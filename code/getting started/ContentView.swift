@@ -23,14 +23,18 @@ class Note : Identifiable, ObservableObject {
     var description : String?
     var imageName : String?
     @Published var image : Image?
-    
-    var data : NoteData?
-    
+        
     init(id: String, name: String) {
         self.id = id
         self.name = name
     }
-    
+
+    convenience init(id: String, name: String, description: String, image: String) {
+        self.init(id: id, name: name)
+        self.description = description
+        self.imageName = image
+    }
+
     init(from: NoteData) {
         self.id          = from.id
         self.name        = from.name
@@ -47,8 +51,25 @@ class Note : Identifiable, ObservableObject {
             }
         }
         // store API object for easy retrieval later
-        self.data = from
+        self._data = from
     }
+    
+    fileprivate var _data : NoteData?
+    
+    // access the privately stored NoteData or build one if we don't have one.
+    var data : NoteData {
+
+        if (_data == nil) {
+
+            _data = NoteData(id: self.id,
+                             name: self.name,
+                             description: self.description,
+                             image: self.imageName)
+        }
+        
+        return _data!
+    }
+    
 }
 
 struct ListRow: View {
@@ -170,13 +191,10 @@ struct AddNoteView: View {
                     
                     let imageName = UUID().uuidString
                     
-                    let noteData = NoteData(id : UUID().uuidString,
-                                            name: self.$name.wrappedValue,
-                                            description: self.$description.wrappedValue,
-                                            image: imageName)
-                    
-                    let note = Note(from: noteData)
-                    
+                    let note = Note(id : UUID().uuidString,
+                                    name: self.$name.wrappedValue,
+                                    description: self.$description.wrappedValue,
+                                    image: imageName)
 
                     if let i = self.image  {
                         // asynchronously store the image (and assume it will work)

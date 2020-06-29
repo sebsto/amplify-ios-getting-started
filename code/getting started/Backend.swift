@@ -126,12 +126,8 @@ class Backend {
     }
     
     func createNote(note: Note) {
-        guard let data = note.data else {
-            assertionFailure("Note object contains no NoteData reference")
-            return
-        }
         
-        _ = Amplify.API.mutate(request: .create(data)) { event in
+        _ = Amplify.API.mutate(request: .create(note.data)) { event in
             switch event {
             case .success(let result):
                 switch result {
@@ -147,12 +143,8 @@ class Backend {
     }
     
     func deleteNote(note: Note) {
-        guard let data = note.data else {
-            assertionFailure("Note object contains no NoteData reference")
-            return
-        }
         
-        _ = Amplify.API.mutate(request: .delete(data)) { event in
+        _ = Amplify.API.mutate(request: .delete(note.data)) { event in
             switch event {
             case .success(let result):
                 switch result {
