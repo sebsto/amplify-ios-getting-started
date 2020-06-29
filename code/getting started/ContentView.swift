@@ -65,7 +65,7 @@ struct ListRow: View {
             
             VStack(alignment: .leading, spacing: 5.0) {
                 Text(note.name)
-                .font(.title)
+                .bold()
                     
                 if ((note.description) != nil) {
                     Text(note.description!)
