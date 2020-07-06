@@ -18,7 +18,7 @@ This tutorial will walk you through the steps to create a simple iOS application
 
 This tutorial is divided into five short modules. You must complete each module in order before moving on to the next one.
 
-- Create an iOS App (10 minutes): Create an iOS app and test it in the iPhone simulator.
+- [Create an iOS App](/02_create_ios_app.md) (10 minutes): Create an iOS app and test it in the iPhone simulator.
 
 - Initialize a Local App (5 minutes): Initialize a local app using AWS Amplify.
 
