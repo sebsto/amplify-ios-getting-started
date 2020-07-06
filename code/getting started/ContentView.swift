@@ -112,12 +112,11 @@ struct ContentView: View {
                     List {
                         ForEach(userData.notes) { note in
                             ListRow(note: note)
-                        }.onDelete() { (indexSet) in
-                            // we might receive multiple indexes when view is in edit mode
-                            let indexes = Array(indexSet)
-                            for i in indexes {
+                        }.onDelete { indices in
+                            indices.forEach {
                                 // removing from user data will refresh UI
-                                let note = self.userData.notes.remove(at: i)
+                                let note = self.userData.notes.remove(at: $0)
+                                
                                 // asynchronously remove from database
                                 Backend.shared.deleteNote(note: note)
                                 
@@ -129,7 +128,8 @@ struct ContentView: View {
                         }
                     }
                     .navigationBarTitle(Text("Notes"))
-                    .navigationBarItems(leading: SignOutButton(), trailing: Button(action: {
+                    .navigationBarItems(leading: SignOutButton(),
+                                        trailing: Button(action: {
                         self.showCreateNote.toggle()
                     }) {
                         Image(systemName: "plus")
@@ -206,7 +206,7 @@ struct AddNoteView: View {
                     Backend.shared.createNote(note: note)
                     
                     // add the new note in our userdata, this will refresh UI
-                    self.userData.notes.append(note)
+                    withAnimation { self.userData.notes.append(note) }
                 }) {
                     Text("Create this note")
                 }
