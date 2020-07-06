@@ -147,7 +147,7 @@ Check the Canvas to verify the layout is as desired.  If you do not see the canv
 
 ![xcode project preview](img/02_40.png)
 
-Note that the data for the preview are generated in the code (line 67 and up), the data does not appear at runtime. If everything looks OK, Build and launch the app in the simulator. Click **Product** menu and select **Run** or type &#8984;R. ALternatively, you can click the `Play` ▶️   button in the toolbar.
+Note that the data for the preview are generated in the code (line 67 and up), the data does not appear at runtime. If everything looks OK, Build and launch the app in the simulator. Click **Product** menu and select **Run** or type **&#8984;R**. ALternatively, you can click the **Play** ▶️   button in the toolbar.
 
 ![xcode build and launch](img/02_50.png)
 
