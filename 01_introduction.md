@@ -8,6 +8,7 @@
 
 ## Side Bar 
 
+| &nbsp; | &nbsp; |
 | --- | --- |
 | ✅ **AWS Level**    | Begineer |
 | ⏱ Time to complete | 1h       |
