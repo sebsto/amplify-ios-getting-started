@@ -63,9 +63,6 @@ brew install awscli
 # install Node.js & npm
 brew install node
 
-# install the AWS Amplify CLI 
-npm install -g @aws-amplify/cli
-
 # install cocoa pods
 sudo gem install cocoapods
 ```
@@ -86,11 +83,6 @@ aws --version
 
 node --version
 # v14.4.0
-
-amplify --version
-# Scanning for plugins...
-# Plugin scan successful
-# 4.22.0
 
 pod --version
 # 1.9.3

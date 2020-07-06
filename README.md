@@ -2,7 +2,7 @@ This is the editable material for Amplify's "iOS Getting Started" guide.
 
 It follows the same structure as the [Amplify's React Getting Started](https://aws.amazon.com/getting-started/learning-path-front-end-developer/) guide.
 
-Please create [Issues](https://github.com/sebsto/amplify-ios-getting-started/issues) if you encounter a typo or a problemm and submit [Pull Requests](https://github.com/sebsto/amplify-ios-getting-started/pulls) for changes 
+Please create [Issues](https://github.com/sebsto/amplify-ios-getting-started/issues) if you encounter a typo or a problem, and submit [Pull Requests](https://github.com/sebsto/amplify-ios-getting-started/pulls) for changes 
 
 # Table of Content
 

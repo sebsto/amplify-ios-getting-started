@@ -1,10 +1,21 @@
 # Initialize Amplify
 
 ## Install Amplify CLI
+
+```zsh
+## Install Amplify CLI
 npm install -g @aws-amplify/cli
+
+## Verify installation and version 
+amplify --version
+# Scanning for plugins...
+# Plugin scan successful
+# 4.22.0
 
 ## Initialize the Amplify Project
 pod init
+```
+
 + project initialization steps at https://docs.amplify.aws/start/getting-started/setup/q/integration/ios#add-amplify-to-your-application
 
 Check AmplifyConfig has been added to XCode project.
