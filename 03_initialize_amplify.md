@@ -1,6 +1,18 @@
-# Initialize Amplify
+# Introduction 
 
 To start to use AWS Amplify in your applications, you must install the Amplify command line, initialize the amplify project directory, configure your project to use the Amplify libraries, and initialize Amplify at runtime from your code.
+
+## What you Will Learn
+
+- Initialize a new Amplify project
+- Add Amplify Libraries in your project 
+- Initialize Amplify libraries at runtime
+
+## Key Concepts
+
+- Amplify CLI - The Amplify CLI allows you to create, manage, and remove AWS services directly from your terminal.
+
+# Implementation 
 
 ## Install Amplify CLI
 
@@ -64,7 +76,7 @@ Initialized your environment successfully.
 Your project has been successfully initialized and connected to the cloud!
 ```
 
-## Add Amplify to your Application
+## Add Amplify Librairies to your Project
 
 1. Before starting this step, please make sure that **you close Xcode**.
    
