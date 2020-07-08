@@ -1,18 +1,20 @@
-# Introduction 
+# Introduction
 
 To start to use AWS Amplify in your applications, you must install the Amplify command line, initialize the amplify project directory, configure your project to use the Amplify libraries, and initialize Amplify at runtime from your code.
 
 ## What you Will Learn
 
 - Initialize a new Amplify project
-- Add Amplify Libraries in your project 
+- Add Amplify Libraries in your project
 - Initialize Amplify libraries at runtime
 
 ## Key Concepts
 
 - Amplify CLI - The Amplify CLI allows you to create, manage, and remove AWS services directly from your terminal.
 
-# Implementation 
+- Amplify libraries – The Amplify libraries allow you to interact with AWS services from a web or mobile application.
+
+# Implementation
 
 ## Install Amplify CLI
 
@@ -24,7 +26,7 @@ To install AWS Amplify CLI, open a Terminal, and **type the following command**:
 ## Install Amplify CLI
 npm install -g @aws-amplify/cli
 
-## Verify installation and version 
+## Verify installation and version
 amplify --version
 # Scanning for plugins...
 # Plugin scan successful
@@ -40,7 +42,9 @@ Open a terminal and change directories to your project. For example, if you crea
 ```zsh
 cd ~/Developer/iOS\ Getting\ Started
 ```
+
 To verify you are in the correct directory, it should look like this:
+
 ```zsh
 ➜  iOS Getting Started git:(master) ✗ ls -al
 total 32
@@ -54,13 +58,13 @@ drwxr-xr-x@  5 stormacq  admin   160 Jul  8 15:09 iOS Getting Started.xcodeproj
 Initialize the Amplify project structure and configuration file. **Execute the following command**:
 
 ```zsh
-amplify init 
+amplify init
 ```
 
 - *? Enter a name for your project (iOSGettingStarted)*: accept the default, press **enter**
 - *? Enter a name for the environment (dev)*: accept the default, press **enter**
 - *? Choose your default editor*: use the arrow key to select your favorite text editor an press **enter**
-- *? Choose the type of app that you're building*: iOS is already selected, press **enter** 
+- *? Choose the type of app that you're building*: iOS is already selected, press **enter**
 - *? Do you want to use an AWS profile?*, Y, press **enter**
 - *? Please choose the profile you want to use*: use the arrow keys to select your profile and press **enter**.
 
@@ -68,7 +72,7 @@ You can create a profile using AWS CLI using `aws configure --profile <name>` if
 
 Amplify initilizes your project in the cloud, it might take a few minutes. After a few minutes, you should see a message like:
 
-```
+```zsh
 ✔ Successfully created initial AWS cloud resources for deployments.
 ✔ Initialized provider successfully.
 Initialized your environment successfully.
@@ -79,14 +83,15 @@ Your project has been successfully initialized and connected to the cloud!
 ## Add Amplify Librairies to your Project
 
 1. Before starting this step, please make sure that **you close Xcode**.
-   
+
    Open a terminal and change directories to your project. For example, if you created your project in the folder `~/Developer`, you can:
 
     ```zsh
     cd ~/Developer/iOS\ Getting\ Started
-    ```    
+    ```
 
     To verify you are in the correct directory, it should look like this:
+
     ```zsh
     ➜  iOS Getting Started git:(master) ✗ ls -al
     total 32
@@ -113,7 +118,7 @@ Your project has been successfully initialized and connected to the cloud!
 
 3. **Update `Podfile`** to include the following pods:
 
-    ```
+    ```Podfile
     # Uncomment the next line to define a global platform for your project
     platform :ios, '13.0'
 
@@ -137,6 +142,7 @@ Your project has been successfully initialized and connected to the cloud!
 5. After doing this, you should now see a file called `iOS Getting Started.xcworkspace`. You are required to use this file from now on instead of the `iOS Getting Started.xcodeproj` file.
 
     To verify you are in the correct directory, it should look like this:
+
     ```zsh
     ➜  iOS Getting Started git:(master) ✗ ls -al
     total 32
@@ -170,7 +176,7 @@ At runtime, the Amplify libraries required the amplify configuration files gener
 
     ![Add Amplify Configuration Files to Xcode](img/03_10.gif)
 
-2. Load the Amplify class at Runtime 
+2. Load the Amplify class at Runtime
 
     Let's create a `Backend` class to group the code to interract with our backend. I chose to use a singleton to make it easily available thorough the application and to ensure the AMplify libraries are initialized only once.
 
@@ -203,12 +209,13 @@ At runtime, the Amplify libraries required the amplify configuration files gener
     We initialize our singleton `Backend` object when application finishes launching.
 
     Open the `AppDelegate.swift` file and add `Backend.initialize()` in the `application(:didFinishLaunchingWithOptions:)` method, just like this:
+
     ```swift
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         // initialize Amplify
         let _ = Backend.initialize()
-        
+
         return true
     }
     ```
