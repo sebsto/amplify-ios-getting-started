@@ -304,7 +304,7 @@ Add the `<key>` and `<array>` element **inside** the `<dict>` element.
      </dict>
 ```
 
-6. Test and Launch the applications
+6. Test and Launch the application
 
 To verify everything works as expected, build the project. Click **Product** menu and select **Run** or type **&#8984;R**. There should be no error. The app starts on the Sign In button.
 
