@@ -392,9 +392,11 @@ ForEach(userData.notes) { note in
 
 ## Test and Launch the application
 
-To verify everything works as expected, build the project. Click **Product** menu and select **Run** or type **&#8984;R**. There should be no error. Assuming you are still signed in, the app starts on the emply List.  It now has a `+` button to add a Note.  **Tap +**, **Tap Create a Note** and the note should appear in the list.
+To verify everything works as expected, build the project. Click **Product** menu and select **Run** or type **&#8984;R**. There should be no error.
 
-You can close the `AddNoteView` by pulling it down.  Note that, on the iOS simulator, it is not possible to tap `+` a second time, yyou need to 'pull-to-refresh' the List first.
+Assuming you are still signed in, the app starts on the emply List.  It now has a `+` button to add a Note.  **Tap +**, **Tap Create a Note** and the note should appear in the list.
+
+You can close the `AddNoteView` by pulling it down.  Note that, on the iOS simulator, it is not possible to tap `+` a second time, you need to 'pull-to-refresh' the List first.
 
 Here is the complete flow.
 
