@@ -278,7 +278,7 @@ Finally, we must ensure our app is launched at the end of the web authentication
 
 In Xcode, select the `Info.plist` file, right click on it and **select Open As => Source Code**.
 
-![Open as Source Code](/img/03_20.png)
+![Open as Source Code](img/03_20.png)
 
 Add the `<key>` and `<array>` element **inside** the `<dict>` element.
 
@@ -312,5 +312,5 @@ Here is the full signup flow.
 
 | Screen Flow | Screen Flow | Screen Flow |
 | --- | --- | --- |
-| ![Signin button](/img/03_30.png) | ![Open Web UI Consent](/img/03_40.png) | ![Signin Page](/img/03_50.png)
-| ![Signup flow](/img/03_60.png) | ![Verification Code](/img/03_70.png) | ![Main View](/img/03_80.png)
+| ![Signin button](img/03_30.png) | ![Open Web UI Consent](img/03_40.png) | ![Signin Page](img/03_50.png)
+| ![Signup flow](img/03_60.png) | ![Verification Code](img/03_70.png) | ![Main View](img/03_80.png)
