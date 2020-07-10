@@ -29,7 +29,7 @@ class Note : Identifiable, ObservableObject {
         self.name = name
     }
 
-    convenience init(id: String, name: String, description: String, image: String) {
+    convenience init(id: String, name: String, description: String? = nil, image: String? = nil ) {
         self.init(id: id, name: name)
         self.description = description
         self.imageName = image
@@ -189,17 +189,16 @@ struct AddNoteView: View {
                 Button(action: {
                     self.isPresented = false
                     
-                    let imageName = UUID().uuidString
-                    
                     let note = Note(id : UUID().uuidString,
                                     name: self.$name.wrappedValue,
-                                    description: self.$description.wrappedValue,
-                                    image: imageName)
+                                    description: self.$description.wrappedValue)
 
                     if let i = self.image  {
-                        // asynchronously store the image (and assume it will work)
-                        Backend.shared.storeImage(name: imageName, image: (i.pngData())!)
+                        note.imageName = UUID().uuidString
                         note.image = Image(uiImage: i)
+
+                        // asynchronously store the image (and assume it will work)
+                        Backend.shared.storeImage(name: note.imageName!, image: (i.pngData())!)
                     }
                     
                     // asynchronously store the note (and assume it will succeed)

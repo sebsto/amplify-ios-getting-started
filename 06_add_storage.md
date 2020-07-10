@@ -41,6 +41,8 @@ To deploy the storage service we have just created, go to your terminal and **ex
 
 ``` zsh
 amplify push
+
+# press Y when asked to continue
 ```
 
 Press **Y** to confirm and, after a while, you should see:
@@ -52,7 +54,6 @@ Press **Y** to confirm and, after a while, you should see:
 ## Add Amplify Storage Libraries to the Xcode Project
 
 Before going to the code, you add the Amplify Storage Library to the dependencies of your project.  Open the `Podfile` file and **add the line** with `AmplifyPlugins/AWSS3StoragePlugin` or copy / paste the entire file below.
-
 
 ```Podfile
 # Uncomment the next line to define a global platform for your project
@@ -91,67 +92,9 @@ Integrating client project
 Pod installation complete! There are 5 dependencies from the Podfile and 12 total pods installed.
 ```
 
-## Add UI code to capture an image
-
-First, we add generic code to support image capture. This code can be reused in many appications, it shows an image selector allowing the user to chose an image from its image library.
-
-In Xcode, **create a new swift file** (&#8984;N, then select Swift). Name the file `CaptureImageView.swift` file and **add this code**:
-
-```swift
-import Foundation
-import UIKit
-import SwiftUI
-
-struct CaptureImageView {
-
-  /// MARK: - Properties
-  @Binding var isShown: Bool
-  @Binding var image: UIImage?
-
-  func makeCoordinator() -> Coordinator {
-    return Coordinator(isShown: $isShown, image: $image)
-  }
-}
-
-class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
-  @Binding var isCoordinatorShown: Bool
-  @Binding var imageInCoordinator: UIImage?
-  init(isShown: Binding<Bool>, image: Binding<UIImage?>) {
-    _isCoordinatorShown = isShown
-    _imageInCoordinator = image
-  }
-  func imagePickerController(_ picker: UIImagePickerController,
-                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-     guard let unwrapImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
-     imageInCoordinator = unwrapImage
-     isCoordinatorShown = false
-  }
-  func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-     isCoordinatorShown = false
-  }
-}
-
-extension CaptureImageView: UIViewControllerRepresentable {
-    func makeUIViewController(context: UIViewControllerRepresentableContext<CaptureImageView>) -> UIImagePickerController {
-        let picker = UIImagePickerController()
-        picker.delegate = context.coordinator
-
-        // picker.sourceType = .camera // on real devices, you can capture image from the camera
-        // see https://medium.com/better-programming/how-to-pick-an-image-from-camera-or-photo-library-in-swiftui-a596a0a2ece
-        
-        return picker
-    }
-
-    func updateUIViewController(_ uiViewController: UIImagePickerController,
-                                context: UIViewControllerRepresentableContext<CaptureImageView>) {
-
-    }
-}
-```
-
 ## Initialize Amplify Storage plugin at runtime
 
-Open `Backedn.swift`. In the initializer of `Backend`, **add** the Storage plugin `AWSS3StoragePlugin`:
+Back to Xcode, open `Backend.swift` and add a line in the Amplify initialisation sequence in `private init()` method. Complete code block should lool like this:
 
 ```swift
 // initialize amplify
@@ -170,9 +113,8 @@ do {
 
 Open `Backedn.swift`. Anywhere in the `Backend` class, **add** the the following methods:
 
-
 ```Swift
-// MARK: - Image Storage 
+// MARK: - Image Storage
 
 func storeImage(name: String, image: Data) {
 
@@ -222,7 +164,7 @@ func deleteImage(name: String) {
 
 ## Load image when data are retrieved from the API
 
-Now that we have our backend functions available, let's load the images when the API returns.  The central place to add this behaviour is when the app construct a `Note` UI object from the `NoteData` returned by the API.
+Now that we have our backend functions available, let's load the images when the API call returns.  he central place to add this behaviour is when the app construct a `Note` UI object from the `NoteData` returned by the API.
 
 Open `ContentView.swift` and update the `Note`'s initializer:
 
@@ -251,9 +193,69 @@ convenience init(from: NoteData) {
 }
 ```
 
+When an image name is present in the instance of `Note`, the code calls `retrieveImage`. This is an asynchronous function. It takes a function to call when the image is downloaded. The function creates an `Image` UI object and assign it to the instance of `Note`. Notice that this assignment triggers a User Interface update, hence it happens on the main thread of the application `DispatchQueue.main.async`.
+
+## Add UI Code to Capture an Image
+
+First, we add generic code to support image capture. This code can be reused in many appications, it shows an image selector allowing the user to chose an image from its image library.
+
+In Xcode, **create a new swift file** (**&#8984;N**, then select Swift). Name the file `CaptureImageView.swift` file and **add this code**:
+
+```swift
+import Foundation
+import UIKit
+import SwiftUI
+
+struct CaptureImageView {
+
+  /// MARK: - Properties
+  @Binding var isShown: Bool
+  @Binding var image: UIImage?
+
+  func makeCoordinator() -> Coordinator {
+    return Coordinator(isShown: $isShown, image: $image)
+  }
+}
+
+class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+  @Binding var isCoordinatorShown: Bool
+  @Binding var imageInCoordinator: UIImage?
+  init(isShown: Binding<Bool>, image: Binding<UIImage?>) {
+    _isCoordinatorShown = isShown
+    _imageInCoordinator = image
+  }
+  func imagePickerController(_ picker: UIImagePickerController,
+                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+     guard let unwrapImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
+     imageInCoordinator = unwrapImage
+     isCoordinatorShown = false
+  }
+  func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+     isCoordinatorShown = false
+  }
+}
+
+extension CaptureImageView: UIViewControllerRepresentable {
+    func makeUIViewController(context: UIViewControllerRepresentableContext<CaptureImageView>) -> UIImagePickerController {
+        let picker = UIImagePickerController()
+        picker.delegate = context.coordinator
+
+        // picker.sourceType = .camera // on real devices, you can capture image from the camera
+        // see https://medium.com/better-programming/how-to-pick-an-image-from-camera-or-photo-library-in-swiftui-a596a0a2ece
+
+        return picker
+    }
+
+    func updateUIViewController(_ uiViewController: UIImagePickerController,
+                                context: UIViewControllerRepresentableContext<CaptureImageView>) {
+
+    }
+}
+```
+
 ## Store image when Notes are created
 
-Similary, let's invoke the storage methods when a `Note` is created.
+Let's invoke the storage methods from `Backend` when a `Note` is created.
 Open `ContentView.swift` and **modify** the `AddNoteView` to add an `ImagePicker` component:
 
 ```swift
@@ -294,38 +296,32 @@ Section {
     Button(action: {
         self.isPresented = false
 
-        let imageName = UUID().uuidString
+        let note = Note(id : UUID().uuidString,
+                        name: self.$name.wrappedValue,
+                        description: self.$description.wrappedValue)
 
-        let noteData = NoteData(id : UUID().uuidString,
-                                name: self.$name.wrappedValue,
-                                description: self.$description.wrappedValue,
-                                image: imageName)
-
-        let note = Note(from: noteData)  
-
-        // NEW CODE TO ADD
         if let i = self.image  {
-            let imageName = UUID().uuidString
-            // asynchronously store the image (and assume it will work)
-            Backend.shared.storeImage(name: imageName, image: (i.pngData())!)
+            note.imageName = UUID().uuidString
             note.image = Image(uiImage: i)
+
+            // asynchronously store the image (and assume it will work)
+            Backend.shared.storeImage(name: note.imageName!, image: (i.pngData())!)
         }
-        // END OF NEW CODE 
 
         // asynchronously store the note (and assume it will succeed)
         Backend.shared.createNote(note: note)
 
         // add the new note in our userdata, this will refresh UI
-        self.userData.notes.append(note)
+        withAnimation { self.userData.notes.append(note) }
     }) {
         Text("Create this note")
     }
 }
-
 ```
-## Test and Launch the application
 
-To verify everything works as expected, build the project. Click **Product** menu and select **Run** or type **&#8984;R**. There should be no error.
+## Build and Test
+
+To verify everything works as expected, build and run the project. Click **Product** menu and select **Run** or type **&#8984;R**. There should be no error.
 
 Assuming you are still signed in, the app starts on the list with one Note.  Use the `+` sign again to craete a Note. This time, add a picture selected from the local image store.
 

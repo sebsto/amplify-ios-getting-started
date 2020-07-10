@@ -1,13 +1,13 @@
 # Introduction
 
-The next feature you will be adding is authentication. In this module, you will learn how to authenticate a user with the Amplify CLI and libraries, leveraging [Amazon Cognito](https://aws.amazon.com/cognito/), a managed user identity service.
+The next feature you will be adding is user authentication. In this module, you will learn how to authenticate a user with the Amplify CLI and libraries, leveraging [Amazon Cognito](https://aws.amazon.com/cognito/), a managed user identity provider.
 
 You will also learn how to use the Cognito Hosted User Interface to present an entire user authentication flow, allowing users to sign up, sign in, and reset their password with just few lines of code.
 
 ## What you Will Learn
 
 - Create and deploy an authentication service
-- Configure your iOS app to include authentication
+- Configure your iOS app to include Cognito Hosted UI authentication
 
 ## Key Concepts
 
@@ -37,8 +37,8 @@ amplify add auth
 
 You know the configuration is sucesfull when you see the message (the exact name of the resource will vary) :
 
-```zsh
-    Successfully added resource iosgettingstartedfc5a4717 locally
+```text
+Successfully added resource iosgettingstartedfc5a4717 locally
 ```
 
 ## Deploy the Authentication Service
@@ -56,8 +56,8 @@ After a while, you should see the following message:
 ```zsh
 ✔ All resources are updated in the cloud
 
-Hosted UI Endpoint: https://iosgettingstartedfc5a4717-fc5a4717-dev.auth.eu-central-1.amazoncognito.com/
-Test Your Hosted UI Endpoint: https://iosgettingstartedfc5a4717-fc5a4717-dev.auth.eu-central-1.amazoncognito.com/login?response_type=code&client_id=5ssp9hbqmro958v5pvbjhovvdn&redirect_uri=gettingstarted://
+Hosted UI Endpoint: https://iosgettingstarted-dev.auth.eu-central-1.amazoncognito.com/
+Test Your Hosted UI Endpoint: https://iosgettingstarted-dev.auth.eu-central-1.amazoncognito.com/login?response_type=code&client_id=1234567890&redirect_uri=gettingstarted://
 ```
 
 ## Add Amplify Authentication Library to the Project
@@ -87,7 +87,7 @@ In a terminal, **execute the command**:
 pod install
 ```
 
-The command takes a few moments to complete. You should see this (actual version numbers may vary):
+The command takes a few seconds to complete. You should see this (actual version numbers may vary):
 
 ```zsh
 Analyzing dependencies
@@ -106,7 +106,10 @@ Pod installation complete! There are 3 dependencies from the Podfile and 8 total
 
 ## Configure Amplify Authentication library at runtime
 
-Back to Xcode, open `backend.swift` file.  In the `Backend` class, **add** an `import` statement for the `AmplifyPlugins`. Also **add a line** to the amplify initialization code we added in the previous section.  Complete code block should look like this:
+Back to Xcode, open `backend.swift` file.  In the `Backend` class,
+
+- **add** an `import` statement for the `AmplifyPlugins`
+- **add a line** to the amplify initialization code we added in the previous section.  Complete code block should look like this:
 
 ```swift
 // at the top of the file
@@ -128,7 +131,7 @@ To verify everything works as expected, build the project. Click **Product** men
 
 ## Trigger Authentication at Runtime
 
-The remaining code change is to track the status of user (are they signed in or not?) and trigger the SignIn / SignUp user interface when user are not signed in.
+The remaining code change tracks the status of user (are they signed in or not?) and triggers the SignIn / SignUp user interface when user is not signed in.
 
 1. Add signin and signout code
 
@@ -176,11 +179,11 @@ The remaining code change is to track the status of user (are they signed in or 
 
 2. Add an authentication hub listener
 
-    To track the changes of authentication status, we add code to subscribe to Authentication events sent by Amplify. We initilaize the Hub in the `Backend.init()` method.
+    To track the changes of authentication status, we add code to subscribe to Authentication events sent by Amplify. We initialize the Hub in the `Backend.init()` method.
 
-    When an authentication event is received, we call the `updateUserData()` method.  This methods keeps the `UserData` object in sync.  The `UserData.isSignedIn` property on is `@Published`, it means the user interface will refresh automatically when the value changes.
+    When an authentication event is received, we call the `updateUserData()` method.  This method keeps the `UserData` object in sync.  The `UserData.isSignedIn` property is `@Published`, it means the user interface is automatically refreshed when the value changes.
 
-    In `Backend.init()`, **add the following code**:
+    In `Backend.init()`, **add the following code** after Amplify's initialization:
 
     ```Swift
     // in private init() function
@@ -213,7 +216,7 @@ The remaining code change is to track the status of user (are they signed in or 
 
     The last change in the code is related to the User Interface, we add a `ZStack` to the `ContentView`.  Depending on `UserData.isSignedIn`'s value, the UI shows either a `SigninButton`, either the main `List` view.
 
-    Open `ContentView.swift` and **replace** `body` in `struct ContentView`
+    Open `ContentView.swift` and **replace** `body` in `ContentView` struct:
 
     ```swift
     var body: some View {
@@ -236,7 +239,7 @@ The remaining code change is to track the status of user (are they signed in or 
     }
     ```
 
-    In the same file, **add** a `SignInButton` view:
+    In the same file, **add** a `SignInButton` and a `SignOutButton` view:
 
     ```swift
     struct SignInButton: View {
@@ -256,11 +259,7 @@ The remaining code change is to track the status of user (are they signed in or 
             }
         }
     }
-    ```
 
-    In the same file, **add** a `SignOutButton` button:
-
-    ```swift
     struct SignOutButton : View {
         var body: some View {
             Button(action: { Backend.shared.signOut() }) {
@@ -272,45 +271,48 @@ The remaining code change is to track the status of user (are they signed in or 
 
     To verify everything works as expected, build the project. Click **Product** menu and select **Build** or type **&#8984;B**. There should be no error.
 
-5. Update `Info.plist`
+4. Update `Info.plist`
 
-Finally, we must ensure our app is launched at the end of the web authentication sequence, provided by Cognito hosted user interface.  We add the `gettingstarted` URI scheme to `Info.plist` file.
+    Finally, we must ensure our app is launched at the end of the web authentication sequence, provided by Cognito hosted user interface.  We add the `gettingstarted` URI scheme to the app's `Info.plist` file.
 
-In Xcode, select the `Info.plist` file, right click on it and **select Open As => Source Code**.
+    In Xcode, select the `Info.plist` file, right click on it and **select Open As**, **Source Code**.
 
-![Open as Source Code](img/03_20.png)
+    ![Open as Source Code](img/03_20.png)
 
-Add the `<key>` and `<array>` element **inside** the `<dict>` element.
+    Add the below `<key>` and `<array>` elements **inside** the top `<dict>` element.
 
-```xml
-<plist version="1.0">
+    ```xml
+    <plist version="1.0">
 
-     <dict>
-     <!-- YOUR OTHER PLIST ENTRIES HERE -->
+        <dict>
+        <!-- YOUR OTHER PLIST ENTRIES HERE -->
 
-     <!-- ADD AN ENTRY TO CFBundleURLTypes for Cognito Auth -->
-     <!-- IF YOU DO NOT HAVE CFBundleURLTypes, YOU CAN COPY THE WHOLE BLOCK BELOW -->
-     <key>CFBundleURLTypes</key>
-     <array>
-         <dict>
-             <key>CFBundleURLSchemes</key>
-             <array>
-                 <string>gettingstarted</string>
-             </array>
-         </dict>
-     </array>
+        <!-- ADD AN ENTRY TO CFBundleURLTypes for Cognito Auth -->
+        <!-- IF YOU DO NOT HAVE CFBundleURLTypes, YOU CAN COPY THE WHOLE BLOCK BELOW -->
+        <key>CFBundleURLTypes</key>
+        <array>
+            <dict>
+                <key>CFBundleURLSchemes</key>
+                <array>
+                    <string>gettingstarted</string>
+                </array>
+            </dict>
+        </array>
 
-     <!-- ... -->
-     </dict>
-```
+        <!-- ... -->
+        </dict>
+    ```
 
-6. Test and Launch the application
+5. Build and Test
 
-To verify everything works as expected, build the project. Click **Product** menu and select **Run** or type **&#8984;R**. There should be no error. The app starts on the Sign In button.
+    To verify everything works as expected, build the project. Click **Product** menu and select **Run** or type **&#8984;R**. There should be no error. The app starts on the Sign In button.
 
 Here is the full signup flow.
 
-| Screen Flow | Screen Flow | Screen Flow |
+| Landing View | Consent to redirect| Cognito Hosted UI |
 | --- | --- | --- |
 | ![Signin button](img/03_30.png) | ![Open Web UI Consent](img/03_40.png) | ![Signin Page](img/03_50.png)
+
+| Signup flow | Verification Code | Main View |
+| --- | --- | --- |
 | ![Signup flow](img/03_60.png) | ![Verification Code](img/03_70.png) | ![Main View](img/03_80.png)
