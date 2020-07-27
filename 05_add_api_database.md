@@ -119,7 +119,7 @@ GraphQL endpoint: https://yourid.appsync-api.eu-central-1.amazonaws.com/graphql
 Before going to the code, you add the Amplify API Library to the dependencies of your project.  Open the `Podfile` file and **add the line** with `AmplifyPlugins/AWSAPIPlugin` or copy / paste the entire file below.
 
 ```Podfile
-# Uncomment the next line to define a global platform for your project
+# you need at least version 13.0 for this turorial, more recent versions are valid too
 platform :ios, '13.0'
 
 target 'getting started' do

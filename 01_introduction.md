@@ -71,7 +71,7 @@ brew install node
 sudo gem install cocoapods
 ```
 
-Once installed, you should have at least the versions below :
+Once installed, you should have **at least the versions** below (anything more recent is valid !) :
 
 ```zsh
 brew --version

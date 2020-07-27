@@ -41,8 +41,6 @@ To deploy the storage service we have just created, go to your terminal and **ex
 
 ``` zsh
 amplify push
-
-# press Y when asked to continue
 ```
 
 Press **Y** to confirm and, after a while, you should see:
@@ -56,7 +54,7 @@ Press **Y** to confirm and, after a while, you should see:
 Before going to the code, you add the Amplify Storage Library to the dependencies of your project.  Open the `Podfile` file and **add the line** with `AmplifyPlugins/AWSS3StoragePlugin` or copy / paste the entire file below.
 
 ```Podfile
-# Uncomment the next line to define a global platform for your project
+# you need at least version 13.0 for this turorial, more recent versions are valid too
 platform :ios, '13.0'
 
 target 'getting started' do

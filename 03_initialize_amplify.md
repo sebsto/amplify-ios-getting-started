@@ -119,7 +119,7 @@ Your project has been successfully initialized and connected to the cloud!
 3. **Update `Podfile`** to include the following pods:
 
     ```Podfile
-    # Uncomment the next line to define a global platform for your project
+    # you need at least version 13.0 for this turorial, more recent versions are valid too
     platform :ios, '13.0'
 
     target 'iOS Getting Started' do
