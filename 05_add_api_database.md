@@ -331,7 +331,7 @@ In Xcode, open `ContentView.swift`
         var body: some View {
             Form {
 
-                Section(header: Text("TEXTE")) {
+                Section(header: Text("TEXT")) {
                     TextField("Name", text: $name)
                     TextField("Name", text: $description)
                 }
@@ -412,3 +412,5 @@ Here is the complete flow.
 | ![Empty List](img/05_20.png) | ![Create Note](img/05_30.png) | ![One Note in the List](img/05_40.png) | ![Delete a Note ](img/05_50.png) |
 
 In the next section, we will add UI and behavior to manage pictures.
+
+[Next](/06_add_storage.md) : Add file storage.

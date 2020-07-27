@@ -9,13 +9,13 @@ Now that you have a full project running, let's explore two options frequently u
 
 ## Key Concepts
 
-Shared Backend - it is common to have multiple front end applications sharing a common backend.  For example, you might have a tvOS, Android, iOS, and web frtont end all sharing the same API, database, storage, and user authentication.
+Shared Backend - it is common to have multiple front end applications sharing a common backend in one single AWS account.  For example, you might have a tvOS, Android, iOS, and web frontends, all sharing the same API, database, storage, and user authentication.
 
 # Implementation
 
 ## Share your Backend Between Multiple Projects
 
-Amplify makes it easy to share a single backend between multiple front end application.
+Amplify makes it easy to share a single backend between multiple front end applications.
 
 In a terminal, navigate to your other project directory and **execute the following command**:
 
@@ -72,3 +72,5 @@ Project deleted locally.
 ```
 
 Thank you for having followed this tutorial until the end. Please le us know your feedback by opening an issue or a pull request on our [GitHub repository](https://github.com/sebsto/amplify-ios-getting-started).
+
+[Back](/01_introduction.md) to the start.

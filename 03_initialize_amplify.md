@@ -224,3 +224,5 @@ At runtime, the Amplify libraries require the amplify configuration files genera
 ## Verify your Setup
 
 To verify everything works as expected, build the project. Click **Product** menu and select **Build** or type **&#8984;B**. There should be no error.
+
+[Next](/04_add_authentication.md) : Add user authentication.

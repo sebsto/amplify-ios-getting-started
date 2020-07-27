@@ -334,3 +334,5 @@ Here is the complete flow.
 You have build an iOS application using AWS Amplify! You have added authentication to your app allowing users to sign up, sign in, and manage their account. The app also has a scalable GraphQL API configured with an Amazon DynamoDB database allowing users to create and delete notes. You have also added file storage using Amazon S3 allowing users to upload images and view them in their app.
 
 In the last section, you will find instructions to reuse or to delete the backend we just created.
+
+[Next](/07_cleanup.md) : Cleanup.

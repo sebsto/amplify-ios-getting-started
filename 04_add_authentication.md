@@ -4,6 +4,8 @@ The next feature you will be adding is user authentication. In this module, you 
 
 You will also learn how to use the Cognito Hosted User Interface to present an entire user authentication flow, allowing users to sign up, sign in, and reset their password with just few lines of code.
 
+using a "Hosted User Interface" means the application leverages the Cognito web pages for the signin and signup user interface flows. The user of the app is redirected to a web page hosted by Cognito and redirected back to the app after signin.  Of course, Cognito and Amplify does support native UI as well, you can follow this workshop 
+
 ## What you Will Learn
 
 - Create and deploy an authentication service
@@ -316,3 +318,5 @@ Here is the full signup flow.
 | Signup flow | Verification Code | Main View |
 | --- | --- | --- |
 | ![Signup flow](img/03_60.png) | ![Verification Code](img/03_70.png) | ![Main View](img/03_80.png)
+
+[Next](/05_add_api_database_md) : Add API & Database.

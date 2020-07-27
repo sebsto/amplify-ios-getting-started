@@ -139,7 +139,7 @@ func prepareTestData() -> UserData {
 
 ```
 
-### What we did just add?
+### What did we just add?
 
 - I created a `Note` class to store the data of Notes. I used two distinct properties for `ImageName` and `Image`. I will take care of `Image` later on in section [06 Add Storage](o6_add_storage.md)
 - I created a `UserData` class to hold specific's user data, at this stage, just a list of `Note` objects.
@@ -164,3 +164,5 @@ After a while, the app starts in the iOS Simulator, with an initial empty screen
 The preview data does not render at runtime, they are only intended for previews inside Xcode.
 
 You are ready to start building with Amplify! 🎉
+
+[Next](/03_initialize_amplify.md) : Initialize Amplify
