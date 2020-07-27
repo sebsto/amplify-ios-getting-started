@@ -54,7 +54,7 @@ Press **Y** to confirm and, after a while, you should see:
 Before going to the code, you add the Amplify Storage Library to the dependencies of your project.  Open the `Podfile` file and **add the line** with `AmplifyPlugins/AWSS3StoragePlugin` or copy / paste the entire file below.
 
 ```Podfile
-# you need at least version 13.0 for this turorial, more recent versions are valid too
+# you need at least version 13.0 for this tutorial, more recent versions are valid too
 platform :ios, '13.0'
 
 target 'getting started' do
