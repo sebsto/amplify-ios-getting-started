@@ -24,3 +24,5 @@
 **/amplifytools.xcconfig
 
 iOS Getting Started/**
+
+.DS_Store

@@ -2,7 +2,7 @@
 
 ## Overview
 
-In this tutorial, you will create a simple iOS using AWS Amplify, a set of tools and serverless services in the cloud. In the first module, you’ll build a simple iOS application. Through the remaining 5 modules, you will initialize a local app using the CLI, add authentication, add a GraphQL API and database, and update your app to store images.
+In this tutorial, you will create a simple iOS application using AWS Amplify, a set of tools and serverless services in the cloud. In the first module, you’ll build a simple iOS application. Through the remaining modules, you will initialize a local app using the Amplify Command Line Interface (Amplify CLI), add user authentication, add a GraphQL API and a database to store your data, and update your app to store images.
 
 ## What you Will Learn
 
@@ -22,11 +22,11 @@ This tutorial is divided into five short modules. You must complete each module 
 
 - [Create an iOS App](02_create_ios_app.md) (10 minutes): Create an iOS app and test it in the iPhone simulator.
 
-- [Initialize a Local App](03_initialize_amplify.md) (5 minutes): Initialize a local app using AWS Amplify.
+- [Initialize a Local App](03_initialize_amplify.md) (10 minutes): Initialize a local app using AWS Amplify.
 
 - [Add Authentication](04_add_authentication.md) (10 minutes): Add auth to your application.
 
-- [Add a GraphQL API and Database](05_add_api_database.md) (15 minutes): Create a GraphQL API.
+- [Add a GraphQL API and Database](05_add_api_database.md) (20 minutes): Create a GraphQL API.
 
 - [Add the Ability to Store Images](06_add_storage.md) (10 minutes): Add storage to your app.
 
@@ -50,7 +50,7 @@ To follow this tutorial, you need the following tools and resources:
 - an [AWS Account](https://portal.aws.amazon.com/billing/signup#/start) with at least [these permissions](/amplify-policy.json).
 - [NodeJS 10.x](https://nodejs.org/en/download/) or above.
 - [CocoaPods 1.9.x](https://cocoapods.org/) or above.
-- [AWS CLI 2.0.x](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) or above.
+- AWS Command Line Interface ([AWS CLI 2.0.x])(https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) or above.
 
 You can install these tools following these instructions:
 
