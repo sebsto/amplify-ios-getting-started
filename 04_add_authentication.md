@@ -319,4 +319,4 @@ Here is the full signup flow.
 | --- | --- | --- |
 | ![Signup flow](img/03_60.png) | ![Verification Code](img/03_70.png) | ![Main View](img/03_80.png)
 
-[Next](/05_add_api_database_md) : Add API & Database.
+[Next](/05_add_api_database.md) : Add API & Database.
