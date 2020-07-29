@@ -13,22 +13,22 @@ class UserData : ObservableObject {
     private init() {}
     static let shared = UserData()
     
-    @Published var notes : [Note] = []
-    @Published var isSignedIn : Bool = false
+    @Published var notes      : [Note] = []
+    @Published var isSignedIn : Bool   = false
 }
 
 class Note : Identifiable, ObservableObject {
-    var id : String
-    var name : String
+    var id          : String
+    var name        : String
     var description : String?
-    var imageName : String?
+    var imageName   : String?
     @Published var image : Image?
         
     init(id: String, name: String, description: String? = nil, image: String? = nil ) {
-        self.id = id
-        self.name = name
+        self.id          = id
+        self.name        = name
         self.description = description
-        self.imageName = image
+        self.imageName   = image
     }
 
     convenience init(from data: NoteData) {
