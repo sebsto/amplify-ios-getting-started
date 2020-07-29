@@ -47,7 +47,7 @@ You will be building this iOS application using the [Terminal](https://support.a
 To follow this tutorial, you need the following tools and resources:
 
 - [Xcode 11.x](https://apps.apple.com/us/app/xcode/id497799835?mt=12) or more recent, available on the Apple Store.
-- an [AWS Account](https://portal.aws.amazon.com/billing/signup#/start) with at least [these permissions](/amplify-policy.json) (an Àdministrator`role or root account will also work, but we recommend a [least-privileges](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#grant-least-privilege) approach).
+- an [AWS Account](https://portal.aws.amazon.com/billing/signup#/start) with at least [these permissions](/amplify-policy.json) (an `Administrator` role or `root` account will also work, but we recommend a [least-privileges](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#grant-least-privilege) approach).
 - [NodeJS 10.x](https://nodejs.org/en/download/) or more recent.
 - [CocoaPods 1.9.x](https://cocoapods.org/) or more recent.
 - AWS Command Line Interface [AWS CLI 2.0.x](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) or more recent.
