@@ -166,7 +166,7 @@ do {
    try Amplify.add(plugin: AWSCognitoAuthPlugin())
    try Amplify.add(plugin: AWSAPIPlugin(modelRegistration: AmplifyModels()))
    try Amplify.configure()
-   print("Initialized Amplify");
+   print("Initialized Amplify")
 } catch {
    print("Could not initialize Amplify: \(error)")
 }
@@ -225,7 +225,7 @@ Let's add 3 methods to call our API: a method to query the Note, a method to cre
                     for n in notesData {
                         let note = Note.init(from: n)
                         DispatchQueue.main.async() {
-                            UserData.shared.notes.append(note);
+                            UserData.shared.notes.append(note)
                         }
                     }
 

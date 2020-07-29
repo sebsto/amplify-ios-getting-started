@@ -14,7 +14,7 @@ class Backend {
            try Amplify.add(plugin: AWSAPIPlugin(modelRegistration: AmplifyModels()))
            try Amplify.add(plugin: AWSS3StoragePlugin())
            try Amplify.configure()
-           print("Initialized Amplify");
+           print("Initialized Amplify")
         } catch {
            print("Could not initialize Amplify: \(error)")
         }
@@ -112,7 +112,7 @@ class Backend {
                     for n in notesData {
                         let note = Note.init(from: n)
                         DispatchQueue.main.async() {
-                            UserData.shared.notes.append(note);
+                            UserData.shared.notes.append(note)
                         }
                     }
                     

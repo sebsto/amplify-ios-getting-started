@@ -24,22 +24,15 @@ class Note : Identifiable, ObservableObject {
     var imageName : String?
     @Published var image : Image?
         
-    init(id: String, name: String) {
+    init(id: String, name: String, description: String? = nil, image: String? = nil ) {
         self.id = id
         self.name = name
-    }
-
-    convenience init(id: String, name: String, description: String? = nil, image: String? = nil ) {
-        self.init(id: id, name: name)
         self.description = description
         self.imageName = image
     }
 
-    init(from: NoteData) {
-        self.id          = from.id
-        self.name        = from.name
-        self.description = from.description
-        self.imageName   = from.image
+    convenience init(from data: NoteData) {
+        self.init(id: data.id, name: data.name, description: data.description, image: data.image)
         
         if let name = self.imageName {
             // asynchronously download the image
@@ -51,7 +44,7 @@ class Note : Identifiable, ObservableObject {
             }
         }
         // store API object for easy retrieval later
-        self._data = from
+        self._data = data
     }
     
     fileprivate var _data : NoteData?
@@ -257,13 +250,10 @@ func prepareTestData() -> UserData {
     userData.isSignedIn = true
     let desc = "this is a very long description that should fit on multiiple lines.\nit even has a line break\nor two."
     
-    let n1 = Note(id: "01", name: "Hello world")
-    let n2 = Note(id: "02", name: "A new note")
+    let n1 = Note(id: "01", name: "Hello world", description: desc, image: "mic")
+    let n2 = Note(id: "02", name: "A new note", description: desc, image: "phone")
     userData.notes = [ n1, n2 ]
-    n1.description = desc
-    n2.description = desc
-    n1.imageName = "mic"
-    n2.imageName = "phone"
+
     n1.image = Image(systemName: n1.imageName!)
     n2.image = Image(systemName: n2.imageName!)
     return userData

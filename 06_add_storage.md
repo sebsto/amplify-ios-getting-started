@@ -171,10 +171,8 @@ Open `ContentView.swift` and update the `Note`'s initializer:
 @Published var image : Image?
 
 // update init's code
-convenience init(from: NoteData) {
-    self.init(id: from.id, name: from.name)
-    self.description = from.description
-    self.imageName   = from.image
+convenience init(from data: NoteData) {
+    self.init(id: data.id, name: data.name, description: data.description, image: data.image)
 
     if let name = self.imageName {
         // asynchronously download the image
@@ -187,7 +185,7 @@ convenience init(from: NoteData) {
         }
     }
     // store API object for easy retrieval later
-    self.data = from
+    self.data = data
 }
 ```
 

@@ -122,7 +122,7 @@ private init () {
   do {
      try Amplify.add(plugin: AWSCognitoAuthPlugin())
      try Amplify.configure()
-     print("Initialized Amplify");
+     print("Initialized Amplify")
   } catch {
      print("Could not initialize Amplify: \(error)")
   }
