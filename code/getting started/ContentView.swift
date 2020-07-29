@@ -149,7 +149,7 @@ struct AddNoteView: View {
     var body: some View {
         Form {
         
-            Section(header: Text("TEXTE")) {
+            Section(header: Text("TEXT")) {
                 TextField("Name", text: $name)
                 TextField("Name", text: $description)
             }
