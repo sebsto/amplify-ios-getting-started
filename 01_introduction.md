@@ -6,19 +6,19 @@ In this tutorial, you will create a simple iOS application using AWS Amplify, a 
 
 ## What you Will Learn
 
-This tutorial will walk you through the steps to create a simple iOS application discussed above. You will learn:
+This tutorial will walk you through the steps to create a simple iOS application discussed above. You will learn to:
 
 - Manage serverless cloud backend from the command line
 
-- Authentication: Add auth to your app to enable sign-in and sign-out
+- Add auth to your app to enable sign-in and sign-out
 
-- Database and Storage: Add a GraphQL API, database, and storage solution
+- Add a GraphQL API, database, and storage solution
 
 - Share your backend between multiple projects.
 
 ## Modules
 
-This tutorial is divided into five short modules. You must complete each module in order before moving on to the next one.
+This tutorial is divided into five short modules. You must complete each module in order, before moving on to the next one.
 
 - [Create an iOS App](02_create_ios_app.md) (10 minutes): Create an iOS app and test it in the iPhone simulator.
 
@@ -30,7 +30,7 @@ This tutorial is divided into five short modules. You must complete each module 
 
 - [Add the Ability to Store Images](06_add_storage.md) (10 minutes): Add storage to your app.
 
-You will be building this iOS application using the [Terminal](https://support.apple.com/en-gb/guide/terminal/welcome/mac) and Apple's [Xcode](https://developer.apple.com/xcode/) IDE
+You will be building this iOS application using the [Terminal](https://support.apple.com/en-gb/guide/terminal/welcome/mac) and Apple's [Xcode](https://developer.apple.com/xcode/) IDE.
 
 ## Side Bar
 
@@ -47,10 +47,10 @@ You will be building this iOS application using the [Terminal](https://support.a
 To follow this tutorial, you need the following tools and resources:
 
 - [Xcode 11.x](https://apps.apple.com/us/app/xcode/id497799835?mt=12) or more recent, available on the Apple Store.
-- an [AWS Account](https://portal.aws.amazon.com/billing/signup#/start) with at least [these permissions](/amplify-policy.json).
-- [NodeJS 10.x](https://nodejs.org/en/download/) or above.
-- [CocoaPods 1.9.x](https://cocoapods.org/) or above.
-- AWS Command Line Interface ([AWS CLI 2.0.x])(https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) or above.
+- an [AWS Account](https://portal.aws.amazon.com/billing/signup#/start) with at least [these permissions](/amplify-policy.json) (an Àdministrator`role or root account will also work, but we recommend a [least-privileges](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#grant-least-privilege) approach).
+- [NodeJS 10.x](https://nodejs.org/en/download/) or more recent.
+- [CocoaPods 1.9.x](https://cocoapods.org/) or more recent.
+- AWS Command Line Interface [AWS CLI 2.0.x](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) or more recent.
 
 You can install these tools following these instructions:
 
@@ -71,7 +71,7 @@ brew install node
 sudo gem install cocoapods
 ```
 
-Once installed, you should have **at least the versions** below (anything more recent is valid !) :
+Once installed, you should have **at least the versions shown below** (anything more recent is valid !) :
 
 ```zsh
 brew --version
