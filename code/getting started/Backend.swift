@@ -26,12 +26,8 @@ class Backend {
                 let session = try result.get()
                 
                 // let's update UserData and the UI
-                self.updateUI(forSignInStatus: session.isSignedIn)
+                self.updateUI(withSignInStatus: session.isSignedIn)
                 
-                // when user is signed in, query the database
-                if session.isSignedIn {
-                    self.queryNotes()
-                }
             } catch {
                 print("Fetch auth session failed with error - \(error)")
             }
@@ -46,15 +42,15 @@ class Backend {
 
             case HubPayload.EventName.Auth.signedIn:
                 print("==HUB== User signed In, update UI")
-                self.updateUI(forSignInStatus: true)
+                self.updateUI(withSignInStatus: true)
 
             case HubPayload.EventName.Auth.signedOut:
                 print("==HUB== User signed Out, update UI")
-                self.updateUI(forSignInStatus: false)
+                self.updateUI(withSignInStatus: false)
 
             case HubPayload.EventName.Auth.sessionExpired:
                 print("==HUB== Session expired, show sign in aui")
-                self.updateUI(forSignInStatus: false)
+                self.updateUI(withSignInStatus: false)
 
             default:
                 //print("==HUB== \(payload)")
@@ -66,10 +62,17 @@ class Backend {
     
     // MARK: Authentication
     // change our internal state, this triggers an UI update on the main thread
-    func updateUI(forSignInStatus : Bool) {
+    func updateUI(withSignInStatus status : Bool) {
         DispatchQueue.main.async() {
             let userData : UserData = .shared
-            userData.isSignedIn = forSignInStatus
+            userData.isSignedIn = status
+
+            // when user is signed in, query the database, otherwise empty our model
+            if status {
+                self.queryNotes()
+            } else {
+                userData.notes = []
+            }
         }
     }
     

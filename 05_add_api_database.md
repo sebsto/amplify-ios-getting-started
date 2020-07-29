@@ -178,11 +178,9 @@ Our project already has a data model to represent a `Note`. So I made a design d
 Open `ContentView.swift` and add this initializer in the `Note` class
 
 ```swift
-convenience init(from: NoteData) {
-    self.init(id: from.id, name: from.name)
-    self.description = from.description
-    self.imageName   = from.image
-
+convenience init(from data: NoteData) {
+    self.init(id: data.id, name: data.name, description: data.description, image: data.image)
+ 
     // store API object for easy retrieval later
     self._data = from
 }
@@ -288,14 +286,29 @@ _ = Amplify.Auth.fetchAuthSession { (result) in
         // let's update UserData and the UI
         self.updateUserData(withSignInStatus: session.isSignedIn)
 
-        // when user is signed in, query the database
-        if session.isSignedIn {
-            self.queryNotes()
-        }
     } catch {
         print("Fetch auth session failed with error - \(error)")
     }
 
+}
+````
+
+In the same `Backend.swift`file, update the `updateUI(withSignInStatus:)` method to look like this:
+
+```swift
+// change our internal state, this triggers an UI update on the main thread
+func updateUI(withSignInStatus status : Bool) {
+    DispatchQueue.main.async() {
+        let userData : UserData = .shared
+        userData.isSignedIn = status
+
+        // when user is signed in, query the database, otherwise empty our model
+        if status {
+            self.queryNotes()
+        } else {
+            userData.notes = []
+        }
+    }
 }
 ```
 
