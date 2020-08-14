@@ -377,7 +377,7 @@ In Xcode, open `ContentView.swift`
 
 3. Add a `+` button on the navigation bar to present a sheet to create a `Note`
 
-    Back to `ContentView` struct, **replace** `navigationBarItems(trailing:)` with
+    Back to `ContentView` struct, **replace** `.navigationBarItems(leading: SignOutButton())` with
 
     ```Swift
         .navigationBarItems(leading: SignOutButton(),
@@ -412,7 +412,7 @@ ForEach(userData.notes) { note in
 
 To verify everything works as expected, build and run the project. Click **Product** menu and select **Run** or type **&#8984;R**. There should be no error.
 
-Assuming you are still signed in, the app starts on the emply List. It now has a `+` button to add a Note.  **Tap the + sign**, **Tap Create a Note** and the note should appear in the list.
+Assuming you are still signed in, the app starts on the emply List. It now has a `+` button to add a Note.  **Tap the + sign**, **Tap Create this Note** and the note should appear in the list.
 
 You can close the `AddNoteView` by pulling it down.  Note that, on the iOS simulator, it is not possible to tap `+` a second time, you need to 'pull-to-refresh' the List first.
 
