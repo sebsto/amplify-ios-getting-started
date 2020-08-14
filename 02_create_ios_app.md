@@ -144,7 +144,7 @@ func prepareTestData() -> UserData {
 
 ## Build and Test
 
-Check the Canvas to verify the layout is as desired.  If you do not see the canvas, you can enable it using the **Editor** menu, then click **Canvas**.
+Check the Canvas to verify the layout is as desired.  If you do not see the canvas, you can enable it using the **Editor** menu, then click **Canvas**. You may also need to click the **Resume** button in the Canvas to generate the preview of the layout.
 
 ![xcode project preview](img/02_40.png)
 
