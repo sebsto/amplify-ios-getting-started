@@ -37,7 +37,7 @@ amplify add auth
 - *? Do you want to add another redirect signout URI?* Select the default **N** and press **enter**
 - *Select the social providers you want to configure for your user pool:* do not select any provider and press **enter**
 
-You know the configuration is sucesfull when you see the message (the exact name of the resource will vary) :
+You know the configuration is successful when you see the message (the exact name of the resource will vary) :
 
 ```text
 Successfully added resource iosgettingstartedfc5a4717 locally
@@ -45,7 +45,7 @@ Successfully added resource iosgettingstartedfc5a4717 locally
 
 ## Deploy the Authentication Service
 
-Now that the authentication service has been configured locally, you can deploy it to the cloud. In a Terminal, **execute the command**:
+Now that the authentication service has been configured locally, you can deploy it to the cloud. In a Terminal, **execute this command** in your project directory:
 
 ```zsh
 amplify push
@@ -215,7 +215,7 @@ The remaining code change tracks the status of user (are they signed in or not?)
 
 3. Update the User Interface code
 
-    The last change in the code is related to the User Interface, we add a `ZStack` to the `ContentView`.  Depending on `UserData.isSignedIn`'s value, the UI shows either a `SigninButton`, either the main `List` view.
+    The last change in the code is related to the User Interface, we add a `ZStack` to the `ContentView`.  Depending on `UserData.isSignedIn`'s value, the UI shows either a `SigninButton` or the main `List` view.
 
     Open `ContentView.swift` and **replace** `body` in `ContentView` struct:
 
