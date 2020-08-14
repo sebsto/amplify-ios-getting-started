@@ -182,7 +182,7 @@ convenience init(from data: NoteData) {
     self.init(id: data.id, name: data.name, description: data.description, image: data.image)
  
     // store API object for easy retrieval later
-    self._data = from
+    self._data = data
 }
 
 fileprivate var _data : NoteData?
