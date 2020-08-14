@@ -21,7 +21,7 @@ The app we will be building is a note taking app that allows users to create, de
 
 ## Create a GraphQL API service and a Database  
 
-To create the GraphQL API and its backing database, open a Terminal and **execute this command**:
+To create the GraphQL API and its backing database, open a Terminal and **execute this command** from your project directory:
 
 ```zsh
 amplify add api
@@ -29,7 +29,7 @@ amplify add api
 
 - *? Please select from one of the below mentioned services:* : select **GraphQL** and press **enter**
 - *? Provide API name:* select the default, press **enter**
-- *? Choose the default authorization type for the API*: use teh arrow key to select **Amazon Cognito User Pool** and press **enter**
+- *? Choose the default authorization type for the API*: use the arrow key to select **Amazon Cognito User Pool** and press **enter**
 - *? Do you want to configure advanced settings for the GraphQL API*: select the default **No, I am done** and press **enter**
 - *? Do you have an annotated GraphQL schema?*, keep the default **N** and press **enter**
 - *? Do you want a guided schema creation?* , keep the default **Y** and press **enter**
