@@ -21,7 +21,7 @@ using a "Hosted User Interface" means the application leverages the Cognito web 
 
 ## Create the Authentication Service
 
-To create the authentication service, open a Terminal and **execute this command**:
+To create the authentication service, open a Terminal and **execute this command** in your project directory:
 
 ```zsh
 amplify add auth
