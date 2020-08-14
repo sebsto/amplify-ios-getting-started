@@ -185,7 +185,7 @@ convenience init(from data: NoteData) {
         }
     }
     // store API object for easy retrieval later
-    self.data = data
+    self._data = data
 }
 ```
 
