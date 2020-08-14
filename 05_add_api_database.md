@@ -293,11 +293,11 @@ _ = Amplify.Auth.fetchAuthSession { (result) in
 }
 ````
 
-In the same `Backend.swift`file, update the `updateUI(withSignInStatus:)` method to look like this:
+In the same `Backend.swift`file, update the `updateUserData(withSignInStatus:)` method to look like this:
 
 ```swift
 // change our internal state, this triggers an UI update on the main thread
-func updateUI(withSignInStatus status : Bool) {
+func updateUserData(withSignInStatus status : Bool) {
     DispatchQueue.main.async() {
         let userData : UserData = .shared
         userData.isSignedIn = status
