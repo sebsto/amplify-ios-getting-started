@@ -319,7 +319,7 @@ Section {
 
 To verify everything works as expected, build and run the project. Click **Product** menu and select **Run** or type **&#8984;R**. There should be no error.
 
-Assuming you are still signed in, the app starts on the list with one Note.  Use the `+` sign again to craete a Note. This time, add a picture selected from the local image store.
+Assuming you are still signed in, the app starts on the list with one Note.  Use the `+` sign again to create a Note. This time, add a picture selected from the local image store.
 
 Here is the complete flow.
 
