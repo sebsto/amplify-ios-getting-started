@@ -205,7 +205,7 @@ var data : NoteData {
 
 Let's add 3 methods to call our API: a method to query the Note, a method to create a new Note, and a method to delete a Note. Notice that these method works on the app data model (`Note`) to make it easy to interract from the User Interface. These method transparently convert `Note` to GraphQL's `NoteData` objects.
 
-**Open** the `Backend.swift` file and **add the following** snipet at the end of the `Backend` class:
+**Open** the `Backend.swift` file and **add the following** snippet at the end of the `Backend` class:
 
 ```swift
     // MARK: API Access
@@ -273,7 +273,7 @@ Let's add 3 methods to call our API: a method to query the Note, a method to cre
     }
 ```
 
-Finally, we must call the API to query the list of `Note` for the currently signed in user whne the application starts. **Add** this piece of code in the `Backend`'s `private init()` method:
+Finally, we must call the API to query the list of `Note` for the currently signed in user when the application starts. **Add** this piece of code in the `Backend`'s `private init()` method:
 
 ```swift
 // inside private init() method
