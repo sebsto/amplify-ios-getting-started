@@ -137,7 +137,7 @@ func prepareTestData() -> UserData {
 ### What did we just add?
 
 - I created a `Note` class to store the data of Notes. I used two distinct properties for `ImageName` and `Image`. I will take care of `Image` later on in section [06 Add Storage](o6_add_storage.md)
-- I created a `UserData` class to hold specific's user data, at this stage, just a list of `Note` objects.
+- I created a `UserData` class to hold specific user's data, at this stage, just a list of `Note` objects.
 - the main view `ContentView` contains a `List` of `ListRow`
 - Each line is rendered by a `ListRow` : a horizontal stack with an image and text.  Text is a vertical stack with the note name, in bold, and the note description.
 - Finally I adjusted `ContentView_Previews` and added `prepareTestData()` to allow a preview rendering in the canvas.
