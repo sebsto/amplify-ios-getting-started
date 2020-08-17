@@ -1,5 +1,7 @@
 # Introduction
 
+Now that we have created an iOS application, we want to continue development and add new features.
+
 To start to use AWS Amplify in your application, you must install the Amplify command line, initialize the amplify project directory, configure your project to use the Amplify libraries, and initialize Amplify Libraries at runtime.
 
 ## What you Will Learn
