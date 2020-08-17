@@ -1,6 +1,6 @@
 # Introduction
 
-AWS Amplify provides a Git-based workflow for creating, managing, integrating, and deploying serverless backends for web and mobile applications. The Amplify CLI provides a simple text-based user interface to provision and manage backend services, such as user authentication or a REST or GrahQL API for your applications. The Amplify Libraries allow to easily integrate these backend services with just a few lines of code in your applications.
+AWS Amplify provides a Git-based workflow for creating, managing, integrating, and deploying serverless backends for web and mobile applications. The Amplify CLI provides a simple text-based user interface to provision and manage backend services, such as user authentication or a REST or GraphQL API for your applications. The Amplify Libraries allow to easily integrate these backend services with just a few lines of code in your applications.
 
 In this module, we’ll begin by creating a new iOS application to take travel notes. A note is made of a title, a description and a picture. We will enhance this application in the following modules.
 
@@ -137,14 +137,14 @@ func prepareTestData() -> UserData {
 ### What did we just add?
 
 - I created a `Note` class to store the data of Notes. I used two distinct properties for `ImageName` and `Image`. I will take care of `Image` later on in section [06 Add Storage](o6_add_storage.md)
-- I created a `UserData` class to hold specific's user data, at this stage, just a list of `Note` objects.
-- the main view `ContentView` contains a `List` of `ListRow`
+- I created a `UserData` class to hold specific user's data, at this stage, just a list of `Note` objects.
+- the main view `ContentView` contains a `List` of `ListRow`s
 - Each line is rendered by a `ListRow` : a horizontal stack with an image and text.  Text is a vertical stack with the note name, in bold, and the note description.
 - Finally I adjusted `ContentView_Previews` and added `prepareTestData()` to allow a preview rendering in the canvas.
 
 ## Build and Test
 
-Check the Canvas to verify the layout is as desired.  If you do not see the canvas, you can enable it using the **Editor** menu, then click **Canvas**.
+Check the Canvas to verify the layout is as desired.  If you do not see the canvas, you can enable it using the **Editor** menu, then click **Canvas**. You may also need to click the **Resume** button in the Canvas to generate the preview of the layout.
 
 ![xcode project preview](img/02_40.png)
 

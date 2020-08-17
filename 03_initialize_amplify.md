@@ -116,7 +116,7 @@ Your project has been successfully initialized and connected to the cloud!
 
    After doing this, you should see a newly created file called `Podfile`. This file is used to describe what packages your project depends on.
 
-3. **Update `Podfile`** to include the following pods:
+3. **Update `Podfile`** to include the following pods and update the platform:
 
     ```Podfile
     # you need at least version 13.0 for this tutorial, more recent versions are valid too
@@ -172,13 +172,13 @@ At runtime, the Amplify libraries require the amplify configuration files genera
 
 1. Add the Amplify Configuration Files to our Project
 
-    Using the Finder, locate `awsconfiguration.json` and `amplifyconfiguration.json`at the root of your project directory. Ddrag'n drop them into your Xcode project:
+    Using the Finder, locate `awsconfiguration.json` and `amplifyconfiguration.json`at the root of your project directory. Drag 'n drop them into your Xcode project:
 
     ![Add Amplify Configuration Files to Xcode](img/03_10.gif)
 
 2. Load the Amplify classes at Runtime
 
-    Let's create a `Backend` class to group the code to interract with our backend. I use a [singleton design pattern](https://en.wikipedia.org/wiki/Singleton_pattern) to make it easily available thorough the application and to ensure the Amplify libraries are initialized only once.
+    Let's create a `Backend` class to group the code to interact with our backend. I use a [singleton design pattern](https://en.wikipedia.org/wiki/Singleton_pattern) to make it easily available through the application and to ensure the Amplify libraries are initialized only once.
 
     The class initializer takes care of initializing the Amplify librairies.
 

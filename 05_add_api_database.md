@@ -21,7 +21,7 @@ The app we will be building is a note taking app that allows users to create, de
 
 ## Create a GraphQL API service and a Database  
 
-To create the GraphQL API and its backing database, open a Terminal and **execute this command**:
+To create the GraphQL API and its backing database, open a Terminal and **execute this command** from your project directory:
 
 ```zsh
 amplify add api
@@ -29,7 +29,7 @@ amplify add api
 
 - *? Please select from one of the below mentioned services:* : select **GraphQL** and press **enter**
 - *? Provide API name:* select the default, press **enter**
-- *? Choose the default authorization type for the API*: use teh arrow key to select **Amazon Cognito User Pool** and press **enter**
+- *? Choose the default authorization type for the API*: use the arrow key to select **Amazon Cognito User Pool** and press **enter**
 - *? Do you want to configure advanced settings for the GraphQL API*: select the default **No, I am done** and press **enter**
 - *? Do you have an annotated GraphQL schema?*, keep the default **N** and press **enter**
 - *? Do you want a guided schema creation?* , keep the default **Y** and press **enter**
@@ -182,7 +182,7 @@ convenience init(from data: NoteData) {
     self.init(id: data.id, name: data.name, description: data.description, image: data.image)
  
     // store API object for easy retrieval later
-    self._data = from
+    self._data = data
 }
 
 fileprivate var _data : NoteData?
@@ -205,7 +205,7 @@ var data : NoteData {
 
 Let's add 3 methods to call our API: a method to query the Note, a method to create a new Note, and a method to delete a Note. Notice that these method works on the app data model (`Note`) to make it easy to interract from the User Interface. These method transparently convert `Note` to GraphQL's `NoteData` objects.
 
-**Open** the `Backend.swift` file and **add the following** snipet at the end of the `Backend` class:
+**Open** the `Backend.swift` file and **add the following** snippet at the end of the `Backend` class:
 
 ```swift
     // MARK: API Access
@@ -273,7 +273,7 @@ Let's add 3 methods to call our API: a method to query the Note, a method to cre
     }
 ```
 
-Finally, we must call the API to query the list of `Note` for the currently signed in user whne the application starts. **Add** this piece of code in the `Backend`'s `private init()` method:
+Finally, we must call the API to query the list of `Note` for the currently signed in user when the application starts. **Add** this piece of code in the `Backend`'s `private init()` method:
 
 ```swift
 // inside private init() method
@@ -293,11 +293,11 @@ _ = Amplify.Auth.fetchAuthSession { (result) in
 }
 ````
 
-In the same `Backend.swift`file, update the `updateUI(withSignInStatus:)` method to look like this:
+In the same `Backend.swift`file, update the `updateUserData(withSignInStatus:)` method to look like this:
 
 ```swift
 // change our internal state, this triggers an UI update on the main thread
-func updateUI(withSignInStatus status : Bool) {
+func updateUserData(withSignInStatus status : Bool) {
     DispatchQueue.main.async() {
         let userData : UserData = .shared
         userData.isSignedIn = status
@@ -377,7 +377,7 @@ In Xcode, open `ContentView.swift`
 
 3. Add a `+` button on the navigation bar to present a sheet to create a `Note`
 
-    Back to `ContentView` struct, **replace** `navigationBarItems(trailing:)` with
+    Back to `ContentView` struct, **replace** `.navigationBarItems(leading: SignOutButton())` with
 
     ```Swift
         .navigationBarItems(leading: SignOutButton(),
@@ -412,7 +412,7 @@ ForEach(userData.notes) { note in
 
 To verify everything works as expected, build and run the project. Click **Product** menu and select **Run** or type **&#8984;R**. There should be no error.
 
-Assuming you are still signed in, the app starts on the emply List. It now has a `+` button to add a Note.  **Tap the + sign**, **Tap Create a Note** and the note should appear in the list.
+Assuming you are still signed in, the app starts on the emply List. It now has a `+` button to add a Note.  **Tap the + sign**, **Tap Create this Note** and the note should appear in the list.
 
 You can close the `AddNoteView` by pulling it down.  Note that, on the iOS simulator, it is not possible to tap `+` a second time, you need to 'pull-to-refresh' the List first.
 
