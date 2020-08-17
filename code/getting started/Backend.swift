@@ -28,7 +28,7 @@ class Backend {
                 let session = try result.get()
                 
                 // let's update UserData and the UI
-                self.updateUI(withSignInStatus: session.isSignedIn)
+                self.updateUserData(withSignInStatus: session.isSignedIn)
                 
             } catch {
                 print("Fetch auth session failed with error - \(error)")
@@ -44,15 +44,15 @@ class Backend {
 
             case HubPayload.EventName.Auth.signedIn:
                 print("==HUB== User signed In, update UI")
-                self.updateUI(withSignInStatus: true)
+                self.updateUserData(withSignInStatus: true)
 
             case HubPayload.EventName.Auth.signedOut:
                 print("==HUB== User signed Out, update UI")
-                self.updateUI(withSignInStatus: false)
+                self.updateUserData(withSignInStatus: false)
 
             case HubPayload.EventName.Auth.sessionExpired:
                 print("==HUB== Session expired, show sign in aui")
-                self.updateUI(withSignInStatus: false)
+                self.updateUserData(withSignInStatus: false)
 
             default:
                 //print("==HUB== \(payload)")
@@ -64,7 +64,7 @@ class Backend {
     
     // MARK: Authentication
     // change our internal state, this triggers an UI update on the main thread
-    func updateUI(withSignInStatus status : Bool) {
+    func updateUserData(withSignInStatus status : Bool) {
         DispatchQueue.main.async() {
             let userData : UserData = .shared
             userData.isSignedIn = status
