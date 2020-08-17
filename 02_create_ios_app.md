@@ -12,7 +12,7 @@ In this module, we’ll begin by creating a new iOS application to take travel n
 
 ## Key Concepts
 
-- SwiftUI - [SwiftUI](https://developer.apple.com/xcode/swiftui/) is a simple way to build user interfaces across all Apple platforms with the power of [Swift](https://swift.org/) programming language
+- SwiftUI - [SwiftUI](https://developer.apple.com/xcode/swiftui/) is a simple way to build user interfaces across all Apple platforms with the power of the [Swift](https://swift.org/) programming language
 
 # Implementation
 
@@ -158,6 +158,6 @@ After a while, the app starts in the iOS Simulator, with an initial empty screen
 
 The preview data does not render at runtime, they are only intended for previews inside Xcode.
 
-You are ready to start building with Amplify! 🎉
+You have successfully created an iOS app. You are ready to start building with Amplify! 🎉
 
 [Next](/03_initialize_amplify.md) : Initialize Amplify
