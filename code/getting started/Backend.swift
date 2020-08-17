@@ -4,6 +4,8 @@ import AmplifyPlugins
 
 class Backend {
     static let shared = Backend()
+    
+    @discardableResult
     static func initialize() -> Backend {
         return .shared
     }
