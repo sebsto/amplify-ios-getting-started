@@ -186,6 +186,8 @@ The remaining code change tracks the status of user (are they signed in or not?)
 
     When an authentication event is received, we call the `updateUserData()` method.  This method keeps the `UserData` object in sync.  The `UserData.isSignedIn` property is `@Published`, it means the user interface is automatically refreshed when the value changes.
 
+    We also add code to check previous authentication status at application startup time. When the application starts, it checks if a Cognito session already exists and updates the UI accordingly.
+
     In `Backend.init()`, **add the following code** after Amplify's initialization:
 
     ```Swift
@@ -213,6 +215,21 @@ The remaining code change tracks the status of user (are they signed in or not?)
             break
         }
     }
+
+        // let's check if user is signedIn or not
+        _ = Amplify.Auth.fetchAuthSession { (result) in
+
+            do {
+                let session = try result.get()
+                
+                // let's update UserData and the UI
+                self.updateUserData(withSignInStatus: session.isSignedIn)
+                
+            } catch {
+                print("Fetch auth session failed with error - \(error)")
+            }
+
+        }    
     ```
 
 3. Update the User Interface code
