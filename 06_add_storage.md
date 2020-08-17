@@ -256,7 +256,7 @@ Open `ContentView.swift` and **modify** the `AddNoteView` to add an `ImagePicker
 
 ```swift
 // at the start of the Content View struct 
-@State var image : UIImage? // replace the previous declaraion of image
+@State var image : UIImage? // replace the previous declaration of image
 @State var showCaptureImageView = false
 
 // in the view, replace the existing PICTURE section
