@@ -108,10 +108,12 @@ Pod installation complete! There are 3 dependencies from the Podfile and 8 total
 
 ## Configure Amplify Authentication library at runtime
 
-Back to Xcode, open `backend.swift` file.  In the `Backend` class,
+Back to Xcode, open `Backend.swift` file.  In the `Backend` class,
 
 - **add** an `import` statement for the `AmplifyPlugins`
-- **add a line** to the amplify initialization code we added in the previous section.  Complete code block should look like this:
+- **add a line** to the amplify initialization code we added in the previous section.
+
+Complete code block should look like this:
 
 ```swift
 // at the top of the file
