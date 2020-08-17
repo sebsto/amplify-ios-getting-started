@@ -2,7 +2,7 @@
 
 Now that we've created and configured the app with user authentication, let's add an API and Create, Read, Update, Delete (CRUD) operations on a database.
 
-In this module, you will add an API to our app using the Amplify CLI and libraries. The API you will be creating is a [GraphQL](https://graphql.org) API that leverages [AWS AppSync](https://aws.amazon.com/appsync/) (a managed GraphQL service) which is backed by [Amazon DynamoDB](https://aws.amazon.com/dynamodb/) (a NoSQL database). (For an introduction to GraphQL, [visit this page](https://graphql.org/learn/).)
+In this module, you will add an API to our app using the Amplify CLI and libraries. The API you will be creating is a [GraphQL](https://graphql.org) API that leverages [AWS AppSync](https://aws.amazon.com/appsync/) (a managed GraphQL service) which is backed by [Amazon DynamoDB](https://aws.amazon.com/dynamodb/) (a NoSQL database). For an introduction to GraphQL, [visit this page](https://graphql.org/learn/).
 
 The app we will be building is a note taking app that allows users to create, delete, and list notes. This example gives you a good idea how to build many popular types of CRUD+L (create, read, update, delete, and list) applications.
 
@@ -32,9 +32,8 @@ amplify add api
 - *? Choose the default authorization type for the API*: use the arrow key to select **Amazon Cognito User Pool** and press **enter**
 - *? Do you want to configure advanced settings for the GraphQL API*: select the default **No, I am done** and press **enter**
 - *? Do you have an annotated GraphQL schema?*, keep the default **N** and press **enter**
-- *? Do you want a guided schema creation?* , keep the default **Y** and press **enter**
 - *? What best describes your project*: choose any model, we are going to replace it with our own anyway. Press **enter**
-- *? Do you want to edit the schema now?*, accept the default *Y* and press **enter**
+- *? Do you want to edit the schema now?*, select *Y* and press **enter**
 
     The default text editor that you choose when you initialized the project (`amplify init`) opens with a prebuilt data schema.  
 
