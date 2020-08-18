@@ -75,18 +75,17 @@ Once installed, you should have **at least the versions shown below** (anything 
 
 ```zsh
 brew --version
-# Homebrew 2.3.0
-# Homebrew/homebrew-core (git revision 467e0; last commit 2020-06-05)
-# Homebrew/homebrew-cask (git revision 8a0acb; last commit 2020-06-05)
+# Homebrew 2.4.12
+# Homebrew/homebrew-core (git revision f76a37; last commit 2020-08-17)
 
 python3 --version
-# Python 3.7.3
+# Python 3.8.5
 
 aws --version
-# aws-cli/2.0.19 Python/3.7.4 Darwin/19.5.0 botocore/2.0.0dev23
+# aws-cli/2.0.40 Python/3.8.5 Darwin/19.6.0 source/x86_64
 
 node --version
-# v14.4.0
+# v14.8.0
 
 pod --version
 # 1.9.3
