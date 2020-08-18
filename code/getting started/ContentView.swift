@@ -238,13 +238,14 @@ struct SignOutButton : View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
 
-        let _ = prepareTestData()
+        prepareTestData()
         
         return ContentView()
 //        return AddNoteView(isPresented: .constant(true), userData: UserData.shared)
     }
 }
 
+@discardableResult
 func prepareTestData() -> UserData {
     let userData = UserData.shared
     userData.isSignedIn = true
