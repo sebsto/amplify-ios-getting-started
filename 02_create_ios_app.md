@@ -109,13 +109,14 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
 
-        let _ = prepareTestData()
+        prepareTestData()
 
         return ContentView()
     }
 }
 
 // this is a test data set to preview the UI in Xcode
+@discardableResult
 func prepareTestData() -> UserData {
     let userData = UserData.shared
     userData.isSignedIn = true

@@ -193,6 +193,7 @@ At runtime, the Amplify libraries require the amplify configuration files genera
 
     class Backend {
         static let shared = Backend()
+        @discardableResult
         static func initialize() -> Backend {
             return .shared
         }
@@ -217,7 +218,7 @@ At runtime, the Amplify libraries require the amplify configuration files genera
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         // initialize Amplify
-        let _ = Backend.initialize()
+        Backend.initialize()
 
         return true
     }
