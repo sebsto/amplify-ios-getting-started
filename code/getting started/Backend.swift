@@ -59,7 +59,6 @@ class Backend {
                 break
             }
         }
-
     }
     
     // MARK: Authentication
@@ -70,7 +69,7 @@ class Backend {
             userData.isSignedIn = status
 
             // when user is signed in, query the database, otherwise empty our model
-            if status {
+            if (status && userData.notes.isEmpty) {
                 self.queryNotes()
             } else {
                 userData.notes = []
