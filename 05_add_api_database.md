@@ -211,7 +211,7 @@ Let's add 3 methods to call our API: a method to query the Note, a method to cre
 
     func queryNotes() {
 
-        _ = Amplify.API.query(request: .list(NoteData.self)) { event in
+        Amplify.API.query(request: .list(NoteData.self)) { event in
             switch event {
             case .success(let result):
                 switch result {
@@ -238,7 +238,7 @@ Let's add 3 methods to call our API: a method to query the Note, a method to cre
     func createNote(note: Note) {
 
         // use note.data to access the NoteData instance
-        _ = Amplify.API.mutate(request: .create(note.data)) { event in
+        Amplify.API.mutate(request: .create(note.data)) { event in
             switch event {
             case .success(let result):
                 switch result {
@@ -256,7 +256,7 @@ Let's add 3 methods to call our API: a method to query the Note, a method to cre
     func deleteNote(note: Note) {
 
         // use note.data to access the NoteData instance
-        _ = Amplify.API.mutate(request: .delete(note.data)) { event in
+        Amplify.API.mutate(request: .delete(note.data)) { event in
             switch event {
             case .success(let result):
                 switch result {
@@ -277,7 +277,7 @@ Finally, we must call the API to query the list of `Note` for the currently sign
 ```swift
 // inside private init() method
 // let's check if user is signedIn or not
-_ = Amplify.Auth.fetchAuthSession { (result) in
+Amplify.Auth.fetchAuthSession { (result) in
 
     do {
         let session = try result.get()

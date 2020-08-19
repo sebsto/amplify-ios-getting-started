@@ -148,7 +148,7 @@ The remaining code change tracks the status of user (are they signed in or not?)
     // signin with Cognito web user interface
     public func signIn() {
 
-        _ = Amplify.Auth.signInWithWebUI(presentationAnchor: UIApplication.shared.windows.first!) { result in
+        Amplify.Auth.signInWithWebUI(presentationAnchor: UIApplication.shared.windows.first!) { result in
             switch result {
             case .success(_):
                 print("Sign in succeeded")
@@ -161,7 +161,7 @@ The remaining code change tracks the status of user (are they signed in or not?)
     // signout
     public func signOut() {
 
-        _ = Amplify.Auth.signOut() { (result) in
+        Amplify.Auth.signOut() { (result) in
             switch result {
             case .success:
                 print("Successfully signed out")
@@ -217,7 +217,7 @@ The remaining code change tracks the status of user (are they signed in or not?)
     }
 
         // let's check if user is signedIn or not
-        _ = Amplify.Auth.fetchAuthSession { (result) in
+        Amplify.Auth.fetchAuthSession { (result) in
 
             do {
                 let session = try result.get()
