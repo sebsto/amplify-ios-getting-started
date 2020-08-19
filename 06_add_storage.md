@@ -117,7 +117,7 @@ Open `Backedn.swift`. Anywhere in the `Backend` class, **add** the the following
 func storeImage(name: String, image: Data) {
 
 //        let options = StorageUploadDataRequest.Options(accessLevel: .private)
-    let _ = Amplify.Storage.uploadData(key: name, data: image,// options: options,
+    Amplify.Storage.uploadData(key: name, data: image,// options: options,
         progressListener: { progress in
             // optionlly update a progress bar here
         }, resultListener: { event in
@@ -131,7 +131,7 @@ func storeImage(name: String, image: Data) {
 }
 
 func retrieveImage(name: String, completed: @escaping (Data) -> Void) {
-    let _ = Amplify.Storage.downloadData(key: name,
+    Amplify.Storage.downloadData(key: name,
         progressListener: { progress in
             // in case you want to monitor progress
         }, resultListener: { (event) in
@@ -147,7 +147,7 @@ func retrieveImage(name: String, completed: @escaping (Data) -> Void) {
 }
 
 func deleteImage(name: String) {
-    let _ = Amplify.Storage.remove(key: name,
+    Amplify.Storage.remove(key: name,
         resultListener: { (event) in
             switch event {
             case let .success(data):

@@ -22,7 +22,7 @@ class Backend {
         }
         
         // let's check if user is signedIn or not
-        _ = Amplify.Auth.fetchAuthSession { (result) in
+        Amplify.Auth.fetchAuthSession { (result) in
 
             do {
                 let session = try result.get()
@@ -80,7 +80,7 @@ class Backend {
     
     public func signIn() {
 
-        _ = Amplify.Auth.signInWithWebUI(presentationAnchor: UIApplication.shared.windows.first!) { result in
+        Amplify.Auth.signInWithWebUI(presentationAnchor: UIApplication.shared.windows.first!) { result in
             switch result {
             case .success(_):
                 print("Sign in succeeded")
@@ -93,7 +93,7 @@ class Backend {
     // signout
     public func signOut() {
 
-        _ = Amplify.Auth.signOut() { (result) in
+        Amplify.Auth.signOut() { (result) in
             switch result {
             case .success:
                 print("Successfully signed out")
@@ -107,7 +107,7 @@ class Backend {
     
     func queryNotes() {
         
-        _ = Amplify.API.query(request: .list(NoteData.self)) { event in
+        Amplify.API.query(request: .list(NoteData.self)) { event in
             switch event {
             case .success(let result):
                 switch result {
@@ -132,7 +132,7 @@ class Backend {
     
     func createNote(note: Note) {
         
-        _ = Amplify.API.mutate(request: .create(note.data)) { event in
+        Amplify.API.mutate(request: .create(note.data)) { event in
             switch event {
             case .success(let result):
                 switch result {
@@ -149,7 +149,7 @@ class Backend {
     
     func deleteNote(note: Note) {
         
-        _ = Amplify.API.mutate(request: .delete(note.data)) { event in
+        Amplify.API.mutate(request: .delete(note.data)) { event in
             switch event {
             case .success(let result):
                 switch result {
@@ -169,7 +169,7 @@ class Backend {
     func storeImage(name: String, image: Data) {
         
 //        let options = StorageUploadDataRequest.Options(accessLevel: .private)
-        let _ = Amplify.Storage.uploadData(key: name, data: image,// options: options,
+        Amplify.Storage.uploadData(key: name, data: image,// options: options,
             progressListener: { progress in
                 // optionlly update a progress bar here
             }, resultListener: { event in
@@ -183,7 +183,7 @@ class Backend {
     }
     
     func retrieveImage(name: String, completed: @escaping (Data) -> Void) {
-        let _ = Amplify.Storage.downloadData(key: name,
+        Amplify.Storage.downloadData(key: name,
             progressListener: { progress in
                 // in case you want to monitor progress
             }, resultListener: { (event) in
@@ -199,7 +199,7 @@ class Backend {
     }
 
     func deleteImage(name: String) {
-        let _ = Amplify.Storage.remove(key: name,
+        Amplify.Storage.remove(key: name,
             resultListener: { (event) in
                 switch event {
                 case let .success(data):
