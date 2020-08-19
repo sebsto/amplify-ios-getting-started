@@ -167,8 +167,8 @@ class Backend {
     
     func storeImage(name: String, image: Data) {
         
-//        let options = StorageUploadDataRequest.Options(accessLevel: .private)
-        Amplify.Storage.uploadData(key: name, data: image,// options: options,
+        let options = StorageUploadDataRequest.Options(accessLevel: .private)
+        Amplify.Storage.uploadData(key: name, data: image, options: options,
             progressListener: { progress in
                 // optionlly update a progress bar here
             }, resultListener: { event in
@@ -182,7 +182,9 @@ class Backend {
     }
     
     func retrieveImage(name: String, completed: @escaping (Data) -> Void) {
-        Amplify.Storage.downloadData(key: name,
+
+        let options = StorageDownloadDataRequest.Options(accessLevel: .private)
+        Amplify.Storage.downloadData(key: name, options: options,
             progressListener: { progress in
                 // in case you want to monitor progress
             }, resultListener: { (event) in
@@ -198,7 +200,9 @@ class Backend {
     }
 
     func deleteImage(name: String) {
-        Amplify.Storage.remove(key: name,
+        
+        let options = StorageRemoveRequest.Options(accessLevel: .private)
+        Amplify.Storage.remove(key: name, options: options,
             resultListener: { (event) in
                 switch event {
                 case let .success(data):
