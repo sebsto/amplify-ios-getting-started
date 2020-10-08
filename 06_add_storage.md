@@ -5,8 +5,8 @@ Now that we have the notes app working, let's add the ability to associate an im
 ## What You Will Learn
 
 - Create a storage service
-- Update your IOS app - the logic to upload and download images
-- Update your IOS app - the user interface
+- Update your iOS app - the logic to upload and download images
+- Update your iOS app - the user interface
 
 ## Key Concepts
 
