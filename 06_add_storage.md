@@ -92,7 +92,7 @@ Pod installation complete! There are 5 dependencies from the Podfile and 12 tota
 
 ## Initialize Amplify Storage plugin at runtime
 
-Back to Xcode, open `Backend.swift` and add a line in the Amplify initialisation sequence in `private init()` method. Complete code block should lool like this:
+Back to Xcode, open `Backend.swift` and add a line in the Amplify initialisation sequence in `private init()` method. Complete code block should look like this:
 
 ```swift
 // initialize amplify
@@ -116,8 +116,8 @@ Open `Backedn.swift`. Anywhere in the `Backend` class, **add** the the following
 
 func storeImage(name: String, image: Data) {
 
-//        let options = StorageUploadDataRequest.Options(accessLevel: .private)
-    Amplify.Storage.uploadData(key: name, data: image,// options: options,
+    let options = StorageUploadDataRequest.Options(accessLevel: .private)
+    Amplify.Storage.uploadData(key: name, data: image, options: options,
         progressListener: { progress in
             // optionlly update a progress bar here
         }, resultListener: { event in
@@ -131,7 +131,9 @@ func storeImage(name: String, image: Data) {
 }
 
 func retrieveImage(name: String, completed: @escaping (Data) -> Void) {
-    Amplify.Storage.downloadData(key: name,
+
+    let options = StorageDownloadDataRequest.Options(accessLevel: .private)
+    Amplify.Storage.downloadData(key: name, options: options,
         progressListener: { progress in
             // in case you want to monitor progress
         }, resultListener: { (event) in
@@ -147,7 +149,9 @@ func retrieveImage(name: String, completed: @escaping (Data) -> Void) {
 }
 
 func deleteImage(name: String) {
-    Amplify.Storage.remove(key: name,
+
+    let options = StorageRemoveRequest.Options(accessLevel: .private)
+    Amplify.Storage.remove(key: name, options: options,
         resultListener: { (event) in
             switch event {
             case let .success(data):
@@ -160,9 +164,17 @@ func deleteImage(name: String) {
 }
 ```
 
+These three methods simply call their `Amplify` counterpart. Amplify storage has three file protection levels:
+
+- **Public** Accessible by all users
+- **Protected** Readable by all users, but only writable by the creating user
+- **Private** Readable and writable only by the creating user
+
+For this app, we want the images to only be available to the Note owner, we are using the `accessLevel: .private` property.
+
 ## Load image when data are retrieved from the API
 
-Now that we have our backend functions available, let's load the images when the API call returns.  he central place to add this behaviour is when the app construct a `Note` UI object from the `NoteData` returned by the API.
+Now that we have our backend functions available, let's load the images when the API call returns.  The central place to add this behaviour is when the app construct a `Note` UI object from the `NoteData` returned by the API.
 
 Open `ContentView.swift` and update the `Note`'s initializer:
 
