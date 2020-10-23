@@ -29,6 +29,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             self.window = window
             window.makeKeyAndVisible()
         }
+        
+        // initialize Amplify
+        Backend.initialize()
+        
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
