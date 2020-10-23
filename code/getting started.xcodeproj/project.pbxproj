@@ -15,6 +15,7 @@
 		0084717A24A60D86002CD90D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0084717924A60D86002CD90D /* Preview Assets.xcassets */; };
 		0084717D24A60D86002CD90D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0084717B24A60D86002CD90D /* LaunchScreen.storyboard */; };
 		00A017D725429F8D003977CB /* local-env-info.json in Resources */ = {isa = PBXBuildFile; fileRef = 00A017D625429F8D003977CB /* local-env-info.json */; };
+		00A017DA2542A646003977CB /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A017D92542A646003977CB /* UserData.swift */; };
 		00FA7E7324A9D2FA007042EA /* schema.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 00FA7E7224A9D2FA007042EA /* schema.graphql */; };
 		00FA7E7524A9EC46007042EA /* Backend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FA7E7424A9EC46007042EA /* Backend.swift */; };
 		00FA7E7724AA1DB0007042EA /* CaptureImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FA7E7624AA1DB0007042EA /* CaptureImageView.swift */; };
@@ -36,6 +37,7 @@
 		0084717C24A60D86002CD90D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0084717E24A60D86002CD90D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00A017D625429F8D003977CB /* local-env-info.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "local-env-info.json"; path = "amplify/.config/local-env-info.json"; sourceTree = SOURCE_ROOT; };
+		00A017D92542A646003977CB /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		00FA7E7224A9D2FA007042EA /* schema.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; name = schema.graphql; path = amplify/backend/api/code/schema.graphql; sourceTree = SOURCE_ROOT; };
 		00FA7E7424A9EC46007042EA /* Backend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backend.swift; sourceTree = "<group>"; };
 		00FA7E7624AA1DB0007042EA /* CaptureImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureImageView.swift; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 			children = (
 				0084717024A60D82002CD90D /* AppDelegate.swift */,
 				00FA7E7424A9EC46007042EA /* Backend.swift */,
+				00A017D92542A646003977CB /* UserData.swift */,
 				0084717224A60D82002CD90D /* SceneDelegate.swift */,
 				0084717424A60D82002CD90D /* ContentView.swift */,
 				00FA7E7624AA1DB0007042EA /* CaptureImageView.swift */,
@@ -287,6 +290,7 @@
 				0084717124A60D82002CD90D /* AppDelegate.swift in Sources */,
 				0084717324A60D82002CD90D /* SceneDelegate.swift in Sources */,
 				0084717524A60D82002CD90D /* ContentView.swift in Sources */,
+				00A017DA2542A646003977CB /* UserData.swift in Sources */,
 				00FA7E7724AA1DB0007042EA /* CaptureImageView.swift in Sources */,
 				002822358F4E40B9ABA864DF /* AmplifyModels.swift in Sources */,
 				AC999F9B323349A1B34075A7 /* NoteData.swift in Sources */,
