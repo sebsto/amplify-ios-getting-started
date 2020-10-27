@@ -1,6 +1,6 @@
 type NoteData
-  @model
-  @auth (rules: [ { allow: owner } ]) {
+@model
+@auth (rules: [ { allow: owner } ]) {
     id: ID!
     name: String!
     description: String

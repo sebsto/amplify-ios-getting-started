@@ -1,33 +1,33 @@
 {
-	"api": {
-		"code": {
-			"service": "AppSync",
-			"providerPlugin": "awscloudformation",
-			"output": {
-				"authConfig": {
-					"additionalAuthenticationProviders": [],
-					"defaultAuthentication": {
-						"authenticationType": "AMAZON_COGNITO_USER_POOLS",
-						"userPoolConfig": {
-							"userPoolId": "authcode40a20d41"
-						}
-					}
-				}
-			}
-		}
-	},
-	"auth": {
-		"code40a20d41": {
-			"service": "Cognito",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": [],
-			"customAuth": false
-		}
-	},
-	"storage": {
-		"images": {
-			"service": "S3",
-			"providerPlugin": "awscloudformation"
-		}
-	}
+  "auth": {
+    "iosgettingstarted07c67632": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  },
+  "api": {
+    "iosgettingstarted": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authiosgettingstarted07c67632"
+            }
+          },
+          "additionalAuthenticationProviders": []
+        }
+      }
+    }
+  },
+  "storage": {
+    "iosgettingstarted": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation"
+    }
+  }
 }

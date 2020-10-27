@@ -1,22 +1,22 @@
 {
-    "amplify": {
-        "awscloudformation": {
-            "AuthRoleName": "amplify-code-amplify-215545-authRole",
-            "UnauthRoleArn": "arn:aws:iam::486652066693:role/amplify-code-amplify-215545-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::486652066693:role/amplify-code-amplify-215545-authRole",
-            "Region": "eu-central-1",
-            "DeploymentBucketName": "amplify-code-amplify-215545-deployment",
-            "UnauthRoleName": "amplify-code-amplify-215545-unauthRole",
-            "StackName": "amplify-code-amplify-215545",
-            "StackId": "arn:aws:cloudformation:eu-central-1:486652066693:stack/amplify-code-amplify-215545/06ed12f0-b7e7-11ea-84ed-0a0c9a06689c",
-            "AmplifyAppId": "d2baftuoyb48o7"
-        },
-        "categories": {
-            "auth": {
-                "code40a20d41": {
-                    "hostedUIProviderCreds": "[]"
-                }
-            }
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-iosgettingstarted-dev-82533-authRole",
+      "UnauthRoleArn": "arn:aws:iam::486652066693:role/amplify-iosgettingstarted-dev-82533-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::486652066693:role/amplify-iosgettingstarted-dev-82533-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-iosgettingstarted-dev-82533-deployment",
+      "UnauthRoleName": "amplify-iosgettingstarted-dev-82533-unauthRole",
+      "StackName": "amplify-iosgettingstarted-dev-82533",
+      "StackId": "arn:aws:cloudformation:eu-central-1:486652066693:stack/amplify-iosgettingstarted-dev-82533/9aa5b620-1825-11eb-81a8-0222a20602d0",
+      "AmplifyAppId": "d3tdpju84wvt9p"
+    },
+    "categories": {
+      "auth": {
+        "iosgettingstarted07c67632": {
+          "hostedUIProviderCreds": "[]"
         }
+      }
     }
+  }
 }

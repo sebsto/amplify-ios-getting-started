@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "code40a20d41_identitypool_40a20d41",
+    "identityPoolName": "iosgettingstarted07c67632_identitypool_07c67632",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "code40a20d41",
-    "userPoolName": "code40a20d41_userpool_40a20d41",
+    "resourceNameTruncated": "iosget07c67632",
+    "userPoolName": "iosgettingstarted07c67632_userpool_07c67632",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -28,10 +28,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "code4040a20d41_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "iosget07c67632_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "40a20d41",
-    "resourceName": "code40a20d41",
+    "sharedId": "07c67632",
+    "resourceName": "iosgettingstarted07c67632",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -46,11 +46,12 @@
         ]
     },
     "useDefault": "defaultSocial",
-    "userPoolGroupList": [],
-    "dependsOn": [],
     "hostedUI": true,
-    "hostedUIDomainName": "codeedb48aac-edb48aac",
+    "hostedUIDomainName": "iosgettingstarted07c67632-07c67632",
     "authProvidersUserPool": [],
     "hostedUIProviderMeta": "[]",
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"gettingstarted://\"],\"LogoutURLs\":[\"gettingstarted://\"]}"
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"gettingstarted://\"],\"LogoutURLs\":[\"gettingstarted://\"]}",
+    "userPoolGroupList": [],
+    "serviceName": "Cognito",
+    "dependsOn": []
 }
