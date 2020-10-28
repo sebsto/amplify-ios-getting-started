@@ -1,7 +1,7 @@
 This is the editable material for Amplify's [iOS Getting Started](https://aws.amazon.com/getting-started/hands-on/build-ios-app-amplify/) guide.
 
 Other front-end Amplify hands on tutorial :
-- Amplify's Android Getting Started (TBD) 
+- [Amplify's Android Getting Started](https://aws.amazon.com/getting-started/hands-on/build-android-app-amplify/?e=gs2020&p=frontend) 
 - [Amplify's React Getting Started](https://aws.amazon.com/getting-started/learning-path-front-end-developer/).
 
 Please create [Issues](https://github.com/sebsto/amplify-ios-getting-started/issues) if you encounter a typo or a problem, and submit [Pull Requests](https://github.com/sebsto/amplify-ios-getting-started/pulls) for changes 
