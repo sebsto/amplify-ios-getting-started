@@ -74,7 +74,10 @@ struct ContentView: View {
                     AddNoteView(isPresented: self.$showCreateNote, userData: self.userData)
                 }
             } else {
-                SignInButton()
+                VStack {
+                    SignInButton()
+                    SignOutButton()
+                }
             }
         }
     }

@@ -2,11 +2,7 @@ import Foundation
 import Amplify
 import AmplifyPlugins
 
-class Backend : DevMenuPresentationContextProvider {
-    func devMenuPresentationContext() -> UIWindow {
-        // https://stackoverflow.com/questions/57134259/how-to-resolve-keywindow-was-deprecated-in-ios-13-0
-        UIApplication.shared.windows.first(where: \.isKeyWindow)!
-    }
+class Backend  {
     
     static let shared = Backend()
     
@@ -21,7 +17,6 @@ class Backend : DevMenuPresentationContextProvider {
            try Amplify.add(plugin: AWSAPIPlugin(modelRegistration: AmplifyModels()))
            try Amplify.add(plugin: AWSS3StoragePlugin())
             
-            Amplify.enableDevMenu(contextProvider: self)
            try Amplify.configure()
            print("Initialized Amplify")
         } catch {

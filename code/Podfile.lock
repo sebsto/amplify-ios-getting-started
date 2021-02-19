@@ -1,45 +1,42 @@
 PODS:
-  - Amplify (1.4.0):
-    - Amplify/Default (= 1.4.0)
-  - Amplify/Default (1.4.0)
-  - Amplify/Tools (1.4.0)
-  - AmplifyPlugins/AWSAPIPlugin (1.4.0):
+  - Amplify (1.6.0):
+    - Amplify/Default (= 1.6.0)
+  - Amplify/Default (1.6.0)
+  - Amplify/Tools (1.6.0)
+  - AmplifyPlugins/AWSAPIPlugin (1.6.0):
     - AppSyncRealTimeClient (~> 1.4.0)
-    - AWSCore (~> 2.18.0)
-    - AWSPluginsCore (= 1.4.0)
-    - ReachabilitySwift (~> 5.0.0)
-  - AmplifyPlugins/AWSCognitoAuthPlugin (1.4.0):
-    - AWSAuthCore (~> 2.18.0)
-    - AWSCognitoIdentityProvider (~> 2.18.0)
-    - AWSCognitoIdentityProviderASF (~> 2.18.0)
-    - AWSCore (~> 2.18.0)
-    - AWSMobileClient (~> 2.18.0)
-    - AWSPluginsCore (= 1.4.0)
-  - AmplifyPlugins/AWSS3StoragePlugin (1.4.0):
-    - AWSCore (~> 2.18.0)
-    - AWSPluginsCore (= 1.4.0)
-    - AWSS3 (~> 2.18.0)
-  - AppSyncRealTimeClient (1.4.1):
+    - AWSCore (~> 2.22.0)
+    - AWSPluginsCore (= 1.6.0)
+  - AmplifyPlugins/AWSCognitoAuthPlugin (1.6.0):
+    - AWSAuthCore (~> 2.22.0)
+    - AWSCognitoIdentityProvider (~> 2.22.0)
+    - AWSCognitoIdentityProviderASF (~> 2.22.0)
+    - AWSCore (~> 2.22.0)
+    - AWSMobileClient (~> 2.22.0)
+    - AWSPluginsCore (= 1.6.0)
+  - AmplifyPlugins/AWSS3StoragePlugin (1.6.0):
+    - AWSCore (~> 2.22.0)
+    - AWSPluginsCore (= 1.6.0)
+    - AWSS3 (~> 2.22.0)
+  - AppSyncRealTimeClient (1.4.3):
     - Starscream (~> 3.1.0)
-  - AWSAuthCore (2.18.0):
-    - AWSCore (= 2.18.0)
-  - AWSCognitoIdentityProvider (2.18.0):
-    - AWSCognitoIdentityProviderASF (= 2.18.0)
-    - AWSCore (= 2.18.0)
-  - AWSCognitoIdentityProviderASF (2.18.0)
-  - AWSCore (2.18.0)
-  - AWSMobileClient (2.18.0):
-    - AWSAuthCore (= 2.18.0)
-    - AWSCognitoIdentityProvider (= 2.18.0)
-    - AWSCognitoIdentityProviderASF (= 2.18.0)
-    - AWSCore (= 2.18.0)
-  - AWSPluginsCore (1.4.0):
-    - Amplify (= 1.4.0)
-    - AWSCore (~> 2.18.0)
-    - AWSMobileClient (~> 2.18.0)
-  - AWSS3 (2.18.0):
-    - AWSCore (= 2.18.0)
-  - ReachabilitySwift (5.0.0)
+  - AWSAuthCore (2.22.3):
+    - AWSCore (= 2.22.3)
+  - AWSCognitoIdentityProvider (2.22.3):
+    - AWSCognitoIdentityProviderASF (= 2.22.3)
+    - AWSCore (= 2.22.3)
+  - AWSCognitoIdentityProviderASF (2.22.3)
+  - AWSCore (2.22.3)
+  - AWSMobileClient (2.22.3):
+    - AWSAuthCore (= 2.22.3)
+    - AWSCognitoIdentityProvider (= 2.22.3)
+    - AWSCognitoIdentityProviderASF (= 2.22.3)
+    - AWSCore (= 2.22.3)
+  - AWSPluginsCore (1.6.0):
+    - Amplify (= 1.6.0)
+    - AWSCore (~> 2.22.0)
+  - AWSS3 (2.22.3):
+    - AWSCore (= 2.22.3)
   - Starscream (3.1.1)
 
 DEPENDENCIES:
@@ -61,23 +58,21 @@ SPEC REPOS:
     - AWSMobileClient
     - AWSPluginsCore
     - AWSS3
-    - ReachabilitySwift
     - Starscream
 
 SPEC CHECKSUMS:
-  Amplify: 7974e4da6a0fcae8b79afd4fc38e78d1b54a6ea7
-  AmplifyPlugins: d16bc2e4d3bae00699b476f1a2d045b7851c583c
-  AppSyncRealTimeClient: 879b9fa3ce3f335450ca06e0def279fa90af9e76
-  AWSAuthCore: d350688ae52b9644a0713901e436cb529dce15b7
-  AWSCognitoIdentityProvider: ae02dbb7d2f53291adbfd52e7334286abde8bb3f
-  AWSCognitoIdentityProviderASF: 3c8bb7a1f306d21d22c4429509da5cf34ef72e6d
-  AWSCore: e8cc7fd06efa211328942cc7c9f6dddbe889a115
-  AWSMobileClient: b082181b527b2f68222006fa996a2ec4d7be6386
-  AWSPluginsCore: 883d3969add07eec02d4719c1a844d0b870b2e1d
-  AWSS3: 31b24341477f8eaae01542900e2253e908eed1ee
-  ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
+  Amplify: fe8cbe6fcd0e6468f537bd49e6c3d15437442576
+  AmplifyPlugins: 85fa4fa7d0eb78a4f4f44dcf107993a8c13fdf2a
+  AppSyncRealTimeClient: 04df4dffe57cfbd06da336d0bfcd5641ba9adcb5
+  AWSAuthCore: 5a2e6c939281a56c30f68896bc68ee44044400bc
+  AWSCognitoIdentityProvider: 5aefe4cbfdecc2f9335fb0e2236d334b2d438d59
+  AWSCognitoIdentityProviderASF: 455fb74bf1b0b5aeab9800495f2060f391f2e38e
+  AWSCore: c86b71ff60747c4058769af64ed871ebfae16ddb
+  AWSMobileClient: 6f63dd57d3df2ebcac1be074144f029e0db90536
+  AWSPluginsCore: d21990b54729e2a95620922ea83e123adaa678cd
+  AWSS3: 4c5de623861eb2f660465084829b22abfcdf5644
   Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
 
 PODFILE CHECKSUM: 650fc7a195c2d70affc97edc3ca126b37c1cae57
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.10.0

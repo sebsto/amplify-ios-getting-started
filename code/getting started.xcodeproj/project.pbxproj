@@ -15,8 +15,8 @@
 		0084717A24A60D86002CD90D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0084717924A60D86002CD90D /* Preview Assets.xcassets */; };
 		0084717D24A60D86002CD90D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0084717B24A60D86002CD90D /* LaunchScreen.storyboard */; };
 		0088995B2548046300A9B468 /* schema.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 0088995A2548046300A9B468 /* schema.graphql */; };
-		00A017D725429F8D003977CB /* local-env-info.json in Resources */ = {isa = PBXBuildFile; fileRef = 00A017D625429F8D003977CB /* local-env-info.json */; };
 		00A017DA2542A646003977CB /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A017D92542A646003977CB /* UserData.swift */; };
+		00C7680C257AD05600E4C4E8 /* local-env-info.json in Resources */ = {isa = PBXBuildFile; fileRef = 00C7680B257AD05600E4C4E8 /* local-env-info.json */; };
 		00FA7E7524A9EC46007042EA /* Backend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FA7E7424A9EC46007042EA /* Backend.swift */; };
 		00FA7E7724AA1DB0007042EA /* CaptureImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FA7E7624AA1DB0007042EA /* CaptureImageView.swift */; };
 		9BF4E8AC9F4D92F2F7AC19F3 /* Pods_getting_started.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18EED3433DFC552A42BF2F8A /* Pods_getting_started.framework */; };
@@ -36,9 +36,9 @@
 		0084717924A60D86002CD90D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0084717C24A60D86002CD90D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0084717E24A60D86002CD90D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0088995A2548046300A9B468 /* schema.graphql */ = {isa = PBXFileReference; lastKnownFileType = file; name = schema.graphql; path = amplify/backend/api/iosgettingstarted/schema.graphql; sourceTree = SOURCE_ROOT; };
-		00A017D625429F8D003977CB /* local-env-info.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "local-env-info.json"; path = "amplify/.config/local-env-info.json"; sourceTree = SOURCE_ROOT; };
+		0088995A2548046300A9B468 /* schema.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; name = schema.graphql; path = amplify/backend/api/iosgettingstarted/schema.graphql; sourceTree = SOURCE_ROOT; };
 		00A017D92542A646003977CB /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
+		00C7680B257AD05600E4C4E8 /* local-env-info.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "local-env-info.json"; path = "amplify/.config/local-env-info.json"; sourceTree = SOURCE_ROOT; };
 		00FA7E7424A9EC46007042EA /* Backend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backend.swift; sourceTree = "<group>"; };
 		00FA7E7624AA1DB0007042EA /* CaptureImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureImageView.swift; sourceTree = "<group>"; };
 		18EED3433DFC552A42BF2F8A /* Pods_getting_started.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_getting_started.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -112,9 +112,9 @@
 			isa = PBXGroup;
 			children = (
 				0077871D449E482783023296 /* amplifytools.xcconfig */,
+				00C7680B257AD05600E4C4E8 /* local-env-info.json */,
 				BFC917DF1BBF4063A6547E94 /* amplifyconfiguration.json */,
 				3AD56078D735455A8CD40652 /* awsconfiguration.json */,
-				00A017D625429F8D003977CB /* local-env-info.json */,
 				0088995A2548046300A9B468 /* schema.graphql */,
 			);
 			name = AmplifyConfig;
@@ -211,7 +211,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0084717D24A60D86002CD90D /* LaunchScreen.storyboard in Resources */,
-				00A017D725429F8D003977CB /* local-env-info.json in Resources */,
+				00C7680C257AD05600E4C4E8 /* local-env-info.json in Resources */,
 				0084717A24A60D86002CD90D /* Preview Assets.xcassets in Resources */,
 				0088995B2548046300A9B468 /* schema.graphql in Resources */,
 				0084717724A60D86002CD90D /* Assets.xcassets in Resources */,
@@ -364,7 +364,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -419,7 +419,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
