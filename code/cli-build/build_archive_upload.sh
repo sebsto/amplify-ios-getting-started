@@ -55,9 +55,8 @@ mv ./generated amplify/
 # Increase Build Number
 # https://rderik.com/blog/automating-build-and-testflight-upload-for-simple-ios-apps/
 
-# plutil -extract CFBundleVersion xml1 -o - ./getting\ started/Info.plist | xmllint --xpath "//string/text()" -
-# plutil -replace CFBundleVersion -string 3 ./getting\ started/Info.plist 
-
+BUILD_NUMBER=`date +%Y%M%d%H%m%S`
+plutil -replace CFBundleVersion -string $BUILD_NUMBER "./getting started/Info.plist"
 
 # before to run this script, use the KeyChain App to 
 # create a keychain, import the ios distribution
