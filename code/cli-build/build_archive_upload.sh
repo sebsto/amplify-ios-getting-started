@@ -55,7 +55,7 @@ mv ./generated amplify/
 # Increase Build Number
 # https://rderik.com/blog/automating-build-and-testflight-upload-for-simple-ios-apps/
 
-BUILD_NUMBER=`date +%Y%M%d%H%m%S`
+BUILD_NUMBER=`date +%Y%m%d%H%M%S`
 plutil -replace CFBundleVersion -string $BUILD_NUMBER "./getting started/Info.plist"
 
 # before to run this script, use the KeyChain App to 
@@ -81,29 +81,37 @@ EXPORT_OPTIONS="./cli-build/ExportOptions.plist"
 
 echo "Build, Sign and Archive"
 xcodebuild clean build archive \
-           -workspace $WORKSPACE \
-           -scheme $SCHEME \
-           -archivePath $ARCHIVE_PATH \
-           -configuration $CONFIGURATION 
+           -workspace "$WORKSPACE" \
+           -scheme "$SCHEME" \
+           -archivePath "$ARCHIVE_PATH" \
+           -configuration "$CONFIGURATION" 
 
 xcodebuild -exportArchive \
-           -archivePath $ARCHIVE_PATH \
-           -exportOptionsPlist $EXPORT_OPTIONS \
-           -exportPath $BUILD_PATH
+           -archivePath "$ARCHIVE_PATH" \
+           -exportOptionsPlist "$EXPORT_OPTIONS" \
+           -exportPath "$BUILD_PATH"
 
 # Restore login keychain as default
 echo "Restore keychain" 
-security list-keychains -d user -s $OLD_KEYCHAIN_PATH $KEYCHAIN_PATH
-security list-keychains -s $OLD_KEYCHAIN_PATH
-security default-keychain -s $OLD_KEYCHAIN_PATH
+security list-keychains -d user -s "$OLD_KEYCHAIN_PATH" "$KEYCHAIN_PATH"
+security list-keychains -s "$OLD_KEYCHAIN_PATH"
+security default-keychain -s "$OLD_KEYCHAIN_PATH"
+
+export APPLE_ID=sebsto@me.com
+export APPLE_SECRET=vgru-usai-krtq-vjer  # app specific password generated on appleid.apple.com 
+
+echo "Verify Archive"
+xcrun altool  \
+            --validate-app \
+            -f "$(pwd)/build/$SCHEME.ipa" \
+            -t ios \
+            -u $APPLE_ID \
+            -p @env:APPLE_SECRET
 
 echo "Upload Archive to iTunesConnect"
-APPLE_ID=sebsto@me.com
-APPLE_SECRET=vgru-usai-krtq-vjer  # app specific password generated on appleid.apple.com 
-
-/Applications/Xcode.app/Contents/Developer/usr/bin/altool  \
+xcrun altool  \
             --upload-app \
-            -f $(pwd)/build/$SCHEME.ipa \
+            -f "$(pwd)/build/$SCHEME.ipa" \
             -t ios \
             -u $APPLE_ID \
             -p @env:APPLE_SECRET
