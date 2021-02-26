@@ -1,5 +1,7 @@
 #!/bin/sh
 
+source ./build_secrets.sh
+
 # Thanks to 
 # https://medium.com/appssemble/a-guide-to-writing-your-own-ios-ci-cd-integration-script-186be1b99575
 
@@ -27,15 +29,17 @@ echo "Pulling amplify environment"
 
 # see https://docs.amplify.aws/cli/usage/headless#amplify-pull-parameters 
 
+# TODO : adjust appId and projectName
+
 AWSCLOUDFORMATIONCONFIG="{\
 \"configLevel\":\"project\",\
 \"useProfile\":true,\
 \"profileName\":\"default\"\
 }"
 AMPLIFY="{\
-\"projectName\":\"iosgettingstarted\",\
-\"appId\":\"d3tdpju84wvt9p\",\
-\"envName\":\"dev\",\
+\"projectName\":\"$AMPLIFY_PROJECT_NAME\",\
+\"appId\":\"$AMPLIFY_APPID\",\
+\"envName\":\"$AMPLIFY_ENV\",\
 \"defaultEditor\":\"code\"\
 }"
 FRONTEND="{\
@@ -47,7 +51,7 @@ PATH=$PATH:/usr/local/bin/ # require to find node
 --amplify $AMPLIFY \
 --frontend $FRONTEND \
 --providers $PROVIDERS \
---yes
+--yes --region eu-central-1
 
 echo "Restore generated files"
 mv ./generated amplify/
@@ -61,25 +65,36 @@ plutil -replace CFBundleVersion -string $BUILD_NUMBER "./getting started/Info.pl
 # before to run this script, use the KeyChain App to 
 # create a keychain, import the ios distribution
 # private key and certificate 
+# https://stackoverflow.com/questions/20205162/user-interaction-is-not-allowed-trying-to-sign-an-osx-app-using-codesign
+
 echo "Prepare keychain"
-KEYCHAIN_PASSWORD=Passw0rd!
-KEYCHAIN_NAME=ios-distribution
-KEYCHAIN_PATH=$HOME/Library/Keychains/$KEYCHAIN_NAME.keychain-db
-OLD_KEYCHAIN_PATH=$HOME/Library/Keychains/login.keychain-db 
+DIST_CERT=~/apple-dist.p12
+aws s3 cp $S3_APPLE_DISTRIBUTION_CERT $DIST_CERT
+KEYCHAIN_PASSWORD=Passw0rd\!
+KEYCHAIN_NAME=dev
+OLD_KEYCHAIN_NAMES=login
+rm ~/Library/Keychains/"${KEYCHAIN_NAME}"-db
+security create-keychain -p "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
+security list-keychains -s "${KEYCHAIN_NAME}" "${OLD_KEYCHAIN_NAMES[@]}"
+security unlock-keychain -p "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
+security set-keychain-settings $KEYCHAIN_NAME 
+security import "${DIST_CERT}" -P "${APPLE_DISTRIBUTION_KEY_PASSWORD}" -k "${KEYCHAIN_NAME}" -T /usr/bin/codesign
+security set-key-partition-list -S apple-tool:,apple: -s -k "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
 
-security list-keychains -s $KEYCHAIN_PATH
-security default-keychain -s $KEYCHAIN_PATH
-security unlock-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN_PATH
+echo "Install provisioning profile"
+MOBILE_PROVISIONING_PROFILE=~/project.mobileprovision
+aws s3 cp $S3_MOBILE_PROVISIONING_PROFILE $MOBILE_PROVISIONING_PROFILE
+UUID=$(security cms -D -i $MOBILE_PROVISIONING_PROFILE  | plutil -extract UUID xml1 -o - - | xmllint --xpath "//string/text()" -)
+mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
+cp $MOBILE_PROVISIONING_PROFILE "$HOME/Library/MobileDevice/Provisioning Profiles/${UUID}.mobileprovision"
 
-PROVISIONING_PROFILE_PATH
+echo "Build, Sign and Archive"
 SCHEME="getting started"
 CONFIGURATION="Release"
 WORKSPACE="getting started.xcworkspace"
 BUILD_PATH="./build"
 ARCHIVE_PATH="$BUILD_PATH/getting-started.xcarchive"
 EXPORT_OPTIONS="./cli-build/ExportOptions.plist"
-
-echo "Build, Sign and Archive"
 xcodebuild clean build archive \
            -workspace "$WORKSPACE" \
            -scheme "$SCHEME" \
@@ -90,15 +105,6 @@ xcodebuild -exportArchive \
            -archivePath "$ARCHIVE_PATH" \
            -exportOptionsPlist "$EXPORT_OPTIONS" \
            -exportPath "$BUILD_PATH"
-
-# Restore login keychain as default
-echo "Restore keychain" 
-security list-keychains -d user -s "$OLD_KEYCHAIN_PATH" "$KEYCHAIN_PATH"
-security list-keychains -s "$OLD_KEYCHAIN_PATH"
-security default-keychain -s "$OLD_KEYCHAIN_PATH"
-
-export APPLE_ID=sebsto@me.com
-export APPLE_SECRET=vgru-usai-krtq-vjer  # app specific password generated on appleid.apple.com 
 
 echo "Verify Archive"
 xcrun altool  \
