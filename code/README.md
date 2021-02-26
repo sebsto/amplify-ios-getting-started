@@ -1,6 +1,6 @@
 # Instructions to build on Amazon EC2
 
-## Prepare a mac EC2 instance (one time setup)
+## Prepare a mac EC2 instance with Xcode (one time setup)
 
 1. Get an mac1 instance ([doc](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-mac-instances.html)).
 
@@ -33,11 +33,12 @@ Now that you have access to a macOS EC2 Instance, let's install Xcode.
    yes | sudo diskutil repairDisk $PDISK
    sudo diskutil apfs resizeContainer $APFSCONT 0
 
-   # Download and install Xcode
+   # Download and install Xcode (use your own S3 bucket / CloudFront distribution, the below will stop working at some point)
    curl -o xcode.xip https://download.stormacq.com/apple/Xcode_12.4.xip
    xip --expand xcode.xip 
    sudo mv Xcode.app /Applications
 
+   # Download and install Xcode CLI (use your own S3 bucket / CloudFront distribution, the below will stop working at some point)
    curl -o xcode-cli.dmg https://download.stormacq.com/apple/Command_Line_Tools_for_Xcode_12.4.dmg
    hdiutil mount ./xcode-cli.dmg 
    sudo installer -pkg /Volumes/Command\ Line\ Developer\ Tools/Command\ Line\ Tools.pkg -target / 
