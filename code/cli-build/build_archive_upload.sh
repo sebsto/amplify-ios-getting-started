@@ -7,7 +7,9 @@ source ./build_secrets.sh
 
 HOME=/Users/ec2-user
 pushd $HOME 
-rm -rf amplify-ios-getting-started
+if [ -d amplify-ios-getting-started ]; then
+    rm -rf amplify-ios-getting-started
+fi
 git clone https://github.com/sebsto/amplify-ios-getting-started.git
 CODE_DIR=$HOME/amplify-ios-getting-started/code
 
@@ -91,10 +93,6 @@ security import ~/DevAuthCA.cer -t cert -k "${KEYCHAIN_NAME}" -T /usr/bin/codesi
 
 security unlock-keychain -p "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
 
-# security list-keychains -s ~/Library/Keychains/"${KEYCHAIN_NAME}"-db
-# security default-keychain -s ~/Library/Keychains/"${KEYCHAIN_NAME}"-db
-
-
 echo "Install provisioning profile"
 MOBILE_PROVISIONING_PROFILE=~/project.mobileprovision
 aws s3 cp $S3_MOBILE_PROVISIONING_PROFILE $MOBILE_PROVISIONING_PROFILE
@@ -115,6 +113,7 @@ xcodebuild clean build archive \
            -archivePath "$ARCHIVE_PATH" \
            -configuration "$CONFIGURATION" 
 
+echo "Creating an Archive"
 xcodebuild -exportArchive \
            -archivePath "$ARCHIVE_PATH" \
            -exportOptionsPlist "$EXPORT_OPTIONS" \
