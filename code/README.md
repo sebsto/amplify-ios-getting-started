@@ -77,31 +77,31 @@ Now that we have our GOLD AMI, let's install the project specific build dependen
 
 1. Install project specific build dependencies
 
-(cocoapads dependency solved [thanks to this answer](https://stackoverflow.com/questions/20939568/error-error-installing-cocoapods-error-failed-to-build-gem-native-extension/62706706#62706706))
+   (cocoapads dependency solved [thanks to this answer](https://stackoverflow.com/questions/20939568/error-error-installing-cocoapods-error-failed-to-build-gem-native-extension/62706706#62706706))
 
-The below file can be [downloaded](https://raw.githubusercontent.com/sebsto/amplify-ios-getting-started/main/code/cli-build/build_prepare_machine.sh) GitHub.
+   The below file can be [downloaded](https://raw.githubusercontent.com/sebsto/amplify-ios-getting-started/main/code/cli-build/build_prepare_machine.sh) GitHub.
 
-```bash
-echo "Update Ruby"
-brew install ruby
-echo '\nexport PATH="/usr/local/opt/ruby/bin:$PATH"' >> ~/.zshrc
-export LDFLAGS="-L/usr/local/opt/ruby/lib"
-export CPPFLAGS="-I/usr/local/opt/ruby/include"
+   ```bash
+   echo "Update Ruby"
+   brew install ruby
+   echo '\nexport PATH="/usr/local/opt/ruby/bin:$PATH"' >> ~/.zshrc
+   export LDFLAGS="-L/usr/local/opt/ruby/lib"
+   export CPPFLAGS="-I/usr/local/opt/ruby/include"
 
-echo "Install cocoapods"
-sudo gem install -n /usr/local/bin cocoapods 
+   echo "Install cocoapods"
+   sudo gem install -n /usr/local/bin cocoapods 
 
-echo "Install NodeJS and JQ"
-brew install node jq
+   echo "Install NodeJS and JQ"
+   brew install node jq
 
-echo "Install Amplify CLI"
-npm install -g @aws-amplify/cli
+   echo "Install Amplify CLI"
+   npm install -g @aws-amplify/cli
 
-echo "Prepare AWS CLI configuration"
-mkdir ~/.aws
-echo "[default]\nregion=eu-central-1\n\n" > ~/.aws/config
-echo "[default]\n\n" > ~/.aws/credentials
-```
+   echo "Prepare AWS CLI configuration"
+   mkdir ~/.aws
+   echo "[default]\nregion=eu-central-1\n\n" > ~/.aws/config
+   echo "[default]\n\n" > ~/.aws/credentials
+   ```
 
 2. Create a Project GOLD AMI
 
@@ -144,9 +144,202 @@ echo "[default]\n\n" > ~/.aws/credentials
 
 ## Command Line Build
 
+Now that one time setup is behind you, you can start to build the project.
+A full executable script [is available from the project](https://github.com/sebsto/amplify-ios-getting-started/blob/main/code/cli-build/build_archive_upload.sh).  I am breaking it in multiple sections for learning purposes.
+
+1.  Connect to your mac1 EC2 instance using SSH
+
+   `ssh -i /path/to/my/private-ssh-key.pem`
+
+2. Add your environment specific settings 
+
+   ```bash
+   curl -o build_secrets.sh https://raw.githubusercontent.com/sebsto/amplify-ios-getting-started/main/code/cli-build/build_secrets_RENAME_AND_ADJUST.sh
+   chmod u+x build_secrets.sh
+   ```
+   Assign a value to all the variables in that file. To do so, you will need to export your Apple distribution key from your local laptop Keychain, and downlaod your app provisioning profile from Apple's developer web site.
+
+   An example file, once completed should look like this:
+
+   ```
+   #!/bin/sh
+
+   ## My project and environment specific values
+   ## Replace all of these with yours 
+
+   # get the app id with : amplify env list --details
+
+   AMPLIFY_APPID=d3....9p
+   AMPLIFY_PROJECT_NAME=iosgettingstarted
+   AMPLIFY_ENV=dev
+
+   S3_APPLE_DISTRIBUTION_CERT=s3://your_private_s3_bucket/apple-dist.p12
+   S3_MOBILE_PROVISIONING_PROFILE=s3://your_private_s3_bucket/Amplify_Getting_Started.mobileprovision
+   APPLE_DISTRIBUTION_KEY_PASSWORD=""
+
+   export APPLE_ID=my_icloud_email@mail.com
+   export APPLE_SECRET=aaaa-bbbb-cccc-dddd  # app specific password generated on appleid.apple.com 
+   ```
+
+   !! Source this file before proceeding with the following !!
+
+   ```bash
+   source ./build_secrets.sh
+   ```
+
+2. Pull Out the Code 
+
+   ```bash
+   HOME=/Users/ec2-user
+   pushd $HOME 
+   if [ -d amplify-ios-getting-started ]; then
+      rm -rf amplify-ios-getting-started
+   fi
+   git clone https://github.com/sebsto/amplify-ios-getting-started.git
+   CODE_DIR=$HOME/amplify-ios-getting-started/code
+
+   echo "Changing to code directory at $CODE_DIR"
+   cd $CODE_DIR
+   ```
+
+3. Install Amplify Libraries and other dependencies
+
+   ```bash
+   echo "Installing pods"
+   /usr/local/bin/pod install
+   ```
+
+4. Pull Out the Amplify configuration 
+
+The below only works when the EC2 instance has [this minimum set of permissions](cli-build/iam_permissions_for_ec2.json)
+  
+  ```bash
+   echo "Backing up generated files (these are deleted by amplify pull)"
+   mv amplify/generated .
+
+   echo "Pulling amplify environment"
+
+   # see https://docs.amplify.aws/cli/usage/headless#amplify-pull-parameters 
+
+   AWSCLOUDFORMATIONCONFIG="{\
+   \"configLevel\":\"project\",\
+   \"useProfile\":true,\
+   \"profileName\":\"default\"\
+   }"
+   AMPLIFY="{\
+   \"projectName\":\"$AMPLIFY_PROJECT_NAME\",\
+   \"appId\":\"$AMPLIFY_APPID\",\
+   \"envName\":\"$AMPLIFY_ENV\",\
+   \"defaultEditor\":\"code\"\
+   }"
+   FRONTEND="{\
+   \"frontend\":\"ios\"
+   }"
+
+   PATH=$PATH:/usr/local/bin/ # require to find node
+   /usr/local/bin/amplify pull \
+   --amplify $AMPLIFY \
+   --frontend $FRONTEND \
+   --providers $PROVIDERS \
+   --yes --region eu-central-1
+
+   echo "Restore generated files"
+   mv ./generated amplify/
+   ```
+
+5. Prepare the Keychain with signing certificates 
+
+   ```bash
+   echo "Prepare keychain"
+   DIST_CERT=~/apple-dist.p12
+   aws s3 cp $S3_APPLE_DISTRIBUTION_CERT $DIST_CERT
+   KEYCHAIN_PASSWORD=Passw0rd\!
+   KEYCHAIN_NAME=dev
+   OLD_KEYCHAIN_NAMES=login
+   if [ -f ~/Library/Keychains/"${KEYCHAIN_NAME}"-db ]; then
+      rm ~/Library/Keychains/"${KEYCHAIN_NAME}"-db
+   fi
+   security create-keychain -p "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
+   security list-keychains -s "${KEYCHAIN_NAME}" "${OLD_KEYCHAIN_NAMES[@]}"
+   security set-keychain-settings $KEYCHAIN_NAME 
+   security import "${DIST_CERT}" -P "${APPLE_DISTRIBUTION_KEY_PASSWORD}" -k "${KEYCHAIN_NAME}" -T /usr/bin/codesign -T /usr/bin/xcodebuild
+   security set-key-partition-list -S apple-tool:,apple: -s -k "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
+
+   curl -o ~/AppleWWDRCA.cer https://developer.apple.com/certificationauthority/AppleWWDRCA.cer 
+   security import ~/AppleWWDRCA.cer -t cert -k "${KEYCHAIN_NAME}" -T /usr/bin/codesign -T /usr/bin/xcodebuild
+   curl -o ~/AppleWWDRCAG3.cer https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer
+   security import ~/AppleWWDRCAG3.cer -t cert -k "${KEYCHAIN_NAME}" -T /usr/bin/codesign -T /usr/bin/xcodebuild
+   curl -o ~/DevAuthCA.cer https://www.apple.com/certificateauthority/DevAuthCA.cer 
+   security import ~/DevAuthCA.cer -t cert -k "${KEYCHAIN_NAME}" -T /usr/bin/codesign -T /usr/bin/xcodebuild
+
+   security unlock-keychain -p "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
+
+   echo "Install provisioning profile"
+   MOBILE_PROVISIONING_PROFILE=~/project.mobileprovision
+   aws s3 cp $S3_MOBILE_PROVISIONING_PROFILE $MOBILE_PROVISIONING_PROFILE
+   UUID=$(security cms -D -i $MOBILE_PROVISIONING_PROFILE -k "${KEYCHAIN_NAME}" | plutil -extract UUID xml1 -o - - | xmllint --xpath "//string/text()" -)
+   mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
+   cp $MOBILE_PROVISIONING_PROFILE "$HOME/Library/MobileDevice/Provisioning Profiles/${UUID}.mobileprovision" 
+   ````
+
+6. Build
+
+   ```bash
+   # Increase Build Number
+   BUILD_NUMBER=`date +%Y%m%d%H%M%S`
+   plutil -replace CFBundleVersion -string $BUILD_NUMBER "./getting started/Info.plist"
+   ```
+
+   ```bash
+   echo "Build, Sign and Archive"
+   SCHEME="getting started"
+   CONFIGURATION="Release"
+   WORKSPACE="getting started.xcworkspace"
+   BUILD_PATH="./build"
+   ARCHIVE_PATH="$BUILD_PATH/getting-started.xcarchive"
+   EXPORT_OPTIONS="./cli-build/ExportOptions.plist"
+
+   xcodebuild clean build archive \
+            -workspace "$WORKSPACE" \
+            -scheme "$SCHEME" \
+            -archivePath "$ARCHIVE_PATH" \
+            -configuration "$CONFIGURATION"  
+   ````
+
+7. Archive
+
+   ```bash
+   echo "Creating an Archive"
+   xcodebuild -exportArchive \
+           -archivePath "$ARCHIVE_PATH" \
+           -exportOptionsPlist "$EXPORT_OPTIONS" \
+           -exportPath "$BUILD_PATH"
+
+   echo "Verify Archive"
+   xcrun altool  \
+            --validate-app \
+            -f "$(pwd)/build/$SCHEME.ipa" \
+            -t ios \
+            -u $APPLE_ID \
+            -p @env:APPLE_SECRET
+   ````
+
+8. Upload
+
+   Finally, this upload thsi build to your iTunesConnect account, ready for distribution (TestFlight, Release)
+
+   ```bash
+   echo "Upload Archive to iTunesConnect"
+   xcrun altool  \
+            --upload-app \
+            -f "$(pwd)/build/$SCHEME.ipa" \
+            -t ios \
+            -u $APPLE_ID \
+            -p @env:APPLE_SECRET   
+   ````
 
 
-## Alternative XCode Server 
+## Alternative XCode Server (TBD - WORK IN PROGRESS)
 
 https://www.raywenderlich.com/12258400-xcode-server-for-ios-getting-started
 
