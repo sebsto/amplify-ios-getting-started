@@ -18,4 +18,4 @@ Please create [Issues](https://github.com/sebsto/amplify-ios-getting-started/iss
 
 # Headless build with the CLI
 
-Check [these instructions](tree/main/code) to prepare a mac1 EC2 Instance and build this project **100% from the CLI**.  These are the basic steps to prepare a cloud build environment. No VNC or GUI is necessary.
+Check [these instructions](code) to prepare a mac1 EC2 Instance and build this project **100% from the CLI**.  These are the basic steps to prepare a cloud build environment. No VNC or GUI is necessary.
