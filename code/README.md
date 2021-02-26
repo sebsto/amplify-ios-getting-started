@@ -350,7 +350,8 @@ https://www.raywenderlich.com/12258400-xcode-server-for-ios-getting-started
 3. configure Xcode server on the EC2 instance 
 4. Configure Xcode bot on mac laptop
 5. Add pre-built script from cli-build/
-6. Add signing key (exported Apple Distribution key as p12 files from laptop)
+6. Add post-nuilt script from cli-build/
+7. Add signing key (exported Apple Distribution key as p12 files from laptop)
 security unlock-keychain -p <ec2-user-password>
 security import apple-dist.p12 -k ~/Library/Keychains/login.keychain -T /usr/bin/codesign -P <key-password> 
 
