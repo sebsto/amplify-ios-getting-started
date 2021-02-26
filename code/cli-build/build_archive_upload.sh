@@ -71,7 +71,6 @@ plutil -replace CFBundleVersion -string $BUILD_NUMBER "./getting started/Info.pl
 
 echo "Prepare keychain"
 DIST_CERT=~/apple-dist.p12
-aws s3 cp $S3_APPLE_DISTRIBUTION_CERT $DIST_CERT
 KEYCHAIN_PASSWORD=Passw0rd\!
 KEYCHAIN_NAME=dev
 OLD_KEYCHAIN_NAMES=login
@@ -81,8 +80,6 @@ fi
 security create-keychain -p "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
 security list-keychains -s "${KEYCHAIN_NAME}" "${OLD_KEYCHAIN_NAMES[@]}"
 security set-keychain-settings $KEYCHAIN_NAME 
-security import "${DIST_CERT}" -P "${APPLE_DISTRIBUTION_KEY_PASSWORD}" -k "${KEYCHAIN_NAME}" -T /usr/bin/codesign -T /usr/bin/xcodebuild
-security set-key-partition-list -S apple-tool:,apple: -s -k "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
 
 curl -o ~/AppleWWDRCA.cer https://developer.apple.com/certificationauthority/AppleWWDRCA.cer 
 security import ~/AppleWWDRCA.cer -t cert -k "${KEYCHAIN_NAME}" -T /usr/bin/codesign -T /usr/bin/xcodebuild
@@ -90,6 +87,10 @@ curl -o ~/AppleWWDRCAG3.cer https://www.apple.com/certificateauthority/AppleWWDR
 security import ~/AppleWWDRCAG3.cer -t cert -k "${KEYCHAIN_NAME}" -T /usr/bin/codesign -T /usr/bin/xcodebuild
 curl -o ~/DevAuthCA.cer https://www.apple.com/certificateauthority/DevAuthCA.cer 
 security import ~/DevAuthCA.cer -t cert -k "${KEYCHAIN_NAME}" -T /usr/bin/codesign -T /usr/bin/xcodebuild
+
+aws s3 cp $S3_APPLE_DISTRIBUTION_CERT $DIST_CERT
+security import "${DIST_CERT}" -P "${APPLE_DISTRIBUTION_KEY_PASSWORD}" -k "${KEYCHAIN_NAME}" -T /usr/bin/codesign -T /usr/bin/xcodebuild
+security set-key-partition-list -S apple-tool:,apple: -s -k "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
 
 security unlock-keychain -p "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
 

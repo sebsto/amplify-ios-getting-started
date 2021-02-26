@@ -49,8 +49,11 @@ Now that you have access to a macOS EC2 Instance, let's install Xcode.
    sudo installer -pkg /Applications/Xcode.app/Contents/Resources/Packages/MobileDevice.pkg -target /
    sudo installer -pkg /Applications/Xcode.app/Contents/Resources/Packages/MobileDeviceDevelopment.pkg -target /
 
+   # it might take several minutes to display the license / to return.  Try until it works
    sudo xcodebuild -license accept 
    xcode-select -p
+
+   exit
    ```
 
 4. Create an EBS snapshot and an AMI  
@@ -67,15 +70,20 @@ Now that you have access to a macOS EC2 Instance, let's install Xcode.
    aws ec2 create-snapshot --region $REGION --volume-id $EBS_VOLUME_ID --description "macOS Big Sur Xcode"
 
    # AT THIS STAGE COPY THE SNAPSHOT_ID RETURNED BY THE PREVIOUS COMMAND
+   # WAIT FOR THE SNAPSHOT TO COMPLETE, THIS CAN TAKES SEVERAL MINUTES
    SNAPSHOT_ID=<YOUR SNAPSHOT ID>
-   aws ec2 register-image --region=$REGION --name "GOLD_macOS_BigSur_Xcode" --description "macOS Big Sur Xcode Gold Image" --block-device-mappings DeviceName="/dev/sda",Ebs=\{SnapshotId=$SNAPSHOT_ID,VolumeType=gp3\} --root-device-name "/dev/sda1"
+   aws ec2 register-image --region=$REGION --name "GOLD_macOS_BigSur_Xcode" --description "macOS Big Sur Xcode Gold Image" --architecture x86_64_mac --virtualization-type hvm --block-device-mappings DeviceName="/dev/sda1",Ebs=\{SnapshotId=$SNAPSHOT_ID,VolumeType=gp3\} --root-device-name "/dev/sda1"
    ```
 
 ## Install build environment (one-time setup)
 
 Now that we have our GOLD AMI, let's install the project specific build dependencies that we have.
 
-1. Install project specific build dependencies
+1. Connect to your mac1 EC2 instance using SSH
+
+   `ssh -i /path/to/my/private-ssh-key.pem`
+
+2. Install project specific build dependencies
 
    (cocoapads dependency solved [thanks to this answer](https://stackoverflow.com/questions/20939568/error-error-installing-cocoapods-error-failed-to-build-gem-native-extension/62706706#62706706))
 
@@ -101,9 +109,11 @@ Now that we have our GOLD AMI, let's install the project specific build dependen
    mkdir ~/.aws
    echo "[default]\nregion=eu-central-1\n\n" > ~/.aws/config
    echo "[default]\n\n" > ~/.aws/credentials
+
+   exit
    ```
 
-2. Create a Project GOLD AMI
+3. Create a Project GOLD AMI
 
    At this stage, it is a good idea to create a snapshot and a PROJECT GOLD AMI to avoid having to repeat this project specific installation process for each future mac1 EC2 instance that you would start.
 
@@ -118,7 +128,7 @@ Now that we have our GOLD AMI, let's install the project specific build dependen
 
    # AT THIS STAGE COPY THE SNAPSHOT_ID RETURNED BY THE PREVIOUS COMMAND
    SNAPSHOT_ID=<YOUR SNAPSHOT ID>
-   aws ec2 register-image --region=$REGION --name "GOLD_macOS_BigSur_Xcode_Amplify" --description "macOS Big Sur Xcode Amplify Project Gold Image" --block-device-mappings DeviceName="/dev/sda",Ebs=\{SnapshotId=$SNAPSHOT_ID,VolumeType=gp3\} --root-device-name "/dev/sda1"
+   aws ec2 register-image --region=$REGION --name "GOLD_macOS_BigSur_Xcode_Amplify" --description "macOS Big Sur Xcode Amplify Project Gold Image" --architecture x86_64_mac --virtualization-type hvm --block-device-mappings DeviceName="/dev/sda1",Ebs=\{SnapshotId=$SNAPSHOT_ID,VolumeType=gp3\} --root-device-name "/dev/sda1"
    ```
 
 4. Attach an EC2 role to the instance
@@ -129,11 +139,16 @@ Now that we have our GOLD AMI, let's install the project specific build dependen
    # Create the IAM Policy and Role 
    IAM_ROLE_NAME="macOS_CICD_Amplify"
    EC2_PROFILE_NAME="$IAM_ROLE_NAME"_profile
-   POLICY_ARN=$(aws iam create-policy --region $REGION --description "mac1 instance CICD permission for Amplify" --policy-name "mac1_CICD" --policy-document file://./iam_permissions_for_ec2.json --query 'Policy.Arn' --output text)
-   aws iam create-role --region $REGION --role-name $IAM_ROLE_NAME --assume-role-policy-document file://./iam_assume_role.json
+
+   POLICY_ARN=$(aws iam create-policy --region $REGION --description "mac1 instance CICD permission for Amplify" --policy-name "mac1_CICD" --policy-document file://./cli-build/iam_permissions_for_ec2.json --query 'Policy.Arn' --output text)
+   aws iam create-role --region $REGION --role-name $IAM_ROLE_NAME --assume-role-policy-document file://./cli-build/iam_assume_role.json
    aws iam attach-role-policy --region $REGION --policy-arn $POLICY_ARN --role-name $IAM_ROLE_NAME
    aws iam create-instance-profile --instance-profile-name $EC2_PROFILE_NAME
    INSTANCE_PROFILE_ARN=$(aws iam add-role-to-instance-profile --instance-profile-name $EC2_PROFILE_NAME --role-name $IAM_ROLE_NAME --query InstanceProfile.Arn --output text)
+
+   # If you want to cleanup later, use the two below commands
+   # aws iam remove-role-from-instance-profile --instance-profile-name $EC2_PROFILE_NAME --role-name $IAM_ROLE_NAME
+   # aws iam delete-instance-profile --instance-profile-name $EC2_PROFILE_NAME 
 
    # Find your mac1 Instance ID
    INSTANCE_ID=$(aws ec2 --region $REGION describe-instances --query 'Reservations[].Instances[?PublicIpAddress==`18.191.179.58`].InstanceId | []' --output text)
@@ -252,7 +267,6 @@ The below only works when the EC2 instance has [this minimum set of permissions]
    ```bash
    echo "Prepare keychain"
    DIST_CERT=~/apple-dist.p12
-   aws s3 cp $S3_APPLE_DISTRIBUTION_CERT $DIST_CERT
    KEYCHAIN_PASSWORD=Passw0rd\!
    KEYCHAIN_NAME=dev
    OLD_KEYCHAIN_NAMES=login
@@ -260,10 +274,8 @@ The below only works when the EC2 instance has [this minimum set of permissions]
       rm ~/Library/Keychains/"${KEYCHAIN_NAME}"-db
    fi
    security create-keychain -p "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
+   security unlock-keychain -p "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
    security list-keychains -s "${KEYCHAIN_NAME}" "${OLD_KEYCHAIN_NAMES[@]}"
-   security set-keychain-settings $KEYCHAIN_NAME 
-   security import "${DIST_CERT}" -P "${APPLE_DISTRIBUTION_KEY_PASSWORD}" -k "${KEYCHAIN_NAME}" -T /usr/bin/codesign -T /usr/bin/xcodebuild
-   security set-key-partition-list -S apple-tool:,apple: -s -k "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
 
    curl -o ~/AppleWWDRCA.cer https://developer.apple.com/certificationauthority/AppleWWDRCA.cer 
    security import ~/AppleWWDRCA.cer -t cert -k "${KEYCHAIN_NAME}" -T /usr/bin/codesign -T /usr/bin/xcodebuild
@@ -272,7 +284,12 @@ The below only works when the EC2 instance has [this minimum set of permissions]
    curl -o ~/DevAuthCA.cer https://www.apple.com/certificateauthority/DevAuthCA.cer 
    security import ~/DevAuthCA.cer -t cert -k "${KEYCHAIN_NAME}" -T /usr/bin/codesign -T /usr/bin/xcodebuild
 
-   security unlock-keychain -p "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
+   aws s3 cp $S3_APPLE_DISTRIBUTION_CERT $DIST_CERT
+   security import "${DIST_CERT}" -P "${APPLE_DISTRIBUTION_KEY_PASSWORD}" -k "${KEYCHAIN_NAME}" -T /usr/bin/codesign -T /usr/bin/xcodebuild
+
+   security set-keychain-settings $KEYCHAIN_NAME 
+   security set-key-partition-list -S apple-tool:,apple: -s -k "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
+
 
    echo "Install provisioning profile"
    MOBILE_PROVISIONING_PROFILE=~/project.mobileprovision
