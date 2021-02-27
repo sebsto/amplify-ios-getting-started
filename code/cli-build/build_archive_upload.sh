@@ -78,8 +78,8 @@ if [ -f ~/Library/Keychains/"${KEYCHAIN_NAME}"-db ]; then
     rm ~/Library/Keychains/"${KEYCHAIN_NAME}"-db
 fi
 security create-keychain -p "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
+security unlock-keychain -p "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
 security list-keychains -s "${KEYCHAIN_NAME}" "${OLD_KEYCHAIN_NAMES[@]}"
-security set-keychain-settings $KEYCHAIN_NAME 
 
 curl -o ~/AppleWWDRCA.cer https://developer.apple.com/certificationauthority/AppleWWDRCA.cer 
 security import ~/AppleWWDRCA.cer -t cert -k "${KEYCHAIN_NAME}" -T /usr/bin/codesign -T /usr/bin/xcodebuild
@@ -90,9 +90,9 @@ security import ~/DevAuthCA.cer -t cert -k "${KEYCHAIN_NAME}" -T /usr/bin/codesi
 
 aws s3 cp $S3_APPLE_DISTRIBUTION_CERT $DIST_CERT
 security import "${DIST_CERT}" -P "${APPLE_DISTRIBUTION_KEY_PASSWORD}" -k "${KEYCHAIN_NAME}" -T /usr/bin/codesign -T /usr/bin/xcodebuild
-security set-key-partition-list -S apple-tool:,apple: -s -k "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
 
-security unlock-keychain -p "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
+security set-keychain-settings $KEYCHAIN_NAME 
+security set-key-partition-list -S apple-tool:,apple: -s -k "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
 
 echo "Install provisioning profile"
 MOBILE_PROVISIONING_PROFILE=~/project.mobileprovision
