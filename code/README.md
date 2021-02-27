@@ -27,6 +27,7 @@ Now that you have access to a macOS EC2 Instance, let's install Xcode.
 3. Install Xcode
 
    ```bash
+   echo "\n\nsetopt interactivecomments\n\n" >> ~/.zshrc 
    # First resize the file system to enjoy the full space offered by our EBS volume
    PDISK=$(diskutil list physical external | head -n1 | cut -d" " -f1)
    APFSCONT=$(diskutil list physical external | grep "Apple_APFS" | tr -s " " | cut -d" " -f8)
