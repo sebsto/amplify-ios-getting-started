@@ -8,7 +8,7 @@ pushd $HOME
 if [ -d amplify-ios-getting-started ]; then
     rm -rf amplify-ios-getting-started
 fi
-git clone https://github.com/sebsto/amplify-ios-getting-started.git
+git clone -q https://github.com/sebsto/amplify-ios-getting-started.git
 CODE_DIR=$HOME/amplify-ios-getting-started/code
 
 source $CODE_DIR/cli-build/codebuild-configuration.sh
@@ -81,11 +81,11 @@ security create-keychain -p "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
 security unlock-keychain -p "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
 security list-keychains -s "${KEYCHAIN_NAME}" "${OLD_KEYCHAIN_NAMES[@]}"
 
-curl -o ~/AppleWWDRCA.cer https://developer.apple.com/certificationauthority/AppleWWDRCA.cer 
+curl -s -o ~/AppleWWDRCA.cer https://developer.apple.com/certificationauthority/AppleWWDRCA.cer 
 security import ~/AppleWWDRCA.cer -t cert -k "${KEYCHAIN_NAME}" -T /usr/bin/codesign -T /usr/bin/xcodebuild
-curl -o ~/AppleWWDRCAG3.cer https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer
+curl -s -o ~/AppleWWDRCAG3.cer https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer
 security import ~/AppleWWDRCAG3.cer -t cert -k "${KEYCHAIN_NAME}" -T /usr/bin/codesign -T /usr/bin/xcodebuild
-curl -o ~/DevAuthCA.cer https://www.apple.com/certificateauthority/DevAuthCA.cer 
+curl -s -o ~/DevAuthCA.cer https://www.apple.com/certificateauthority/DevAuthCA.cer 
 security import ~/DevAuthCA.cer -t cert -k "${KEYCHAIN_NAME}" -T /usr/bin/codesign -T /usr/bin/xcodebuild
 
 echo $S3_APPLE_DISTRIBUTION_CERT | base64 -d > $DIST_CERT
