@@ -3,7 +3,8 @@ version: 0.2
 phases:
   install:
     commands:
-      - ls -alR 
+      - which SQSProducer
+      - SQSProducer $SQS_COMMAND_QUEUE_URL $SQS_RESPONSE_QUEUE_URL code/cli-build/codebuild_configuration.sh
 
   pre_build:
     commands:
