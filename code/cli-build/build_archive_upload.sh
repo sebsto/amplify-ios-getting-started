@@ -1,7 +1,5 @@
 #!/bin/sh
 
-source ./codebuild_configuration.sh
-
 # Thanks to 
 # https://medium.com/appssemble/a-guide-to-writing-your-own-ios-ci-cd-integration-script-186be1b99575
 
@@ -12,6 +10,8 @@ if [ -d amplify-ios-getting-started ]; then
 fi
 git clone https://github.com/sebsto/amplify-ios-getting-started.git
 CODE_DIR=$HOME/amplify-ios-getting-started/code
+
+source $CODE_DIR/cli-build/codebuild-configuration.sh
 
 echo "Changing to code directory at $CODE_DIR"
 cd $CODE_DIR
@@ -96,7 +96,7 @@ security set-key-partition-list -S apple-tool:,apple: -s -k "${KEYCHAIN_PASSWORD
 
 echo "Install provisioning profile"
 MOBILE_PROVISIONING_PROFILE=~/project.mobileprovision
-aws s3 cp $S3_MOBILE_PROVISIONING_PROFILE $MOBILE_PROVISIONING_PROFILE
+echo $S3_MOBILE_PROVISIONING_PROFILE | base64 -d > $MOBILE_PROVISIONING_PROFILE
 echo $S3_MOBILE_PROVISIONING_PROFILE
 UUID=$(security cms -D -i $MOBILE_PROVISIONING_PROFILE -k "${KEYCHAIN_NAME}" | plutil -extract UUID xml1 -o - - | xmllint --xpath "//string/text()" -)
 mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
