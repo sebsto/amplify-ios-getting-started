@@ -1,6 +1,6 @@
 #!/bin/sh
 
-source ./build_secrets.sh
+source ./codebuild_configuration.sh
 
 echo "Prepare keychain"
 DIST_CERT=~/apple-dist.p12
