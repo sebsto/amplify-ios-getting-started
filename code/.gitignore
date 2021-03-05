@@ -14,3 +14,4 @@ amplify-build-config.json
 amplify-gradle-config.json
 amplifytools.xcconfig
 cli-build/build_secrets.sh
+cli-build/secrets

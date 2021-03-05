@@ -19,6 +19,15 @@
                 "sqs:DeleteMessage"
             ],
             "Resource": "*"
+        },
+        {
+            "Sid": "VisualEditor1",
+            "Effect": "Allow",
+            "Action": "secretsmanager:GetSecretValue",
+            "Resource": [
+                "arn:aws:secretsmanager:REGION:ACCOUNT_ID:secret:amplify*",
+                "arn:aws:secretsmanager:REGION:ACCOUNT_ID:secret:apple*"
+            ]
         }
     ]
 }
