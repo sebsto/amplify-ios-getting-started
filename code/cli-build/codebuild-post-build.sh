@@ -9,7 +9,7 @@ echo "Creating an Archive"
 xcodebuild -exportArchive \
            -archivePath "$ARCHIVE_PATH" \
            -exportOptionsPlist "$EXPORT_OPTIONS" \
-           -exportPath "$BUILD_PATH"
+           -exportPath "$BUILD_PATH" > $HOME/log/export.log
 
 echo "Verify Archive"
 xcrun altool  \

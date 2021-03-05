@@ -22,16 +22,9 @@ echo "Installing pods"
 echo "Backing up generated files (these are deleted by amplify pull)"
 mv amplify/generated .
 
-# ACCESS_KEY_ID=$(curl -s 169.254.169.254/latest/meta-data/iam/security-credentials/admin | jq -r .AccessKeyId)
-# SECRET_ACCESS_KEY=$(curl -s 169.254.169.254/latest/meta-data/iam/security-credentials/admin | jq -r .SecretAccessKey)
-# SESSION_TOKEN=$(curl -s 169.254.169.254/latest/meta-data/iam/security-credentials/admin | jq -r .Token)
-# REGION=$(curl -s 169.254.169.254/latest/meta-data/placement/region/)
-
 echo "Pulling amplify environment"
 
 # see https://docs.amplify.aws/cli/usage/headless#amplify-pull-parameters 
-
-# TODO : adjust appId and projectName
 
 AWSCLOUDFORMATIONCONFIG="{\
 \"configLevel\":\"project\",\
@@ -64,9 +57,6 @@ mv ./generated amplify/
 BUILD_NUMBER=`date +%Y%m%d%H%M%S`
 plutil -replace CFBundleVersion -string $BUILD_NUMBER "./getting started/Info.plist"
 
-# before to run this script, use the KeyChain App to 
-# create a keychain, import the ios distribution
-# private key and certificate 
 # https://stackoverflow.com/questions/20205162/user-interaction-is-not-allowed-trying-to-sign-an-osx-app-using-codesign
 
 echo "Prepare keychain"
@@ -97,7 +87,6 @@ security set-key-partition-list -S apple-tool:,apple: -s -k "${KEYCHAIN_PASSWORD
 echo "Install provisioning profile"
 MOBILE_PROVISIONING_PROFILE=~/project.mobileprovision
 echo $S3_MOBILE_PROVISIONING_PROFILE | base64 -d > $MOBILE_PROVISIONING_PROFILE
-echo $S3_MOBILE_PROVISIONING_PROFILE
 UUID=$(security cms -D -i $MOBILE_PROVISIONING_PROFILE -k "${KEYCHAIN_NAME}" | plutil -extract UUID xml1 -o - - | xmllint --xpath "//string/text()" -)
 mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
 cp $MOBILE_PROVISIONING_PROFILE "$HOME/Library/MobileDevice/Provisioning Profiles/${UUID}.mobileprovision"
@@ -113,13 +102,13 @@ xcodebuild clean build archive \
            -workspace "$WORKSPACE" \
            -scheme "$SCHEME" \
            -archivePath "$ARCHIVE_PATH" \
-           -configuration "$CONFIGURATION" 
+           -configuration "$CONFIGURATION" > $HOME/log/build.log
 
 echo "Creating an Archive"
 xcodebuild -exportArchive \
            -archivePath "$ARCHIVE_PATH" \
            -exportOptionsPlist "$EXPORT_OPTIONS" \
-           -exportPath "$BUILD_PATH"
+           -exportPath "$BUILD_PATH" > $HOME/log/export.log
 
 echo "Verify Archive"
 xcrun altool  \
@@ -129,12 +118,12 @@ xcrun altool  \
             -u $APPLE_ID \
             -p @env:APPLE_SECRET
 
-echo "Upload Archive to iTunesConnect"
-xcrun altool  \
-            --upload-app \
-            -f "$(pwd)/build/$SCHEME.ipa" \
-            -t ios \
-            -u $APPLE_ID \
-            -p @env:APPLE_SECRET
+# echo "Upload Archive to iTunesConnect"
+# xcrun altool  \
+#             --upload-app \
+#             -f "$(pwd)/build/$SCHEME.ipa" \
+#             -t ios \
+#             -u $APPLE_ID \
+#             -p @env:APPLE_SECRET
 
 echo "Done"

@@ -11,4 +11,4 @@ xcodebuild clean build archive \
            -workspace "$WORKSPACE" \
            -scheme "$SCHEME" \
            -archivePath "$ARCHIVE_PATH" \
-           -configuration "$CONFIGURATION" 
+           -configuration "$CONFIGURATION" > $HOME/log/build.log
