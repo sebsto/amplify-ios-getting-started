@@ -21,8 +21,8 @@ AMPLIFY_APPID=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secr
 AMPLIFY_PROJECT_NAME=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $AMPLIFY_PROJECT_NAME_SECRET --query SecretString --output text)
 AMPLIFY_ENV=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $AMPLIFY_ENV_SECRET --query SecretString --output text)  
 
-APPLE_ID=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $APPLE_ID_SECRET --query SecretString --output text)
-APPLE_SECRET=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $APPLE_SECRET_SECRET --query SecretString --output text)
+export APPLE_ID=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $APPLE_ID_SECRET --query SecretString --output text)
+export APPLE_SECRET=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $APPLE_SECRET_SECRET --query SecretString --output text)
 
 # These are base64 values, we will need to decode to a file when needed
 S3_APPLE_DISTRIBUTION_CERT=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $S3_APPLE_DISTRIBUTION_CERT_SECRET --query SecretBinary --output text)
