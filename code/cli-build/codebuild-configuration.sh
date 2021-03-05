@@ -4,15 +4,6 @@ set -e # force an exit if one command fails
 ## My project and environment specific values
 ## Replace all of these with yours 
 
-export LC_CTYPE=UTF-8
-export USER=ec2-user
-export LOGNAME=ec2-user
-export HOME=/Users/ec2-user
-export PATH=/usr/local/opt/ruby/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin
-export MAIL=/var/mail/ec2-user
-export SHELL=/bin/zsh
-export TERM=xterm-256color
-
 AWS_CLI=/usr/local/bin/aws
 REGION=$(curl -s 169.254.169.254/latest/meta-data/placement/region/)
 
