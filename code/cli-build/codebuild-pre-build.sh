@@ -8,7 +8,7 @@
 CODE_DIR=$HOME/amplify-ios-getting-started/code
 echo "Changing to code directory at $CODE_DIR"
 cd $CODE_DIR
-source ./cli-build/codebuild-configuration.sh
+source $CODE_DIR/cli-build/codebuild-configuration.sh
 
 echo "Installing pods"
 /usr/local/bin/pod install
