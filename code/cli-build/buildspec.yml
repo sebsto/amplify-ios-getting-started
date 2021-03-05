@@ -1,0 +1,18 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - ls -alR 
+
+  pre_build:
+    commands:
+      - echo "Pre build"
+  
+  build:
+    commands:
+      - echo "Build"
+
+  post_build:
+    commands:
+      - echo "Post build"
