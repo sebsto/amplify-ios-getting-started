@@ -1,20 +1,14 @@
 #!/bin/sh
 
-source ./codebuild-configuration.sh
 
 # Thanks to 
 # https://medium.com/appssemble/a-guide-to-writing-your-own-ios-ci-cd-integration-script-186be1b99575
 
-HOME=/Users/ec2-user
-pushd $HOME 
-if [ -d amplify-ios-getting-started ]; then
-    rm -rf amplify-ios-getting-started
-fi
-git clone https://github.com/sebsto/amplify-ios-getting-started.git
-CODE_DIR=$HOME/amplify-ios-getting-started/code
 
+CODE_DIR=$HOME/amplify-ios-getting-started/code
 echo "Changing to code directory at $CODE_DIR"
 cd $CODE_DIR
+source ./cli-build/codebuild-configuration.sh
 
 echo "Installing pods"
 /usr/local/bin/pod install
