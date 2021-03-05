@@ -1,6 +1,9 @@
 #!/bin/sh
 
-source ./codebuild-configuration.sh
+CODE_DIR=$HOME/amplify-ios-getting-started/code
+echo "Changing to code directory at $CODE_DIR"
+cd $CODE_DIR
+source ./cli-build/codebuild-configuration.sh
 
 echo "Creating an Archive"
 xcodebuild -exportArchive \
