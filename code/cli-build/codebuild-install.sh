@@ -11,7 +11,7 @@ CODE_DIR=$HOME/amplify-ios-getting-started/code
 echo "Changing to code directory at $CODE_DIR"
 cd $CODE_DIR
 
-source ./codebuild_configuration.sh
+source ./codebuild-configuration.sh
 
 echo "Prepare keychain"
 DIST_CERT=~/apple-dist.p12

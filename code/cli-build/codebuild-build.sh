@@ -1,6 +1,6 @@
 #!/bin/sh
 
-source ./codebuild_configuration.sh
+source ./codebuild-configuration.sh
 
 echo "Build, Sign and Archive"
 

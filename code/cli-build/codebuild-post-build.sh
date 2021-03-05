@@ -1,6 +1,6 @@
 #!/bin/sh
 
-source ./codebuild_configuration.sh
+source ./codebuild-configuration.sh
 
 echo "Creating an Archive"
 xcodebuild -exportArchive \

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-source ./codebuild_configuration.sh
+source ./codebuild-configuration.sh
 
 # Thanks to 
 # https://medium.com/appssemble/a-guide-to-writing-your-own-ios-ci-cd-integration-script-186be1b99575
