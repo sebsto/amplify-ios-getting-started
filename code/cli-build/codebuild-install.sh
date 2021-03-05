@@ -21,7 +21,7 @@ OLD_KEYCHAIN_NAMES=login
 if [ -f ~/Library/Keychains/"${KEYCHAIN_NAME}"-db ]; then
     rm ~/Library/Keychains/"${KEYCHAIN_NAME}"-db
 fi
-xxxsecurity create-keychain -p "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
+security create-keychain -p "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
 security unlock-keychain -p "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
 security list-keychains -s "${KEYCHAIN_NAME}" "${OLD_KEYCHAIN_NAMES[@]}"
 
