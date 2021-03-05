@@ -5,7 +5,7 @@ pushd $HOME
 if [ -d amplify-ios-getting-started ]; then
     rm -rf amplify-ios-getting-started
 fi
-git clone https://github.com/sebsto/amplify-ios-getting-started.git
+git clone -q https://github.com/sebsto/amplify-ios-getting-started.git
 CODE_DIR=$HOME/amplify-ios-getting-started/code
 
 echo "Changing to code directory at $CODE_DIR"
@@ -21,7 +21,7 @@ OLD_KEYCHAIN_NAMES=login
 if [ -f ~/Library/Keychains/"${KEYCHAIN_NAME}"-db ]; then
     rm ~/Library/Keychains/"${KEYCHAIN_NAME}"-db
 fi
-security create-keychain -p "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
+xxxsecurity create-keychain -p "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
 security unlock-keychain -p "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
 security list-keychains -s "${KEYCHAIN_NAME}" "${OLD_KEYCHAIN_NAMES[@]}"
 
