@@ -3,7 +3,7 @@
 ## My project and environment specific values
 ## Replace all of these with yours 
 
-REGION=us-east-2
+REGION=$(curl -s 169.254.169.254/latest/meta-data/placement/region/)
 
 # My secret ARNs, you get them from import_secrets.sh
 AMPLIFY_APPID_SECRET=amplify-app-id
