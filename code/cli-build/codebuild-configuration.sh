@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e # force an exit if one command fails
 
 ## My project and environment specific values
 ## Replace all of these with yours 
