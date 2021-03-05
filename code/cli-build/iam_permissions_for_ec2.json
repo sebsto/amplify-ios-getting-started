@@ -13,7 +13,10 @@
                 "amplify:List*",
                 "amplify:Get*",
                 "s3:Get*",
-                "s3:List*"
+                "s3:List*",
+                "sqs:Receive*",
+                "sqs:Send*",
+                "sqs:DeleteMessage"
             ],
             "Resource": "*"
         }
