@@ -3,16 +3,16 @@ version: 0.2
 phases:
   install:
     commands:
-      - SQSProducer $SQS_COMMAND_QUEUE_URL $SQS_RESPONSE_QUEUE_URL code/cli-build/codebuild_configuration.sh
+      - SQSProducer $SQS_COMMAND_QUEUE_URL $SQS_RESPONSE_QUEUE_URL code/cli-build/codebuild-install.sh
 
   pre_build:
     commands:
-      - echo "Pre build"
+      - SQSProducer $SQS_COMMAND_QUEUE_URL $SQS_RESPONSE_QUEUE_URL code/cli-build/codebuild-pre-build.sh
   
   build:
     commands:
-      - echo "Build"
+      - SQSProducer $SQS_COMMAND_QUEUE_URL $SQS_RESPONSE_QUEUE_URL code/cli-build/codebuild-build.sh
 
   post_build:
     commands:
-      - echo "Post build"
+      - SQSProducer $SQS_COMMAND_QUEUE_URL $SQS_RESPONSE_QUEUE_URL code/cli-build/codebuild-post-build.sh
