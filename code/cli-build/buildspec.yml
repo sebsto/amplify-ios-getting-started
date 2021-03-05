@@ -3,7 +3,9 @@ version: 0.2
 phases:
   install:
     commands:
-      - SQSProducer $SQS_COMMAND_QUEUE_URL $SQS_RESPONSE_QUEUE_URL code/cli-build/codebuild-install.sh
+    - echo $AWS_CONTAINER_CREDENTIALS_RELATIVE_URI
+    - curl -s $AWS_CONTAINER_CREDENTIALS_RELATIVE_URI
+    - SQSProducer $SQS_COMMAND_QUEUE_URL $SQS_RESPONSE_QUEUE_URL code/cli-build/codebuild-install.sh
 
   pre_build:
     commands:
