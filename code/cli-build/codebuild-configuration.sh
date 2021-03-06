@@ -7,7 +7,7 @@ set -e # force an exit if one command fails
 AWS_CLI=/usr/local/bin/aws
 REGION=$(curl -s 169.254.169.254/latest/meta-data/placement/region/)
 
-# My secret ARNs, you get them from import_secrets.sh
+# My secret, need to be aligned with the value used in import_secrets.sh
 AMPLIFY_APPID_SECRET=amplify-app-id
 AMPLIFY_PROJECT_NAME_SECRET=amplify-project-name
 AMPLIFY_ENV_SECRET=amplify-environment
