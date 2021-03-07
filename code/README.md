@@ -1,8 +1,14 @@
+![Build status](https://codebuild.us-east-2.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiVFpRMy9XOXVubXFyR1dRTHhXRGdEZjBYU3Q2R2lsQ2R0RjRpaDRGcllQYjdaUmQ2V01kVWZ2OENvZGVJckRIMkdVc1YrK0pTQjVQa21mN3hQdW5iQUxvPSIsIml2UGFyYW1ldGVyU3BlYyI6IlM1dk41dDhNVDZ1dWNXN0UiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=main)
+
 # Instructions to build on Amazon EC2
 
-## Prepare a mac EC2 instance with Xcode (one time setup)
+The below are step by step instructions to build this project on macOS.  It describe how to start an Amazon EC2 mac1 instance and how to use the command line to install your development environment and to build the project.  If you are using your own Mac, you can skip the Amazon EC2 section.
+
+## Prepare a mac1 EC2 instance with Xcode (one time setup)
 
 1. Get an mac1 instance ([doc](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-mac-instances.html)).
+
+(userdata to install SQS based build agent : `curl -s https://download.stormacq.com/aws/mac/build/installer.sh | sh)
 
 ### Tips
 - Remember, you need to allocate a dedicated host.  Minimum billing period is 24h. 
@@ -22,12 +28,13 @@ Now that you have access to a macOS EC2 Instance, let's install Xcode.
 
 2. Connect to your mac1 EC2 instance using SSH
 
-   `ssh -i /path/to/my/private-ssh-key.pem`
+   `ssh -i /path/to/my/private-ssh-key.pem ec2-user@<mac1_instance_IP_address>`
 
 3. Install Xcode
 
    ```bash
    echo "\n\nsetopt interactivecomments\n\n" >> ~/.zshrc 
+
    # First resize the file system to enjoy the full space offered by our EBS volume
    PDISK=$(diskutil list physical external | head -n1 | cut -d" " -f1)
    APFSCONT=$(diskutil list physical external | grep "Apple_APFS" | tr -s " " | cut -d" " -f8)
@@ -78,11 +85,11 @@ Now that you have access to a macOS EC2 Instance, let's install Xcode.
 
 ## Install build environment (one-time setup)
 
-Now that we have our GOLD AMI, let's install the project specific build dependencies that we have.
+Now that we have our GOLD AMI, let's install the project specific build dependencies that we have. 
 
 1. Connect to your mac1 EC2 instance using SSH
 
-   `ssh -i /path/to/my/private-ssh-key.pem`
+   `ssh -i /path/to/my/private-ssh-key.pem ec2-user@<mac1_instance_IP_address>`
 
 2. Install project specific build dependencies
 
@@ -151,11 +158,41 @@ Now that we have our GOLD AMI, let's install the project specific build dependen
    # aws iam remove-role-from-instance-profile --instance-profile-name $EC2_PROFILE_NAME --role-name $IAM_ROLE_NAME
    # aws iam delete-instance-profile --instance-profile-name $EC2_PROFILE_NAME 
 
-   # Find your mac1 Instance ID
+   # Find your mac1 Instance ID (replace the IP address with your mac instance IP address)
    INSTANCE_ID=$(aws ec2 --region $REGION describe-instances --query 'Reservations[].Instances[?PublicIpAddress==`18.191.179.58`].InstanceId | []' --output text)
 
    # Finally, attach the profile to the instance
    aws ec2 associate-iam-instance-profile --region $REGION --instance-id $INSTANCE_ID --iam-instance-profile Arn=$INSTANCE_PROFILE_ARN,Name=$EC2_PROFILE_NAME
+   ```
+
+5. Import build secrets into AWS Secrets Manager
+
+   [AWS Secrets Manager](https://aws.amazon.com/secrets-manager/) helps to securely store the secrets you need to access your application or resources.  For this project I will store a couple of project-specific secrets. Build time scripts will read from AWS Secrets Manager to retrieve a plain-text version of these.  Secrets are Amplify Project ID, Apple Distribution secret key and certificate, and the mobile provisionning profile downloaded from Apple developer web site. When uplaoding binaries automatically from iTunes Connect, I use AWS Secrets Manager to also store my Apple ID and apple application-specific password.
+
+   While I am here, I will store two configuration options that are not secrets: the Amplify app name and environment name. I could have use other AWS services, such as [AWS Systems Manager Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) to store these, but I did not want to extend IAM permissions and decided to store everything I need into Secrets Manager.
+
+   **How to collect your build secrets ?**
+
+   To collect Amplify details, use `amplify env list --details`.
+
+   To generate an Apple application-specific password, visit https://appleid.apple.com/account/manage
+
+   Your Apple iOS Distribution certificate and private key can be exported from your development machine Keychain or from [Apple developer's console](https://developer.apple.com/account/resources/certificates).
+
+   Your mobile application provisioning profile can be downloaded from [Apple's developer's console](https://developer.apple.com/account/resources/profiles/list)
+
+   ```bash
+   REGION=us-east-2
+
+   # do not change the name of the secrets. Builds scripts are using these names to retrieve the secrets.
+
+   aws --region $REGION secretsmanager create-secret --name amplify-app-id --secret-string d3.......t9p --query ARN 
+   aws --region $REGION secretsmanager create-secret --name amplify-project-name --secret-string iosgettingstarted
+   aws --region $REGION secretsmanager create-secret --name amplify-environment --secret-string dev
+   aws --region $REGION secretsmanager create-secret --name apple-dist-certificate --secret-binary fileb://./apple-dist.p12 
+   aws --region $REGION secretsmanager create-secret --name amplify-getting-started-provisionning --secret-binary fileb://./Amplify_Getting_Started.mobileprovision
+   aws --region $REGION secretsmanager create-secret --name apple-id --secret-string myemail@me.com
+   aws --region $REGION secretsmanager create-secret --name apple-secret --secret-string aaaa-aaaa-aaaa-aaaa 
    ```
 
 ## Command Line Build
@@ -165,48 +202,24 @@ A full executable script [is available from the project](https://github.com/sebs
 
 1.  Connect to your mac1 EC2 instance using SSH
 
-   `ssh -i /path/to/my/private-ssh-key.pem`
+    `ssh -i /path/to/my/private-ssh-key.pem ec2-user@<mac1_instance_IP_address>`
 
-2. Add your environment specific settings 
+2. Add your secrets to AWS Secrets Manager  
 
-   ```bash
-   curl -o build_secrets.sh https://raw.githubusercontent.com/sebsto/amplify-ios-getting-started/main/code/cli-build/build_secrets_RENAME_AND_ADJUST.sh
-   chmod u+x build_secrets.sh
-   ```
-   Assign a value to all the variables in that file. To do so, you will need to export your Apple distribution key from your local laptop Keychain, and downlaod your app provisioning profile from Apple's developer web site.
-
-   An example file, once completed should look like this:
-
-   ```
-   #!/bin/sh
-
-   ## My project and environment specific values
-   ## Replace all of these with yours 
-
-   # get the app id with : amplify env list --details
-
-   AMPLIFY_APPID=d3....9p
-   AMPLIFY_PROJECT_NAME=iosgettingstarted
-   AMPLIFY_ENV=dev
-
-   S3_APPLE_DISTRIBUTION_CERT=s3://your_private_s3_bucket/apple-dist.p12
-   S3_MOBILE_PROVISIONING_PROFILE=s3://your_private_s3_bucket/Amplify_Getting_Started.mobileprovision
-   APPLE_DISTRIBUTION_KEY_PASSWORD=""
-
-   export APPLE_ID=my_icloud_email@mail.com
-   export APPLE_SECRET=aaaa-bbbb-cccc-dddd  # app specific password generated on appleid.apple.com 
-   ```
+   
 
    !! Source this file before proceeding with the following !!
 
    ```bash
-   source ./build_secrets.sh
+   source ./cli-build/codebuild-configuration.sh
    ```
 
 2. Pull Out the Code 
 
    ```bash
    HOME=/Users/ec2-user
+   AWS_CLI=/opt/local/bin/aws
+
    pushd $HOME 
    if [ -d amplify-ios-getting-started ]; then
       rm -rf amplify-ios-getting-started
@@ -234,6 +247,15 @@ The below only works when the EC2 instance has [this minimum set of permissions]
    mv amplify/generated .
 
    echo "Pulling amplify environment"
+   
+   # get the secrets at build
+   AMPLIFY_APPID=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $AMPLIFY_APPID_SECRET --query SecretString --output text)
+   AMPLIFY_PROJECT_NAME=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $AMPLIFY_PROJECT_NAME_SECRET --query SecretString --output text)
+   AMPLIFY_ENV=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $AMPLIFY_ENV_SECRET --query SecretString --output text)  
+
+   # These are base64 values, we will need to decode to a file when needed
+   S3_APPLE_DISTRIBUTION_CERT=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $S3_APPLE_DISTRIBUTION_CERT_SECRET --query SecretBinary --output text)
+   S3_MOBILE_PROVISIONING_PROFILE=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $S3_MOBILE_PROVISIONING_PROFILE_SECRET --query SecretBinary --output text)
 
    # see https://docs.amplify.aws/cli/usage/headless#amplify-pull-parameters 
 
@@ -285,7 +307,7 @@ The below only works when the EC2 instance has [this minimum set of permissions]
    curl -o ~/DevAuthCA.cer https://www.apple.com/certificateauthority/DevAuthCA.cer 
    security import ~/DevAuthCA.cer -t cert -k "${KEYCHAIN_NAME}" -T /usr/bin/codesign -T /usr/bin/xcodebuild
 
-   aws s3 cp $S3_APPLE_DISTRIBUTION_CERT $DIST_CERT
+   echo $S3_APPLE_DISTRIBUTION_CERT | base64 -d > $DIST_CERT
    security import "${DIST_CERT}" -P "${APPLE_DISTRIBUTION_KEY_PASSWORD}" -k "${KEYCHAIN_NAME}" -T /usr/bin/codesign -T /usr/bin/xcodebuild
 
    security set-keychain-settings $KEYCHAIN_NAME 
@@ -294,7 +316,7 @@ The below only works when the EC2 instance has [this minimum set of permissions]
 
    echo "Install provisioning profile"
    MOBILE_PROVISIONING_PROFILE=~/project.mobileprovision
-   aws s3 cp $S3_MOBILE_PROVISIONING_PROFILE $MOBILE_PROVISIONING_PROFILE
+   echo $S3_MOBILE_PROVISIONING_PROFILE | base64 -d > $MOBILE_PROVISIONING_PROFILE
    UUID=$(security cms -D -i $MOBILE_PROVISIONING_PROFILE -k "${KEYCHAIN_NAME}" | plutil -extract UUID xml1 -o - - | xmllint --xpath "//string/text()" -)
    mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
    cp $MOBILE_PROVISIONING_PROFILE "$HOME/Library/MobileDevice/Provisioning Profiles/${UUID}.mobileprovision" 
@@ -348,6 +370,9 @@ The below only works when the EC2 instance has [this minimum set of permissions]
 
    ```bash
    echo "Upload Archive to iTunesConnect"
+   export APPLE_ID=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $APPLE_ID_SECRET --query SecretString --output text)
+   export APPLE_SECRET=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $APPLE_SECRET_SECRET --query SecretString --output text)
+
    xcrun altool  \
             --upload-app \
             -f "$(pwd)/build/$SCHEME.ipa" \
