@@ -173,13 +173,10 @@ Now that we have our GOLD AMI, let's install the project specific build dependen
 
    **How to collect your build secrets ?**
 
-   To collect Amplify details, use `amplify env list --details`.
-
-   To generate an Apple application-specific password, visit https://appleid.apple.com/account/manage
-
-   Your Apple iOS Distribution certificate and private key can be exported from your development machine Keychain or from [Apple developer's console](https://developer.apple.com/account/resources/certificates).
-
-   Your mobile application provisioning profile can be downloaded from [Apple's developer's console](https://developer.apple.com/account/resources/profiles/list)
+   - To collect Amplify details, use `amplify env list --details`.
+   - To generate an Apple application-specific password, visit https://appleid.apple.com/account/manage
+   - Your Apple iOS Distribution certificate and private key can be exported from your development machine Keychain or from [Apple developer's console](https://developer.apple.com/account/resources/certificates).
+   - Your mobile application provisioning profile can be downloaded from [Apple's developer's console](https://developer.apple.com/account/resources/profiles/list)
 
    ```bash
    REGION=us-east-2
@@ -204,9 +201,7 @@ A full executable script [is available from the project](https://github.com/sebs
 
     `ssh -i /path/to/my/private-ssh-key.pem ec2-user@<mac1_instance_IP_address>`
 
-2. Add your secrets to AWS Secrets Manager  
-
-   
+2. Get your secrets to AWS Secrets Manager  
 
    !! Source this file before proceeding with the following !!
 
@@ -218,7 +213,6 @@ A full executable script [is available from the project](https://github.com/sebs
 
    ```bash
    HOME=/Users/ec2-user
-   AWS_CLI=/opt/local/bin/aws
 
    pushd $HOME 
    if [ -d amplify-ios-getting-started ]; then
