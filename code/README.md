@@ -209,7 +209,7 @@ A full executable script [is available from the project](https://github.com/sebs
    source ./cli-build/codebuild-configuration.sh
    ```
 
-2. Pull Out the Code 
+3. Pull Out the Code 
 
    ```bash
    HOME=/Users/ec2-user
@@ -225,18 +225,18 @@ A full executable script [is available from the project](https://github.com/sebs
    cd $CODE_DIR
    ```
 
-3. Install Amplify Libraries and other dependencies
+4. Install Amplify Libraries and other dependencies
 
    ```bash
    echo "Installing pods"
    /usr/local/bin/pod install
    ```
 
-4. Pull Out the Amplify configuration 
+5. Pull Out the Amplify configuration 
 
-The below only works when the EC2 instance has [this minimum set of permissions](cli-build/iam_permissions_for_ec2.json)
+   The below only works when the EC2 instance has [this minimum set of permissions](cli-build/iam_permissions_for_ec2.json)
   
-  ```bash
+   ```bash
    echo "Backing up generated files (these are deleted by amplify pull)"
    mv amplify/generated .
 
@@ -279,7 +279,7 @@ The below only works when the EC2 instance has [this minimum set of permissions]
    mv ./generated amplify/
    ```
 
-5. Prepare the Keychain with signing certificates 
+6. Prepare the Keychain with signing certificates 
 
    ```bash
    echo "Prepare keychain"
@@ -316,7 +316,7 @@ The below only works when the EC2 instance has [this minimum set of permissions]
    cp $MOBILE_PROVISIONING_PROFILE "$HOME/Library/MobileDevice/Provisioning Profiles/${UUID}.mobileprovision" 
    ````
 
-6. Build
+7. Build
 
    ```bash
    # Increase Build Number
@@ -340,7 +340,7 @@ The below only works when the EC2 instance has [this minimum set of permissions]
             -configuration "$CONFIGURATION"  
    ````
 
-7. Archive
+8. Archive
 
    ```bash
    echo "Creating an Archive"
@@ -358,7 +358,7 @@ The below only works when the EC2 instance has [this minimum set of permissions]
             -p @env:APPLE_SECRET
    ````
 
-8. Upload
+9. Upload
 
    Finally, this upload thsi build to your iTunesConnect account, ready for distribution (TestFlight, Release)
 
@@ -386,8 +386,8 @@ https://www.raywenderlich.com/12258400-xcode-server-for-ios-getting-started
     (discovered with `sudo lsof -PiTCP -sTCP:LISTEN`)
 3. configure Xcode server on the EC2 instance 
 4. Configure Xcode bot on mac laptop
-5. Add pre-built script from cli-build/
-6. Add post-nuilt script from cli-build/
+5. Add pre-built script from `cli-build/bot-pre-build*.sh`. Pre build scripts increase the build number and pull out the Amplify configuration.
+6. Add post-built script from `cli-build/bot-post-build.sh`. Post build script archive and upload the binary to iTunes Connect.
 7. Add signing key (exported Apple Distribution key as p12 files from laptop)
 security unlock-keychain -p <ec2-user-password>
 security import apple-dist.p12 -k ~/Library/Keychains/login.keychain -T /usr/bin/codesign -P <key-password> 
