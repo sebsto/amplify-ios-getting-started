@@ -43,7 +43,7 @@ You know the configuration is successful when you see the message (the exact nam
 Successfully added resource iosgettingstartedfc5a4717 locally
 ```
 
-** DO NOT FORGET to enter the two redirect URIs above (`gettingstarted://`), this is mandatory to have the redirection to Cognito Hosted UI to work **
+**DO NOT FORGET to enter the two redirect URIs above (`gettingstarted://`), this is mandatory to have the redirection to Cognito Hosted UI to work**
 
 ## Deploy the Authentication Service
 
