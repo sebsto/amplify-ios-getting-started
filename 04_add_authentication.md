@@ -43,6 +43,8 @@ You know the configuration is successful when you see the message (the exact nam
 Successfully added resource iosgettingstartedfc5a4717 locally
 ```
 
+** DO NOT FORGET to enter the two redirect URIs above (`gettingstarted://`), this is mandatory to have the redirection to Cognito Hosted UI to work **
+
 ## Deploy the Authentication Service
 
 Now that the authentication service has been configured locally, you can deploy it to the cloud. In a Terminal, **execute this command** in your project directory:
