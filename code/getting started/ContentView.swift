@@ -29,6 +29,7 @@ struct ListRow: View {
                 }
             }
         }
+        .background(Color.green)
     }
 }
 
