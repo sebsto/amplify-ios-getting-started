@@ -7,17 +7,14 @@ public struct NoteData: Model {
   public var name: String
   public var description: String?
   public var image: String?
-  public var owner: String?
   
   public init(id: String = UUID().uuidString,
       name: String,
       description: String? = nil,
-      image: String? = nil,
-      owner: String? = nil) {
+      image: String? = nil) {
       self.id = id
       self.name = name
       self.description = description
       self.image = image
-      self.owner = owner
   }
 }

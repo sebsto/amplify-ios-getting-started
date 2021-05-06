@@ -1,6 +1,6 @@
 {
   "auth": {
-    "iosgettingstarted07c67632": {
+    "iosgettingstarted57ec6fa5": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
@@ -16,7 +16,7 @@
           "defaultAuthentication": {
             "authenticationType": "AMAZON_COGNITO_USER_POOLS",
             "userPoolConfig": {
-              "userPoolId": "authiosgettingstarted07c67632"
+              "userPoolId": "authiosgettingstarted57ec6fa5"
             }
           },
           "additionalAuthenticationProviders": []
@@ -25,7 +25,7 @@
     }
   },
   "storage": {
-    "iosgettingstarted": {
+    "images": {
       "service": "S3",
       "providerPlugin": "awscloudformation"
     }

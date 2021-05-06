@@ -9,7 +9,6 @@ extension NoteData {
     case name
     case description
     case image
-    case owner
   }
   
   public static let keys = CodingKeys.self
@@ -28,8 +27,7 @@ extension NoteData {
       .id(),
       .field(noteData.name, is: .required, ofType: .string),
       .field(noteData.description, is: .optional, ofType: .string),
-      .field(noteData.image, is: .optional, ofType: .string),
-      .field(noteData.owner, is: .optional, ofType: .string)
+      .field(noteData.image, is: .optional, ofType: .string)
     )
     }
 }
