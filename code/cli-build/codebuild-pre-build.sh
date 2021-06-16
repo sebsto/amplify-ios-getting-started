@@ -14,7 +14,10 @@ echo "Installing pods"
 /usr/local/bin/pod install
 
 echo "Backing up generated files (these are deleted by amplify pull)"
-mv amplify/generated .
+if [ -d amplify/generated ];
+then
+   mv amplify/generated .
+fi
 
 echo "Pulling amplify environment"
 
@@ -34,13 +37,16 @@ AMPLIFY="{\
 FRONTEND="{\
 \"frontend\":\"ios\"
 }"
+PROVIDERS="{\
+\"awscloudformation\":$AWSCLOUDFORMATIONCONFIG\
+}"
 
 PATH=$PATH:/usr/local/bin/ # require to find node
 /usr/local/bin/amplify pull \
 --amplify $AMPLIFY \
 --frontend $FRONTEND \
 --providers $PROVIDERS \
---yes --region eu-central-1
+--yes --region $REGION
 
 echo "Restore generated files"
 mv ./generated amplify/
