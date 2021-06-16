@@ -24,7 +24,7 @@ echo "Pulling amplify environment"
 # see https://docs.amplify.aws/cli/usage/headless#amplify-pull-parameters 
 
 AWSCLOUDFORMATIONCONFIG="{\
-\"configLevel\":\"project\",\
+\"configLevel\":\"general\",\
 \"useProfile\":true,\
 \"profileName\":\"default\"\
 }"
