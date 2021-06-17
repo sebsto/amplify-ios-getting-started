@@ -27,6 +27,8 @@ echo "Pulling amplify environment"
 # https://github.com/aws-amplify/amplify-cli/issues/7311 
 # https://github.com/aws-amplify/amplify-clsi/issues/7528 
 
+echo "Using workaround to access Access key and Secret key"
+
 ACCESS_KEY=$(curl -s http://169.254.169.254/latest/meta-data/iam/security-credentials/macOS_CICD_Amplify/ | /usr/local/bin/jq -r .AccessKeyId)
 SECRET_KEY=$(curl -s http://169.254.169.254/latest/meta-data/iam/security-credentials/macOS_CICD_Amplify/ | /usr/local/bin/jq -r .SecretAccessKey)
 
@@ -43,6 +45,9 @@ AWSCLOUDFORMATIONCONFIG="{\
 # \"useProfile\":true,\
 # \"profileName\":\"default\"\
 # }"
+
+##### end of workaround 
+
 AMPLIFY="{\
 \"projectName\":\"$AMPLIFY_PROJECT_NAME\",\
 \"appId\":\"$AMPLIFY_APPID\",\
