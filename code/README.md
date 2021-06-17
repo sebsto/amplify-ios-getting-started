@@ -42,20 +42,20 @@ Now that you have access to a macOS EC2 Instance, let's install Xcode.
    sudo diskutil apfs resizeContainer $APFSCONT 0
 
    # Download and install Xcode (use your own S3 bucket / CloudFront distribution, the below will stop working at some point)
-   curl -o xcode.xip https://download.stormacq.com/apple/Xcode_12.4.xip
+   curl -o xcode.xip https://download.stormacq.com/apple/Xcode_12.5.xip
    xip --expand xcode.xip 
    sudo mv Xcode.app /Applications
-
-   # Download and install Xcode CLI (use your own S3 bucket / CloudFront distribution, the below will stop working at some point)
-   curl -o xcode-cli.dmg https://download.stormacq.com/apple/Command_Line_Tools_for_Xcode_12.4.dmg
-   hdiutil mount ./xcode-cli.dmg 
-   sudo installer -pkg /Volumes/Command\ Line\ Developer\ Tools/Command\ Line\ Tools.pkg -target / 
-   hdiutil unmount /Volumes/Command\ Line\ Developer\ Tools/
 
    sudo installer -pkg /Applications/Xcode.app/Contents/Resources/Packages/XcodeSystemResources.pkg -target /
    sudo installer -pkg /Applications/Xcode.app/Contents/Resources/Packages/CoreTypes.pkg -target /
    sudo installer -pkg /Applications/Xcode.app/Contents/Resources/Packages/MobileDevice.pkg -target /
    sudo installer -pkg /Applications/Xcode.app/Contents/Resources/Packages/MobileDeviceDevelopment.pkg -target /
+
+   # Download and install Xcode CLI (use your own S3 bucket / CloudFront distribution, the below will stop working at some point)
+   curl -o xcode-cli.dmg https://download.stormacq.com/apple/Command_Line_Tools_for_Xcode_12.5.dmg
+   hdiutil mount ./xcode-cli.dmg 
+   sudo installer -pkg /Volumes/Command\ Line\ Developer\ Tools/Command\ Line\ Tools.pkg -target / 
+   hdiutil unmount /Volumes/Command\ Line\ Developer\ Tools/
 
    # it might take several minutes to display the license / to return.  Try until it works
    sudo xcodebuild -license accept 
