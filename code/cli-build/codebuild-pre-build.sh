@@ -27,10 +27,8 @@ echo "Pulling amplify environment"
 # https://github.com/aws-amplify/amplify-cli/issues/7311 
 # https://github.com/aws-amplify/amplify-clsi/issues/7528 
 
-ACCESS_KEY=$(curl -s http://169.254.169.254/latest/meta-data/iam/security-credentials/macOS_CICD_Amplify/ | /usr/local/bin/jq
- -r .AccessKeyId)
-SECRET_KEY=$(curl -s http://169.254.169.254/latest/meta-data/iam/security-credentials/macOS_CICD_Amplify/ | /usr/local/bin/jq
- -r .SecretAccessKey)
+ACCESS_KEY=$(curl -s http://169.254.169.254/latest/meta-data/iam/security-credentials/macOS_CICD_Amplify/ | /usr/local/bin/jq -r .AccessKeyId)
+SECRET_KEY=$(curl -s http://169.254.169.254/latest/meta-data/iam/security-credentials/macOS_CICD_Amplify/ | /usr/local/bin/jq -r .SecretAccessKey)
 
 AWSCLOUDFORMATIONCONFIG="{\
 \"configLevel\":\"general\",\
