@@ -27,26 +27,26 @@ echo "Pulling amplify environment"
 # https://github.com/aws-amplify/amplify-cli/issues/7311 
 # https://github.com/aws-amplify/amplify-clsi/issues/7528 
 
-echo "Using workaround to access Access key and Secret key"
+# echo "Using workaround to access Access key and Secret key"
 
-ACCESS_KEY=$(curl -s http://169.254.169.254/latest/meta-data/iam/security-credentials/macOS_CICD_Amplify/ | /usr/local/bin/jq -r .AccessKeyId)
-SECRET_KEY=$(curl -s http://169.254.169.254/latest/meta-data/iam/security-credentials/macOS_CICD_Amplify/ | /usr/local/bin/jq -r .SecretAccessKey)
-
-AWSCLOUDFORMATIONCONFIG="{\
-\"configLevel\":\"project\",\
-\"useProfile\":false,\
-\"accessKeyId\":\"$ACCESS_KEY\",\
-\"secretAccessKey\":\"$SECRET_KEY\",\
-\"region\":\"$REGION\"\
-}"
+# ACCESS_KEY=$(curl -s http://169.254.169.254/latest/meta-data/iam/security-credentials/macOS_CICD_Amplify/ | /usr/local/bin/jq -r .AccessKeyId)
+# SECRET_KEY=$(curl -s http://169.254.169.254/latest/meta-data/iam/security-credentials/macOS_CICD_Amplify/ | /usr/local/bin/jq -r .SecretAccessKey)
 
 # AWSCLOUDFORMATIONCONFIG="{\
-# \"configLevel\":\"general\",\
-# \"useProfile\":true,\
-# \"profileName\":\"default\"\
+# \"configLevel\":\"project\",\
+# \"useProfile\":false,\
+# \"accessKeyId\":\"$ACCESS_KEY\",\
+# \"secretAccessKey\":\"$SECRET_KEY\",\
+# \"region\":\"$REGION\"\
 # }"
 
 ##### end of workaround 
+
+AWSCLOUDFORMATIONCONFIG="{\
+\"configLevel\":\"general\",\
+\"useProfile\":true,\
+\"profileName\":\"default\"\
+}"
 
 AMPLIFY="{\
 \"projectName\":\"$AMPLIFY_PROJECT_NAME\",\
