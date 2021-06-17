@@ -23,11 +23,26 @@ echo "Pulling amplify environment"
 
 # see https://docs.amplify.aws/cli/usage/headless#amplify-pull-parameters 
 
+# temp workaround for 
+# https://github.com/aws-amplify/amplify-cli/issues/7311 
+# https://github.com/aws-amplify/amplify-clsi/issues/7528 
+
+ACCESS_KEY=$(curl -s http://169.254.169.254/latest/meta-data/iam/security-credentials/macOS_CICD_Amplify/ | jq -r .AccessKeyId)
+SECRET_KEY=$(curl -s http://169.254.169.254/latest/meta-data/iam/security-credentials/macOS_CICD_Amplify/ | jq -r .SecretAccessKey)
+
 AWSCLOUDFORMATIONCONFIG="{\
 \"configLevel\":\"general\",\
-\"useProfile\":true,\
-\"profileName\":\"default\"\
+\"useProfile\":false,\
+\"accessKeyId\":\"$ACCESS_KEY\",\
+\"secretAccessKey\":\"$SECRET_KEY\",\
+\"region\":\"$REGION\"\
 }"
+
+# AWSCLOUDFORMATIONCONFIG="{\
+# \"configLevel\":\"general\",\
+# \"useProfile\":true,\
+# \"profileName\":\"default\"\
+# }"
 AMPLIFY="{\
 \"projectName\":\"$AMPLIFY_PROJECT_NAME\",\
 \"appId\":\"$AMPLIFY_APPID\",\
@@ -40,6 +55,7 @@ FRONTEND="{\
 PROVIDERS="{\
 \"awscloudformation\":$AWSCLOUDFORMATIONCONFIG\
 }"
+
 
 PATH=$PATH:/usr/local/bin/ # require to find node
 /usr/local/bin/amplify pull \
