@@ -19,3 +19,18 @@ amplify-build-config.json
 amplify-gradle-config.json
 amplifytools.xcconfig
 *secrets*
+
+# fastlane specific
+**/fastlane/report.xml
+
+# deliver temporary files
+**/fastlane/Preview.html
+
+# snapshot generated screenshots
+**/fastlane/screenshots
+
+# scan temporary files
+**/fastlane/test_output
+
+# environment files with secrets
+**/fastlane/.env

@@ -42,6 +42,7 @@ Now that you have access to a macOS EC2 Instance, let's install Xcode.
    sudo diskutil apfs resizeContainer $APFSCONT 0
 
    # Download and install Xcode (use your own S3 bucket / CloudFront distribution, the below will stop working at some point)
+   # Source : https://developer.apple.com/download/all/ (requires authentication with apple id)
    curl -o xcode.xip https://download.stormacq.com/apple/Xcode_12.5.xip
    xip --expand xcode.xip 
    sudo mv Xcode.app /Applications
