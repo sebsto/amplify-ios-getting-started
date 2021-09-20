@@ -1,5 +1,5 @@
-s3_bucket("ios-certificates-private-sst")
-s3_region("us-west-2")
+s3_bucket(ENV['S3_BUCKET'])
+s3_region(ENV['S3_REGION'])
 storage_mode("s3")
 
 type("development") # The default type, can be: appstore, adhoc, enterprise or development

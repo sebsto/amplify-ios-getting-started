@@ -28,16 +28,18 @@ default_platform(:ios)
 
 platform :ios do
   
-  desc "Push a new beta build to TestFlight"
   
   lane :beta do
+    desc "Push a new beta build to TestFlight"
     match(type: "appstore", readonly: true)
     increment_build_number(xcodeproj: "getting started.xcodeproj")
     build_app(workspace: "getting started.xcworkspace", scheme: "getting started")
     upload_to_testflight
   end
   
+
   lane :build do
+    desc "Build the project"
     match(type: "development", readonly: true)
     build_app(workspace: "getting started.xcworkspace", scheme: "getting started",
               skip_archive: true,
