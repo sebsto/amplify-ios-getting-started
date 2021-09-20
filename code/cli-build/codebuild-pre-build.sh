@@ -13,11 +13,11 @@ source $CODE_DIR/cli-build/codebuild-configuration.sh
 echo "Installing pods"
 /usr/local/bin/pod install
 
-echo "Backing up generated files (these are deleted by amplify pull)"
-if [ -d amplify/generated ];
-then
-   mv amplify/generated .
-fi
+# echo "Backing up generated files (these are deleted by amplify pull)"
+# if [ -d amplify/generated ];
+# then
+#    mv amplify/generated .
+# fi
 
 echo "Pulling amplify environment"
 
@@ -69,8 +69,12 @@ PATH=$PATH:/usr/local/bin/ # require to find node
 --providers $PROVIDERS \
 --yes --region $REGION
 
-echo "Restore generated files"
-mv ./generated amplify/
+# echo "Restore generated files"
+# mv ./generated amplify/
+
+# echo "Generate code for application models"
+/usr/local/bin/amplify codegen models 
+
 
 # Increase Build Number
 # https://rderik.com/blog/automating-build-and-testflight-upload-for-simple-ios-apps/
