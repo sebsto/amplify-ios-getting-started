@@ -33,7 +33,9 @@ Now that you have access to a macOS EC2 Instance, let's install Xcode.
 3. Install Xcode
 
    ```bash
-   echo "\n\nsetopt interactivecomments\n\n" >> ~/.zshrc 
+   echo "export LANG=en_US.UTF-8\n" >> ~/.zshrc 
+   echo "export LANGUAGE=en_US.UTF-8\n" >> ~/.zshrc 
+   echo "export LC_ALL=en_US.UTF-8\n" >> ~/.zshrc 
 
    # First resize the file system to enjoy the full space offered by our EBS volume
    PDISK=$(diskutil list physical external | head -n1 | cut -d" " -f1)
@@ -41,9 +43,10 @@ Now that you have access to a macOS EC2 Instance, let's install Xcode.
    yes | sudo diskutil repairDisk $PDISK
    sudo diskutil apfs resizeContainer $APFSCONT 0
 
-   # Download and install Xcode (use your own S3 bucket / CloudFront distribution, the below will stop working at some point)
-   # Source : https://developer.apple.com/download/all/ (requires authentication with apple id)
-   curl -o xcode.xip https://download.stormacq.com/apple/Xcode_12.5.xip
+   # Download and install Xcode :
+   # 1. Download it from https://developer.apple.com/download/all (requires authentication with apple id)
+   # 2. Store the files on your own private S3 bucket 
+   aws s3 cp s3://my-private-bucket/Xcode_12.5.xip xcode.xip
    xip --expand xcode.xip 
    sudo mv Xcode.app /Applications
 
@@ -52,13 +55,15 @@ Now that you have access to a macOS EC2 Instance, let's install Xcode.
    sudo installer -pkg /Applications/Xcode.app/Contents/Resources/Packages/MobileDevice.pkg -target /
    sudo installer -pkg /Applications/Xcode.app/Contents/Resources/Packages/MobileDeviceDevelopment.pkg -target /
 
-   # Download and install Xcode CLI (use your own S3 bucket / CloudFront distribution, the below will stop working at some point)
-   curl -o xcode-cli.dmg https://download.stormacq.com/apple/Command_Line_Tools_for_Xcode_12.5.dmg
+   # Download and install Xcode :
+   # 1. Download it from https://developer.apple.com/download/all (requires authentication with apple id)
+   # 2. Store the files on your own private S3 bucket 
+   aws s3 cp s3://my-private-bucket/Command_Line_Tools_for_Xcode_12.5.dmg xcode-cli.dmg
    hdiutil mount ./xcode-cli.dmg 
    sudo installer -pkg /Volumes/Command\ Line\ Developer\ Tools/Command\ Line\ Tools.pkg -target / 
    hdiutil unmount /Volumes/Command\ Line\ Developer\ Tools/
 
-   # it might take several minutes to display the license / to return.  Try until it works
+   # accept the Xcode license
    sudo xcodebuild -license accept 
    xcode-select -p
 
@@ -75,7 +80,7 @@ Now that you have access to a macOS EC2 Instance, let's install Xcode.
    REGION=us-east-2
    # REPLACE THE IP ADDRESS IN THE COMMAND BELOW
    # Use the EC2 mac1 Instance Public IP
-   EBS_VOLUME_ID=$(aws ec2 --region $REGION describe-instances --query 'Reservations[].Instances[?PublicIpAddress==`18.191.179.58`].BlockDeviceMappings[][].Ebs.VolumeId' --output text)
+   EBS_VOLUME_ID=$(aws ec2 --region $REGION describe-instances --query 'Reservations[].Instances[?PublicIpAddress==`<YOUR EC2 MAC PUBLIC IP ADDRESS>`].BlockDeviceMappings[][].Ebs.VolumeId' --output text)
    aws ec2 create-snapshot --region $REGION --volume-id $EBS_VOLUME_ID --description "macOS Big Sur Xcode"
 
    # AT THIS STAGE COPY THE SNAPSHOT_ID RETURNED BY THE PREVIOUS COMMAND
@@ -99,15 +104,15 @@ Now that we have our GOLD AMI, let's install the project specific build dependen
    The below file can be [downloaded](https://raw.githubusercontent.com/sebsto/amplify-ios-getting-started/main/code/cli-build/build_prepare_machine.sh) GitHub.
 
    ```bash
-   echo "Update Ruby"
-   brew install ruby
+   echo "Update Ruby and fastlane"
+   brew install ruby fastlane
    echo '\nexport PATH="/usr/local/opt/ruby/bin:$PATH"' >> ~/.zshrc
    export LDFLAGS="-L/usr/local/opt/ruby/lib"
    export CPPFLAGS="-I/usr/local/opt/ruby/include"
 
    echo "Install cocoapods"
-   sudo gem install -n /usr/local/bin cocoapods 
-
+   brew install cocoapods
+   
    echo "Install NodeJS and JQ"
    brew install node jq
 
