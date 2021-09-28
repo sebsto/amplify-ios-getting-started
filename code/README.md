@@ -200,12 +200,12 @@ Now that we have our GOLD AMI, let's install the project specific build dependen
    aws --region $REGION secretsmanager create-secret --name amplify-getting-started-dev-provisionning --secret-binary fileb://./secrets/getting-started-ios-dev.mobileprovision
 
    aws --region $REGION secretsmanager create-secret --name apple-id --secret-string myemail@me.com
-   aws --region $REGION secretsmanager create-secret --name apple-secret --secret-string aaaa-aaaa-aaaa-aaaa 
-```
+   aws --region $REGION secretsmanager create-secret --name apple-secret --secret-string aaaa-aaaa-aaaa-aaaa
+   ```
 
 ## Command Line Build
 
-Now that one time setup is behind you, you can start to build the project. The steps are 
+Now that the one-time setup is behind you, you can start to build the project. The high-level steps are (some commands here might not work as expected, the correct, executable, and up-to-date scripts are under `./cli-build`directory)
 
 1.  Connect to your mac1 EC2 instance using SSH
 
@@ -239,77 +239,79 @@ Now that one time setup is behind you, you can start to build the project. The s
    The below only works when the EC2 instance has [this minimum set of permissions](cli-build/iam_permissions_for_ec2.json)
   
    ```bash
-   echo "Pulling amplify environment"
-   
-   # get the secrets at build
-   AMPLIFY_APPID=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $AMPLIFY_APPID_SECRET --query SecretString --output text)
-   AMPLIFY_PROJECT_NAME=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $AMPLIFY_PROJECT_NAME_SECRET --query SecretString --output text)
-   AMPLIFY_ENV=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $AMPLIFY_ENV_SECRET --query SecretString --output text)  
+   AWS_CLI=/usr/local/bin/aws
+   REGION=$(curl -s 169.254.169.254/latest/meta-data/placement/region/)
+   HOME=/Users/ec2-user
 
-   # see https://docs.amplify.aws/cli/usage/headless#amplify-pull-parameters 
+   CERTIFICATES_DIR=$HOME/certificates
+   mkdir -p $CERTIFICATES_DIR 2>&1 >/dev/null
 
-   AWSCLOUDFORMATIONCONFIG="{\
-   \"configLevel\":\"project\",\
-   \"useProfile\":true,\
-   \"profileName\":\"default\"\
-   }"
-   AMPLIFY="{\
-   \"projectName\":\"$AMPLIFY_PROJECT_NAME\",\
-   \"appId\":\"$AMPLIFY_APPID\",\
-   \"envName\":\"$AMPLIFY_ENV\",\
-   \"defaultEditor\":\"code\"\
-   }"
-   FRONTEND="{\
-   \"frontend\":\"ios\"
-   }"
+   echo $REGION 
 
-   PATH=$PATH:/usr/local/bin/ # require to find node
-   /usr/local/bin/amplify pull \
-   --amplify $AMPLIFY \
-   --frontend $FRONTEND \
-   --providers $PROVIDERS \
-   --yes --region eu-central-1
-
-   # echo "Generate code for application models"
-   /usr/local/bin/amplify codegen models 
-
-   ```
-
-6. Prepare the Keychain with signing certificates 
-
-   ```bash
    echo "Prepare keychain"
-   DIST_CERT=~/apple-dist.p12
-   KEYCHAIN_PASSWORD=Passw0rd\!
-   KEYCHAIN_NAME=dev
-   OLD_KEYCHAIN_NAMES=login
-   if [ -f ~/Library/Keychains/"${KEYCHAIN_NAME}"-db ]; then
-      rm ~/Library/Keychains/"${KEYCHAIN_NAME}"-db
+   KEYCHAIN_PASSWORD=Passw0rd
+   KEYCHAIN_NAME=dev.keychain
+   OLD_KEYCHAIN_NAMES=login.keychain
+   SYSTEM_KEYCHAIN=/Library/Keychains/System.keychain
+   AUTHORISATION=(-T /usr/bin/security -T /usr/bin/codesign -T /usr/bin/xcodebuild)
+
+   if [ -f $HOME/Library/Keychains/"${KEYCHAIN_NAME}"-db ]; then
+      echo "Deleting old ${KEYCHAIN_NAME} keychain"
+      security delete-keychain "${KEYCHAIN_NAME}"
    fi
+
+   echo "Creating keychain"
    security create-keychain -p "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
-   security unlock-keychain -p "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
    security list-keychains -s "${KEYCHAIN_NAME}" "${OLD_KEYCHAIN_NAMES[@]}"
 
-   curl -o ~/AppleWWDRCA.cer https://developer.apple.com/certificationauthority/AppleWWDRCA.cer 
-   security import ~/AppleWWDRCA.cer -t cert -k "${KEYCHAIN_NAME}" -T /usr/bin/codesign -T /usr/bin/xcodebuild
-   curl -o ~/AppleWWDRCAG3.cer https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer
-   security import ~/AppleWWDRCAG3.cer -t cert -k "${KEYCHAIN_NAME}" -T /usr/bin/codesign -T /usr/bin/xcodebuild
-   curl -o ~/DevAuthCA.cer https://www.apple.com/certificateauthority/DevAuthCA.cer 
-   security import ~/DevAuthCA.cer -t cert -k "${KEYCHAIN_NAME}" -T /usr/bin/codesign -T /usr/bin/xcodebuild
+   # at this point the keychain is unlocked, the below line is not needed
+   security unlock-keychain -p "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
 
-   echo $S3_APPLE_DISTRIBUTION_CERT | base64 -d > $DIST_CERT
-   security import "${DIST_CERT}" -P "${APPLE_DISTRIBUTION_KEY_PASSWORD}" -k "${KEYCHAIN_NAME}" -T /usr/bin/codesign -T /usr/bin/xcodebuild
+   echo "Configure keychain : remove lock timeout"
+   security set-keychain-settings "${KEYCHAIN_NAME}"
 
-   security set-keychain-settings $KEYCHAIN_NAME 
-   security set-key-partition-list -S apple-tool:,apple: -s -k "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
+   if [ ! -f $CERTIFICATES_DIR/AppleWWDRCAG3.cer ]; then
+      echo "Downloadind Apple Worlwide Developer Relation GA3 certificate"
+      curl -s -o $CERTIFICATES_DIR/AppleWWDRCAG3.cer https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer
+   fi
+   echo "Installing Apple Worlwide Developer Relation GA3 certificate into System keychain"
+   sudo security import $CERTIFICATES_DIR/AppleWWDRCAG3.cer -t cert -k "${SYSTEM_KEYCHAIN}" "${AUTHORISATION[@]}"
 
+   echo "Retrieve application dev and dist keys from AWS Secret Manager"
+   SIGNING_DEV_KEY_SECRET=apple-signing-dev-certificate
+   MOBILE_PROVISIONING_PROFILE_DEV_SECRET=amplify-getting-started-dev-provisionning
+   SIGNING_DIST_KEY_SECRET=apple-signing-dist-certificate
+   MOBILE_PROVISIONING_PROFILE_DIST_SECRET=amplify-getting-started-dist-provisionning
 
-   echo "Install provisioning profile"
-   MOBILE_PROVISIONING_PROFILE=~/project.mobileprovision
-   echo $S3_MOBILE_PROVISIONING_PROFILE | base64 -d > $MOBILE_PROVISIONING_PROFILE
-   UUID=$(security cms -D -i $MOBILE_PROVISIONING_PROFILE -k "${KEYCHAIN_NAME}" | plutil -extract UUID xml1 -o - - | xmllint --xpath "//string/text()" -)
+   # These are base64 values, we will need to decode to a file when needed
+   SIGNING_DEV_KEY=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $SIGNING_DEV_KEY_SECRET --query SecretBinary --output text)
+   MOBILE_PROVISIONING_DEV_PROFILE=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $MOBILE_PROVISIONING_PROFILE_DEV_SECRET --query SecretBinary --output text)
+   SIGNING_DIST_KEY=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $SIGNING_DIST_KEY_SECRET --query SecretBinary --output text)
+   MOBILE_PROVISIONING_DIST_PROFILE=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $MOBILE_PROVISIONING_PROFILE_DIST_SECRET --query SecretBinary --output text)
+
+   echo "Import Signing private key and certificate"
+   DEV_KEY_FILE=$CERTIFICATES_DIR/apple_dev_key.p12
+   echo $SIGNING_DEV_KEY | base64 -d > $DEV_KEY_FILE
+   security import "${DEV_KEY_FILE}" -P "" -k "${KEYCHAIN_NAME}" "${AUTHORISATION[@]}"
+
+   DIST_KEY_FILE=$CERTIFICATES_DIR/apple_dist_key.p12
+   echo $SIGNING_DIST_KEY | base64 -d > $DIST_KEY_FILE
+   security import "${DIST_KEY_FILE}" -P "" -k "${KEYCHAIN_NAME}" "${AUTHORISATION[@]}"
+
+   # is this necessary when importing keys with -A ?
+   security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
+
+   echo "Install development provisioning profile"
+   MOBILE_PROVISIONING_DEV_PROFILE_FILE=$CERTIFICATES_DIR/project-dev.mobileprovision
+   echo $MOBILE_PROVISIONING_DEV_PROFILE | base64 -d > $MOBILE_PROVISIONING_DEV_PROFILE_FILE
+   UUID=$(security cms -D -i $MOBILE_PROVISIONING_DEV_PROFILE_FILE -k "${KEYCHAIN_NAME}" | plutil -extract UUID xml1 -o - - | xmllint --xpath "//string/text()" -)
    mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
-   cp $MOBILE_PROVISIONING_PROFILE "$HOME/Library/MobileDevice/Provisioning Profiles/${UUID}.mobileprovision" 
+   cp $MOBILE_PROVISIONING_DEV_PROFILE_FILE "$HOME/Library/MobileDevice/Provisioning Profiles/${UUID}.mobileprovision"
+
+   MOBILE_PROVISIONING_DIST_PROFILE_FILE=$CERTIFICATES_DIR/project-dist.mobileprovision
+   echo $MOBILE_PROVISIONING_DIST_PROFILE | base64 -d > $MOBILE_PROVISIONING_DIST_PROFILE_FILE
+   UUID=$(security cms -D -i $MOBILE_PROVISIONING_DIST_PROFILE_FILE -k "${KEYCHAIN_NAME}" | plutil -extract UUID xml1 -o - - | xmllint --xpath "//string/text()" -)
+   cp $MOBILE_PROVISIONING_DIST_PROFILE_FILE "$HOME/Library/MobileDevice/Provisioning Profiles/${UUID}.mobileprovision"
    ````
 
 7. Build

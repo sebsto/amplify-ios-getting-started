@@ -61,3 +61,11 @@ xcrun altool  \
             -t ios \
             -u $APPLE_ID \
             -p @env:APPLE_SECRET
+
+echo "Upload to AppStore Connect"
+xcrun altool  \
+		--upload-app \
+		-f "$(pwd)/build/$SCHEME.ipa" \
+		-t ios \
+		-u $APPLE_ID \
+		-p @env:APPLE_SECRET  			
