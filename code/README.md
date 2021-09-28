@@ -239,19 +239,12 @@ Now that one time setup is behind you, you can start to build the project. The s
    The below only works when the EC2 instance has [this minimum set of permissions](cli-build/iam_permissions_for_ec2.json)
   
    ```bash
-   echo "Backing up generated files (these are deleted by amplify pull)"
-   mv amplify/generated .
-
    echo "Pulling amplify environment"
    
    # get the secrets at build
    AMPLIFY_APPID=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $AMPLIFY_APPID_SECRET --query SecretString --output text)
    AMPLIFY_PROJECT_NAME=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $AMPLIFY_PROJECT_NAME_SECRET --query SecretString --output text)
    AMPLIFY_ENV=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $AMPLIFY_ENV_SECRET --query SecretString --output text)  
-
-   # These are base64 values, we will need to decode to a file when needed
-   S3_APPLE_DISTRIBUTION_CERT=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $S3_APPLE_DISTRIBUTION_CERT_SECRET --query SecretBinary --output text)
-   S3_MOBILE_PROVISIONING_PROFILE=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $S3_MOBILE_PROVISIONING_PROFILE_SECRET --query SecretBinary --output text)
 
    # see https://docs.amplify.aws/cli/usage/headless#amplify-pull-parameters 
 
@@ -277,8 +270,9 @@ Now that one time setup is behind you, you can start to build the project. The s
    --providers $PROVIDERS \
    --yes --region eu-central-1
 
-   echo "Restore generated files"
-   mv ./generated amplify/
+   # echo "Generate code for application models"
+   /usr/local/bin/amplify codegen models 
+
    ```
 
 6. Prepare the Keychain with signing certificates 

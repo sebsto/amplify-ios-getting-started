@@ -15,6 +15,7 @@ KEYCHAIN_NAME=dev.keychain
 OLD_KEYCHAIN_NAMES=login.keychain
 SYSTEM_KEYCHAIN=/Library/Keychains/System.keychain
 AUTHORISATION=(-T /usr/bin/security -T /usr/bin/codesign -T /usr/bin/xcodebuild)
+
 if [ -f $HOME/Library/Keychains/"${KEYCHAIN_NAME}"-db ]; then
     echo "Deleting old ${KEYCHAIN_NAME} keychain"
     security delete-keychain "${KEYCHAIN_NAME}"

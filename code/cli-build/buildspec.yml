@@ -3,16 +3,20 @@ version: 0.2
 phases:
   install:
     commands:
-    - SQSProducer $SQS_COMMAND_QUEUE_URL $SQS_RESPONSE_QUEUE_URL code/cli-build/codebuild-install.sh
+    # install the keychain and requiered private keys and certificates 
+    - SQSProducer $SQS_COMMAND_QUEUE_URL $SQS_RESPONSE_QUEUE_URL code/cli-build/01_keychain-cli.sh
 
   pre_build:
     commands:
-      - SQSProducer $SQS_COMMAND_QUEUE_URL $SQS_RESPONSE_QUEUE_URL code/cli-build/codebuild-pre-build.sh
+      # pull out the project and its dependencies
+      - SQSProducer $SQS_COMMAND_QUEUE_URL $SQS_RESPONSE_QUEUE_URL code/cli-build/02_prepare_project.sh
   
   build:
     commands:
-      - SQSProducer $SQS_COMMAND_QUEUE_URL $SQS_RESPONSE_QUEUE_URL code/cli-build/codebuild-build.sh
+      # build and prepare the archive
+      - SQSProducer $SQS_COMMAND_QUEUE_URL $SQS_RESPONSE_QUEUE_URL code/cli-build/03_build-cli.sh
 
   post_build:
     commands:
-      - SQSProducer $SQS_COMMAND_QUEUE_URL $SQS_RESPONSE_QUEUE_URL code/cli-build/codebuild-post-build.sh
+      # export and verify teh archive
+      - SQSProducer $SQS_COMMAND_QUEUE_URL $SQS_RESPONSE_QUEUE_URL code/cli-build/04_archive-cli.sh
