@@ -23,7 +23,7 @@ ARCHIVE_PATH="$BUILD_PATH/getting-started.xcarchive"
 
 security unlock-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN_NAME
 
-xcodebuild clean build                    \
+xcodebuild clean archive                  \
            -workspace "$WORKSPACE"        \
            -scheme "$SCHEME"              \
            -archivePath "$ARCHIVE_PATH"   \
