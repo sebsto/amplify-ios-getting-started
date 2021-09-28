@@ -52,6 +52,8 @@ platform :ios do
     # match(type: "development", readonly: true)
     build_app(workspace: "getting started.xcworkspace", scheme: "getting started",
               skip_archive: false,
+              output_directory: ".build",
+              output_name: "getting_started.ipa",
               export_method: "development")
   end
 

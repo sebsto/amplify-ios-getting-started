@@ -8,8 +8,6 @@ The below are step by step instructions to build this project on macOS.  It desc
 
 1. Get an mac1 instance ([doc](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-mac-instances.html)).
 
-(userdata to install SQS based build agent : `curl -s https://download.stormacq.com/aws/mac/build/installer.sh | sh)
-
 ### Tips
 - Remember, you need to allocate a dedicated host.  Minimum billing period is 24h. 
 
@@ -20,7 +18,7 @@ The below are step by step instructions to build this project on macOS.  It desc
    - TCP 20300 (Xcode Server)
    - TCP 20343 - 20346 (Xcode Server)   
 
-  It is always agood idea to restrict the source IP to your laptop / internet box (to find out your current IP address, use `curl ifconfig.me`)
+  It is always a good idea to restrict the source IP to your laptop / internet box (to find out your current IP address, use `curl ifconfig.me`)
 
 - Do not forget to attach your SSH public key
 
@@ -99,9 +97,7 @@ Now that we have our GOLD AMI, let's install the project specific build dependen
 
 2. Install project specific build dependencies
 
-   (cocoapads dependency solved [thanks to this answer](https://stackoverflow.com/questions/20939568/error-error-installing-cocoapods-error-failed-to-build-gem-native-extension/62706706#62706706))
-
-   The below file can be [downloaded](https://raw.githubusercontent.com/sebsto/amplify-ios-getting-started/main/code/cli-build/build_prepare_machine.sh) GitHub.
+   The below file can be [downloaded](https://raw.githubusercontent.com/sebsto/amplify-ios-getting-started/main/code/cli-build/01_AMI_install_dev_dependencies.sh) GitHub.
 
    ```bash
    echo "Update Ruby and fastlane"
@@ -147,6 +143,10 @@ Now that we have our GOLD AMI, let's install the project specific build dependen
 
 4. Attach an EC2 role to the instance
 
+   This is required to give processes running on your instances permission to access AWS resources in your account, such as Amazon S3 buckets, AWS SecretsManager secrets etc. It alos gives required permissions for Amplify to pull out it's resources and to the SQS Build agent to poll and post SQS messages.
+
+   Once the role is created, it can be attached to future instances that you will launch, without typing these commands.
+
    FROM YOUR LAPTOP (NOT FROM THE mac1 INSTANCE) :
 
    ```bash
@@ -165,7 +165,7 @@ Now that we have our GOLD AMI, let's install the project specific build dependen
    # aws iam delete-instance-profile --instance-profile-name $EC2_PROFILE_NAME 
 
    # Find your mac1 Instance ID (replace the IP address with your mac instance IP address)
-   INSTANCE_ID=$(aws ec2 --region $REGION describe-instances --query 'Reservations[].Instances[?PublicIpAddress==`18.191.179.58`].InstanceId | []' --output text)
+   INSTANCE_ID=$(aws ec2 --region $REGION describe-instances --query 'Reservations[].Instances[?PublicIpAddress==`<YOUR MAC INSTANCE PUBLIC IP ADDRESS>`].InstanceId | []' --output text)
 
    # Finally, attach the profile to the instance
    aws ec2 associate-iam-instance-profile --region $REGION --instance-id $INSTANCE_ID --iam-instance-profile Arn=$INSTANCE_PROFILE_ARN,Name=$EC2_PROFILE_NAME
@@ -192,30 +192,26 @@ Now that we have our GOLD AMI, let's install the project specific build dependen
    aws --region $REGION secretsmanager create-secret --name amplify-app-id --secret-string d3.......t9p --query ARN 
    aws --region $REGION secretsmanager create-secret --name amplify-project-name --secret-string iosgettingstarted
    aws --region $REGION secretsmanager create-secret --name amplify-environment --secret-string dev
-   aws --region $REGION secretsmanager create-secret --name apple-dist-certificate --secret-binary fileb://./apple-dist.p12 
-   aws --region $REGION secretsmanager create-secret --name amplify-getting-started-provisionning --secret-binary fileb://./Amplify_Getting_Started.mobileprovision
+
+   aws --region $REGION secretsmanager create-secret --name apple-signing-dev-certificate --secret-binary fileb://./secrets/apple_dev_seb.p12 
+   aws --region $REGION secretsmanager create-secret --name apple-signing-dist-certificate --secret-binary fileb://./secrets/apple_dist_seb.p12 
+
+   aws --region $REGION secretsmanager create-secret --name amplify-getting-started-dist-provisionning --secret-binary fileb://./secrets/getting-started-ios-dist.mobileprovision
+   aws --region $REGION secretsmanager create-secret --name amplify-getting-started-dev-provisionning --secret-binary fileb://./secrets/getting-started-ios-dev.mobileprovision
+
    aws --region $REGION secretsmanager create-secret --name apple-id --secret-string myemail@me.com
    aws --region $REGION secretsmanager create-secret --name apple-secret --secret-string aaaa-aaaa-aaaa-aaaa 
-   ```
+```
 
 ## Command Line Build
 
-Now that one time setup is behind you, you can start to build the project.
-A full executable script [is available from the project](https://github.com/sebsto/amplify-ios-getting-started/blob/main/code/cli-build/build_archive_upload.sh).  I am breaking it in multiple sections for learning purposes.
+Now that one time setup is behind you, you can start to build the project. The steps are 
 
 1.  Connect to your mac1 EC2 instance using SSH
 
     `ssh -i /path/to/my/private-ssh-key.pem ec2-user@<mac1_instance_IP_address>`
 
-2. Get your secrets to AWS Secrets Manager  
-
-   !! Source this file before proceeding with the following !!
-
-   ```bash
-   source ./cli-build/codebuild-configuration.sh
-   ```
-
-3. Pull Out the Code 
+2. Pull Out the Code 
 
    ```bash
    HOME=/Users/ec2-user
