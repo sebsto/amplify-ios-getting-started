@@ -137,6 +137,7 @@ struct AddNoteView: View {
                         note.image = Image(uiImage: i)
 
                         // asynchronously store the image (and assume it will work)
+                        print("Initiating the image upload")
                         Backend.shared.storeImage(name: note.imageName!, image: (i.pngData())!)
                     }
                     

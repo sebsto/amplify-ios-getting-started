@@ -206,7 +206,8 @@ class Backend  {
         let options = StorageUploadDataRequest.Options(accessLevel: .private)
         Amplify.Storage.uploadData(key: name, data: image, options: options,
             progressListener: { progress in
-                // optionlly update a progress bar here
+                // optionally update a progress bar here
+                print("Image upload in progress")
             }, resultListener: { event in
                 switch event {
                 case .success(let data):

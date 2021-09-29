@@ -13,4 +13,7 @@ target 'getting started' do
   pod 'AmplifyPlugins/AWSAPIPlugin', '~> 1.0'         # support for GraphQL API
   pod 'AmplifyPlugins/AWSS3StoragePlugin', '~> 1.0'   # support for Amazon S3 storage
 
+  target 'getting started unit tests' do
+    inherit! :search_paths
+  end
 end
