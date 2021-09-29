@@ -12,7 +12,6 @@ echo $REGION
 echo "Prepare keychain"
 KEYCHAIN_PASSWORD=Passw0rd
 KEYCHAIN_NAME=dev.keychain
-OLD_KEYCHAIN_NAMES=login.keychain
 SYSTEM_KEYCHAIN=/Library/Keychains/System.keychain
 AUTHORISATION=(-T /usr/bin/security -T /usr/bin/codesign -T /usr/bin/xcodebuild)
 
@@ -23,7 +22,12 @@ fi
 
 echo "Creating keychain"
 security create-keychain -p "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
-security list-keychains -s "${KEYCHAIN_NAME}" "${OLD_KEYCHAIN_NAMES[@]}"
+
+echo "Adding the build keychain to the search list"
+EXISTING_KEYCHAINS=( $( security list-keychains | sed -e 's/ *//' | tr '\n' ' ' | tr -d '"') )
+security list-keychains -s "${KEYCHAIN_NAME}" "${EXISTING_KEYCHAINS[@]}"
+echo "New keychain search list :"
+security list-keychain 
 
 # at this point the keychain is unlocked, the below line is not needed
 security unlock-keychain -p "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
