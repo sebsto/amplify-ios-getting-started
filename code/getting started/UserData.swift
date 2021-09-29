@@ -32,7 +32,8 @@ class Note : Identifiable, ObservableObject {
         self.imageName   = image
     }
 
-    convenience init(from data: NoteData) {
+    // the callback is just used for testability
+    convenience init(from data: NoteData, _ completion: ((Image?) -> Void)? = nil ) {
         self.init(id: data.id, name: data.name, description: data.description, image: data.image)
         
         if let name = self.imageName {
@@ -41,6 +42,9 @@ class Note : Identifiable, ObservableObject {
                 DispatchQueue.main.async() {
                     let uim = UIImage(data: data)
                     self.image = Image(uiImage: uim!)
+                    if let completion = completion {
+                        completion(self.image)
+                    }
                 }
             }
         }

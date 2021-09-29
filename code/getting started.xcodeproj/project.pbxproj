@@ -15,6 +15,7 @@
 		0084717A24A60D86002CD90D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0084717924A60D86002CD90D /* Preview Assets.xcassets */; };
 		0084717D24A60D86002CD90D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0084717B24A60D86002CD90D /* LaunchScreen.storyboard */; };
 		0088995B2548046300A9B468 /* schema.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 0088995A2548046300A9B468 /* schema.graphql */; };
+		009998CF27044D32001308D9 /* getting_started_Unit_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 009998CE27044D32001308D9 /* getting_started_Unit_Tests.swift */; };
 		00A017DA2542A646003977CB /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A017D92542A646003977CB /* UserData.swift */; };
 		00C7680C257AD05600E4C4E8 /* local-env-info.json in Resources */ = {isa = PBXBuildFile; fileRef = 00C7680B257AD05600E4C4E8 /* local-env-info.json */; };
 		00FA7E7524A9EC46007042EA /* Backend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FA7E7424A9EC46007042EA /* Backend.swift */; };
@@ -25,6 +26,16 @@
 		AC999F9B323349A1B34075A7 /* NoteData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 395AE9A452844DDBBF0BFDAF /* NoteData.swift */; };
 		D2FCD5EC49574B15A18555AE /* amplifyconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = BFC917DF1BBF4063A6547E94 /* amplifyconfiguration.json */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		009998D027044D32001308D9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0084716524A60D82002CD90D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0084716C24A60D82002CD90D;
+			remoteInfo = "getting started";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		0077871D449E482783023296 /* amplifytools.xcconfig */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.xcconfig; path = amplifytools.xcconfig; sourceTree = "<group>"; };
@@ -37,6 +48,8 @@
 		0084717C24A60D86002CD90D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0084717E24A60D86002CD90D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0088995A2548046300A9B468 /* schema.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; name = schema.graphql; path = amplify/backend/api/iosgettingstarted/schema.graphql; sourceTree = SOURCE_ROOT; };
+		009998CC27044D32001308D9 /* getting started Unit Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "getting started Unit Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		009998CE27044D32001308D9 /* getting_started_Unit_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getting_started_Unit_Tests.swift; sourceTree = "<group>"; };
 		00A017D92542A646003977CB /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		00C7680B257AD05600E4C4E8 /* local-env-info.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "local-env-info.json"; path = "amplify/.config/local-env-info.json"; sourceTree = SOURCE_ROOT; };
 		00FA7E7424A9EC46007042EA /* Backend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backend.swift; sourceTree = "<group>"; };
@@ -60,6 +73,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		009998C927044D32001308D9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -69,6 +89,7 @@
 				9C951F86C374407AA87B830D /* AmplifyModels */,
 				52E6F0519468474CA4651556 /* AmplifyConfig */,
 				0084716F24A60D82002CD90D /* getting started */,
+				009998CD27044D32001308D9 /* getting started Unit Tests */,
 				0084716E24A60D82002CD90D /* Products */,
 				83F8AC4085E35007FAB428D3 /* Pods */,
 				DDCB08E54FCB31B13653CF2B /* Frameworks */,
@@ -79,6 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				0084716D24A60D82002CD90D /* getting started.app */,
+				009998CC27044D32001308D9 /* getting started Unit Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -106,6 +128,14 @@
 				0084717924A60D86002CD90D /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		009998CD27044D32001308D9 /* getting started Unit Tests */ = {
+			isa = PBXGroup;
+			children = (
+				009998CE27044D32001308D9 /* getting_started_Unit_Tests.swift */,
+			);
+			path = "getting started Unit Tests";
 			sourceTree = "<group>";
 		};
 		52E6F0519468474CA4651556 /* AmplifyConfig */ = {
@@ -172,18 +202,40 @@
 			productReference = 0084716D24A60D82002CD90D /* getting started.app */;
 			productType = "com.apple.product-type.application";
 		};
+		009998CB27044D32001308D9 /* getting started Unit Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 009998D227044D32001308D9 /* Build configuration list for PBXNativeTarget "getting started Unit Tests" */;
+			buildPhases = (
+				009998C827044D32001308D9 /* Sources */,
+				009998C927044D32001308D9 /* Frameworks */,
+				009998CA27044D32001308D9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				009998D127044D32001308D9 /* PBXTargetDependency */,
+			);
+			name = "getting started Unit Tests";
+			productName = "getting started Unit Tests";
+			productReference = 009998CC27044D32001308D9 /* getting started Unit Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		0084716524A60D82002CD90D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1150;
+				LastSwiftUpdateCheck = 1300;
 				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "Stormacq, Sebastien";
 				TargetAttributes = {
 					0084716C24A60D82002CD90D = {
 						CreatedOnToolsVersion = 11.5;
+					};
+					009998CB27044D32001308D9 = {
+						CreatedOnToolsVersion = 13.0;
+						TestTargetID = 0084716C24A60D82002CD90D;
 					};
 				};
 			};
@@ -201,6 +253,7 @@
 			projectRoot = "";
 			targets = (
 				0084716C24A60D82002CD90D /* getting started */,
+				009998CB27044D32001308D9 /* getting started Unit Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -217,6 +270,13 @@
 				0084717724A60D86002CD90D /* Assets.xcassets in Resources */,
 				D2FCD5EC49574B15A18555AE /* amplifyconfiguration.json in Resources */,
 				9F9A5DBE15C44A56BE791246 /* awsconfiguration.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		009998CA27044D32001308D9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -299,7 +359,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		009998C827044D32001308D9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				009998CF27044D32001308D9 /* getting_started_Unit_Tests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		009998D127044D32001308D9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0084716C24A60D82002CD90D /* getting started */;
+			targetProxy = 009998D027044D32001308D9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		0084717B24A60D86002CD90D /* LaunchScreen.storyboard */ = {
@@ -477,6 +553,54 @@
 			};
 			name = Release;
 		};
+		009998D327044D32001308D9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 56U756R2L2;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.stormacq.ios.getting-started-Unit-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/getting started.app/getting started";
+			};
+			name = Debug;
+		};
+		009998D427044D32001308D9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 56U756R2L2;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.stormacq.ios.getting-started-Unit-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/getting started.app/getting started";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -494,6 +618,15 @@
 			buildConfigurations = (
 				0084718224A60D86002CD90D /* Debug */,
 				0084718324A60D86002CD90D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		009998D227044D32001308D9 /* Build configuration list for PBXNativeTarget "getting started Unit Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				009998D327044D32001308D9 /* Debug */,
+				009998D427044D32001308D9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
