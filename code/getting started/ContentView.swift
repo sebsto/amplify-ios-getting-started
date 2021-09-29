@@ -133,12 +133,13 @@ struct AddNoteView: View {
                                     description: self.$description.wrappedValue)
 
                     if let i = self.image  {
+                        let smallImage = i.resize(to: 0.10)
                         note.imageName = UUID().uuidString
-                        note.image = Image(uiImage: i)
+                        note.image = Image(uiImage: smallImage)
 
                         // asynchronously store the image (and assume it will work)
                         print("Initiating the image upload")
-                        Backend.shared.storeImage(name: note.imageName!, image: (i.pngData())!)
+                        Backend.shared.storeImage(name: note.imageName!, image: (smallImage.pngData())!)
                     }
                     
                     // asynchronously store the note (and assume it will succeed)
