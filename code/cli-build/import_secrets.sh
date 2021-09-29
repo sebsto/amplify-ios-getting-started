@@ -2,7 +2,7 @@ REGION=us-east-2
 
 # get the amplify app id with : amplify env list --details
 
-aws --region $REGION secretsmanager create-secret --name amplify-app-id --secret-string d3.......t9p --query ARN 
+aws --region $REGION secretsmanager create-secret --name amplify-app-id --secret-string d3.......t9p
 aws --region $REGION secretsmanager create-secret --name amplify-project-name --secret-string iosgettingstarted
 aws --region $REGION secretsmanager create-secret --name amplify-environment --secret-string dev
 

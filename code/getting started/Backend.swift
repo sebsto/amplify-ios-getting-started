@@ -115,6 +115,29 @@ class Backend  {
         }
     }
     
+    // used by unit tests
+    func isSignedIn() async -> Bool {
+        
+        return await withCheckedContinuation({
+            (continuation: CheckedContinuation<Bool, Never>) in
+                Amplify.Auth.fetchAuthSession { (result) in
+                    do {
+                        let session = try result.get()
+                        
+                        // let's return the value
+                        continuation.resume(returning: session.isSignedIn)
+                        
+                    } catch {
+                        print("Fetch auth session failed with error - \(error)")
+                        continuation.resume(returning: false)
+                    }
+
+                }
+        })
+        
+        
+    }
+    
     // MARK: API Access
     
     func queryNotes() {

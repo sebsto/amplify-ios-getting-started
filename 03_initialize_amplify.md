@@ -32,7 +32,7 @@ npm install -g @aws-amplify/cli
 amplify --version
 # Scanning for plugins...
 # Plugin scan successful
-# 4.22.0
+# 6.1.0
 ```
 
 ## Initialize an Amplify Backend
