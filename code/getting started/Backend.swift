@@ -81,7 +81,18 @@ class Backend  {
     
     public func signIn() {
 
-        Amplify.Auth.signInWithWebUI(presentationAnchor: UIApplication.shared.windows.first!) { result in
+        // UIApplication.shared.windows.first is dprecated on iOS 15
+        // solution from https://stackoverflow.com/questions/57134259/how-to-resolve-keywindow-was-deprecated-in-ios-13-0/57899013
+        
+        let w = UIApplication
+                    .shared
+                    .connectedScenes
+                    .compactMap { $0 as? UIWindowScene }
+                    .flatMap { $0.windows }
+                    .first { $0.isKeyWindow }
+        
+        
+        Amplify.Auth.signInWithWebUI(presentationAnchor: w!) { result in
             switch result {
             case .success(_):
                 print("Sign in succeeded")
