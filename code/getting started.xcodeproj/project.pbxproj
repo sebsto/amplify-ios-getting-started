@@ -15,6 +15,8 @@
 		0084717D24A60D86002CD90D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0084717B24A60D86002CD90D /* LaunchScreen.storyboard */; };
 		00A017DA2542A646003977CB /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A017D92542A646003977CB /* UserData.swift */; };
 		00E7574B2704CB720018F166 /* getting_started_unit_tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E7574A2704CB720018F166 /* getting_started_unit_tests.swift */; };
+		00F8F9B32704E4EE00786187 /* UIImage+resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F8F9B22704E4EE00786187 /* UIImage+resize.swift */; };
+		00F8F9B42704E4EE00786187 /* UIImage+resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F8F9B22704E4EE00786187 /* UIImage+resize.swift */; };
 		00FA7E7524A9EC46007042EA /* Backend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FA7E7424A9EC46007042EA /* Backend.swift */; };
 		00FA7E7724AA1DB0007042EA /* CaptureImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FA7E7624AA1DB0007042EA /* CaptureImageView.swift */; };
 		02078A75A9ADA402E5046042 /* Pods_getting_started_unit_tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E1A0F14E99B9393501E2F2C /* Pods_getting_started_unit_tests.framework */; };
@@ -59,6 +61,7 @@
 		00E7575F2704CD880018F166 /* AWSMobileClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AWSMobileClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E757612704CD880018F166 /* AWSPluginsCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AWSPluginsCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E757632704CD880018F166 /* AWSS3.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AWSS3.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		00F8F9B22704E4EE00786187 /* UIImage+resize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+resize.swift"; sourceTree = "<group>"; };
 		00FA7E7424A9EC46007042EA /* Backend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backend.swift; sourceTree = "<group>"; };
 		00FA7E7624AA1DB0007042EA /* CaptureImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureImageView.swift; sourceTree = "<group>"; };
 		18EED3433DFC552A42BF2F8A /* Pods_getting_started.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_getting_started.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -125,6 +128,7 @@
 				0084717224A60D82002CD90D /* SceneDelegate.swift */,
 				0084717424A60D82002CD90D /* ContentView.swift */,
 				00FA7E7624AA1DB0007042EA /* CaptureImageView.swift */,
+				00F8F9B22704E4EE00786187 /* UIImage+resize.swift */,
 				0084717624A60D86002CD90D /* Assets.xcassets */,
 				0084717B24A60D86002CD90D /* LaunchScreen.storyboard */,
 				0084717E24A60D86002CD90D /* Info.plist */,
@@ -397,6 +401,7 @@
 				8F07D5E87234E68690BFCD5B /* AmplifyModels.swift in Sources */,
 				D2322EA3AC392E1784EBA94E /* NoteData+Schema.swift in Sources */,
 				55DD6BBFE7609CE8705E3E7B /* NoteData.swift in Sources */,
+				00F8F9B32704E4EE00786187 /* UIImage+resize.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -405,6 +410,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				00E7574B2704CB720018F166 /* getting_started_unit_tests.swift in Sources */,
+				00F8F9B42704E4EE00786187 /* UIImage+resize.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -45,34 +45,36 @@ class getting_started_unit_tests: XCTestCase {
         // test async loading of images when there is a user session
         let b = Backend.shared
         let signedIn = await b.isSignedIn()
-//        if signedIn {
-//
-//            // image name is available after an upload in the app
-//            // check file name with the following command (bucket and directory name will vary)
-//            // aws s3 ls s3://iosgettingstarted4f3db8751da949bcafd5e61f192c31123138-dev/private/eu-central-1:842e29fa-c30f-45ec-93fd-cbe9968b6878/
-//            let note1 = Note(id: "000", name: "Seb's note", description: "My description", image: "B697C492-7557-4639-94A8-9764AEF17012")
-//
-//            // access the underlying NoteData object
-//            let data = note1.data
-//
-//            // Create an expectation
-//            let expectation = self.expectation(description: "Download image")
-//
-//            // create a note with a NoteData object -> this trigger the download of the image
-//            let note2 = Note(from: data) { image -> Void in
-//                if let _ = image {
-//                    expectation.fulfill()
-//                } else {
-//                    XCTFail("Image downloaded is nil")
-//                }
-//            }
-//
-//            // Wait for the expectation to be fullfilled, or time out
-//            // after 5 seconds. This is where the test runner will pause.
-//            await waitForExpectations(timeout: 15, handler: nil)
-//
-//            XCTAssert(note2.image != nil)
-//        }
+        if signedIn {
+
+            // image name is available after an upload in the app
+            // check file name with the following command (bucket and directory name will vary)
+            // aws s3 ls s3://iosgettingstarted4f3db8751da949bcafd5e61f192c31123138-dev/private/eu-central-1:842e29fa-c30f-45ec-93fd-cbe9968b6878/
+            let note1 = Note(id: "000", name: "Seb's note", description: "My description", image: "8560906F-5440-47B5-A5B9-1C1BF6478C7A")
+
+            // access the underlying NoteData object
+            let data = note1.data
+
+            // Create an expectation
+            let expectation = XCTestExpectation(description: "Download image")
+
+
+            // create a note with a NoteData object -> this trigger the download of the image
+            let note2 = Note(from: data) { image -> Void in
+                if let _ = image {
+                    expectation.fulfill()
+                } else {
+                    XCTFail("Image downloaded is nil")
+                }
+            }
+
+            // Wait for the expectation to be fullfilled, or time out
+            // after 15 seconds. This is where the test runner will pause.
+            self.wait(for: [expectation], timeout: 10)
+            
+            XCTAssert(note2.image != nil)
+
+        }
 
     }
     func testPerformanceExample() throws {
