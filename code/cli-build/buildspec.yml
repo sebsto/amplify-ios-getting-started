@@ -18,5 +18,7 @@ phases:
 
   post_build:
     commands:
-      # export and verify teh archive
-      - SQSProducer $SQS_COMMAND_QUEUE_URL $SQS_RESPONSE_QUEUE_URL code/cli-build/04_archive-cli.sh
+      # Run the unit tests
+      - SQSProducer $SQS_COMMAND_QUEUE_URL $SQS_RESPONSE_QUEUE_URL code/cli-build/04_unit_tests.sh
+      # export and verify the archive
+      - SQSProducer $SQS_COMMAND_QUEUE_URL $SQS_RESPONSE_QUEUE_URL code/cli-build/05_archive-cli.sh
