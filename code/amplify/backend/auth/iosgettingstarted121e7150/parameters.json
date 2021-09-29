@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "iosgettingstarted57ec6fa5_identitypool_57ec6fa5",
+    "identityPoolName": "iosgettingstarted121e7150_identitypool_121e7150",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "iosget57ec6fa5",
-    "userPoolName": "iosgettingstarted57ec6fa5_userpool_57ec6fa5",
+    "resourceNameTruncated": "iosget121e7150",
+    "userPoolName": "iosgettingstarted121e7150_userpool_121e7150",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -20,6 +20,7 @@
     "requiredAttributes": [
         "email"
     ],
+    "aliasAttributes": [],
     "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [
@@ -28,10 +29,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "iosget57ec6fa5_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "iosget121e7150_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "57ec6fa5",
-    "resourceName": "iosgettingstarted57ec6fa5",
+    "sharedId": "121e7150",
+    "resourceName": "iosgettingstarted121e7150",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -47,7 +48,7 @@
     },
     "useDefault": "defaultSocial",
     "hostedUI": true,
-    "hostedUIDomainName": "iosgettingstarted-sst-dev",
+    "hostedUIDomainName": "iosgettingstarted121e7150-121e7150",
     "authProvidersUserPool": [],
     "hostedUIProviderMeta": "[]",
     "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"gettingstarted://\"],\"LogoutURLs\":[\"gettingstarted://\"]}",

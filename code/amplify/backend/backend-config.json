@@ -1,10 +1,29 @@
 {
   "auth": {
-    "iosgettingstarted57ec6fa5": {
+    "iosgettingstarted121e7150": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
-      "customAuth": false
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "loginMechanisms": [
+          "PREFERRED_USERNAME"
+        ],
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      }
     }
   },
   "api": {
@@ -16,7 +35,7 @@
           "defaultAuthentication": {
             "authenticationType": "AMAZON_COGNITO_USER_POOLS",
             "userPoolConfig": {
-              "userPoolId": "authiosgettingstarted57ec6fa5"
+              "userPoolId": "authiosgettingstarted121e7150"
             }
           },
           "additionalAuthenticationProviders": []
@@ -25,7 +44,7 @@
     }
   },
   "storage": {
-    "images": {
+    "image": {
       "service": "S3",
       "providerPlugin": "awscloudformation"
     }

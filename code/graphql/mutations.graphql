@@ -1,0 +1,43 @@
+# this is an auto generated file. This will be overwritten
+mutation CreateNoteData(
+  $input: CreateNoteDataInput!
+  $condition: ModelNoteDataConditionInput
+) {
+  createNoteData(input: $input, condition: $condition) {
+    id
+    name
+    description
+    image
+    createdAt
+    updatedAt
+    owner
+  }
+}
+mutation UpdateNoteData(
+  $input: UpdateNoteDataInput!
+  $condition: ModelNoteDataConditionInput
+) {
+  updateNoteData(input: $input, condition: $condition) {
+    id
+    name
+    description
+    image
+    createdAt
+    updatedAt
+    owner
+  }
+}
+mutation DeleteNoteData(
+  $input: DeleteNoteDataInput!
+  $condition: ModelNoteDataConditionInput
+) {
+  deleteNoteData(input: $input, condition: $condition) {
+    id
+    name
+    description
+    image
+    createdAt
+    updatedAt
+    owner
+  }
+}

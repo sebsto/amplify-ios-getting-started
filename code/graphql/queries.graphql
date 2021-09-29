@@ -1,0 +1,30 @@
+# this is an auto generated file. This will be overwritten
+query GetNoteData($id: ID!) {
+  getNoteData(id: $id) {
+    id
+    name
+    description
+    image
+    createdAt
+    updatedAt
+    owner
+  }
+}
+query ListNoteData(
+  $filter: ModelNoteDataFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listNoteData(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
+      description
+      image
+      createdAt
+      updatedAt
+      owner
+    }
+    nextToken
+  }
+}
