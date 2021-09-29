@@ -63,14 +63,25 @@ struct ContentView: View {
                             }
                         }
                     }
-                    .navigationBarTitle(Text("Notes"))
-                    .navigationBarItems(leading: SignOutButton(),
-                                        trailing: Button(action: {
-                        self.showCreateNote.toggle()
-                    }) {
-                        Image(systemName: "plus")
-                    })
-                }.sheet(isPresented: $showCreateNote) {
+                    .navigationTitle(Text("Notes"))
+
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            SignOutButton()
+                        }
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button(action: {
+                                self.showCreateNote.toggle()
+                            }) {
+                                Image(systemName: "plus")
+                            }
+                        }
+                    }
+                    
+                }
+                .navigationViewStyle(.stack)
+
+                .sheet(isPresented: $showCreateNote) {
                     AddNoteView(isPresented: self.$showCreateNote, userData: self.userData)
                 }
             } else {
