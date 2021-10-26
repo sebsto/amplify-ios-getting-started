@@ -15,6 +15,8 @@
 
 cli-build/secrets
 cli-build/xcode-server
+build_for_testing
+device-farm
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
