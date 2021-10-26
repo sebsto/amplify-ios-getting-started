@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1300"
+   LastUpgradeVersion = "1310"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -46,6 +46,16 @@
                BlueprintIdentifier = "00E757472704CB710018F166"
                BuildableName = "getting started unit tests.xctest"
                BlueprintName = "getting started unit tests"
+               ReferencedContainer = "container:getting started.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "00F8F9B82705A84B00786187"
+               BuildableName = "getting started ui tests.xctest"
+               BlueprintName = "getting started ui tests"
                ReferencedContainer = "container:getting started.xcodeproj">
             </BuildableReference>
          </TestableReference>
