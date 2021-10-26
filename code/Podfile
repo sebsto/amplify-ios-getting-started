@@ -1,10 +1,12 @@
 # Uncomment the next line to define a global platform for your project
 platform :ios, '13.0'
 
-target 'getting started' do
-  # Comment the next line if you don't want to use dynamic frameworks
-  use_frameworks!
+# Comment the next line if you don't want to use dynamic frameworks
+use_frameworks!
 
+# common pods shared between targets.
+# Thanks to https://stackoverflow.com/questions/29204868/how-to-share-the-some-pods-in-two-target-by-podfile
+def common_pods_for_target
   # Pods for getting started
   pod 'Amplify', '~> 1.0'                             # required amplify dependency
   pod 'Amplify/Tools', '~> 1.0'                       # allows to call amplify CLI from within Xcode
@@ -12,8 +14,29 @@ target 'getting started' do
   pod 'AmplifyPlugins/AWSCognitoAuthPlugin', '~> 1.0' # support for Cognito user authentication
   pod 'AmplifyPlugins/AWSAPIPlugin', '~> 1.0'         # support for GraphQL API
   pod 'AmplifyPlugins/AWSS3StoragePlugin', '~> 1.0'   # support for Amazon S3 storage
-
-  target 'getting started unit tests' do
-    inherit! :search_paths
-  end
 end
+
+target 'getting started' do
+  common_pods_for_target
+
+  #
+  # Embedded target do not work for testing
+  #
+  # See : https://github.com/CocoaPods/CocoaPods/issues/4752#issuecomment-305101269
+  #
+#  target 'getting started unit tests' do
+#    inherit! :search_paths
+#  end
+#  target 'getting started ui tests' do
+#    inherit! :search_paths
+#  end
+end
+
+target 'getting started ui tests' do
+  common_pods_for_target
+end
+
+target 'getting started unit tests' do
+  common_pods_for_target
+end
+

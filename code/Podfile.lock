@@ -1,42 +1,42 @@
 PODS:
-  - Amplify (1.14.0):
-    - Amplify/Default (= 1.14.0)
-  - Amplify/Default (1.14.0)
-  - Amplify/Tools (1.14.0)
-  - AmplifyPlugins/AWSAPIPlugin (1.14.0):
+  - Amplify (1.15.3):
+    - Amplify/Default (= 1.15.3)
+  - Amplify/Default (1.15.3)
+  - Amplify/Tools (1.15.3)
+  - AmplifyPlugins/AWSAPIPlugin (1.15.3):
     - AppSyncRealTimeClient (~> 1.4)
-    - AWSCore (~> 2.26.0)
-    - AWSPluginsCore (= 1.14.0)
-  - AmplifyPlugins/AWSCognitoAuthPlugin (1.14.0):
-    - AWSAuthCore (~> 2.26.0)
-    - AWSCognitoIdentityProvider (~> 2.26.0)
-    - AWSCognitoIdentityProviderASF (~> 2.26.0)
-    - AWSCore (~> 2.26.0)
-    - AWSMobileClient (~> 2.26.0)
-    - AWSPluginsCore (= 1.14.0)
-  - AmplifyPlugins/AWSS3StoragePlugin (1.14.0):
-    - AWSCore (~> 2.26.0)
-    - AWSPluginsCore (= 1.14.0)
-    - AWSS3 (~> 2.26.0)
+    - AWSCore (~> 2.26.1)
+    - AWSPluginsCore (= 1.15.3)
+  - AmplifyPlugins/AWSCognitoAuthPlugin (1.15.3):
+    - AWSAuthCore (~> 2.26.1)
+    - AWSCognitoIdentityProvider (~> 2.26.1)
+    - AWSCognitoIdentityProviderASF (~> 2.26.1)
+    - AWSCore (~> 2.26.1)
+    - AWSMobileClient (~> 2.26.1)
+    - AWSPluginsCore (= 1.15.3)
+  - AmplifyPlugins/AWSS3StoragePlugin (1.15.3):
+    - AWSCore (~> 2.26.1)
+    - AWSPluginsCore (= 1.15.3)
+    - AWSS3 (~> 2.26.1)
   - AppSyncRealTimeClient (1.5.0):
     - Starscream (~> 3.1.1)
-  - AWSAuthCore (2.26.0):
-    - AWSCore (= 2.26.0)
-  - AWSCognitoIdentityProvider (2.26.0):
-    - AWSCognitoIdentityProviderASF (= 2.26.0)
-    - AWSCore (= 2.26.0)
-  - AWSCognitoIdentityProviderASF (2.26.0)
-  - AWSCore (2.26.0)
-  - AWSMobileClient (2.26.0):
-    - AWSAuthCore (= 2.26.0)
-    - AWSCognitoIdentityProvider (= 2.26.0)
-    - AWSCognitoIdentityProviderASF (= 2.26.0)
-    - AWSCore (= 2.26.0)
-  - AWSPluginsCore (1.14.0):
-    - Amplify (= 1.14.0)
-    - AWSCore (~> 2.26.0)
-  - AWSS3 (2.26.0):
-    - AWSCore (= 2.26.0)
+  - AWSAuthCore (2.26.2):
+    - AWSCore (= 2.26.2)
+  - AWSCognitoIdentityProvider (2.26.2):
+    - AWSCognitoIdentityProviderASF (= 2.26.2)
+    - AWSCore (= 2.26.2)
+  - AWSCognitoIdentityProviderASF (2.26.2)
+  - AWSCore (2.26.2)
+  - AWSMobileClient (2.26.2):
+    - AWSAuthCore (= 2.26.2)
+    - AWSCognitoIdentityProvider (= 2.26.2)
+    - AWSCognitoIdentityProviderASF (= 2.26.2)
+    - AWSCore (= 2.26.2)
+  - AWSPluginsCore (1.15.3):
+    - Amplify (= 1.15.3)
+    - AWSCore (~> 2.26.1)
+  - AWSS3 (2.26.2):
+    - AWSCore (= 2.26.2)
   - Starscream (3.1.1)
 
 DEPENDENCIES:
@@ -61,18 +61,18 @@ SPEC REPOS:
     - Starscream
 
 SPEC CHECKSUMS:
-  Amplify: 6402de6b8e46f3228b59fef3dfe379ebbfb0e0f1
-  AmplifyPlugins: 94bb3e7e006b41f82e8a0a1dbbc48925d9edbe4c
+  Amplify: 0f1289c87ce5950d3c76d0e8e0ebbddbcda3cd30
+  AmplifyPlugins: c2e983fcde04092101425cbebf1c1dddf9c04123
   AppSyncRealTimeClient: 2b4482b1770a3e5cf64f9714a6d198550017b5a2
-  AWSAuthCore: e33e7d1c2a7e6c08a026865f9396b0ef870faac3
-  AWSCognitoIdentityProvider: 4119e1492b23fc408a18c6dafe06888ef03c96e3
-  AWSCognitoIdentityProviderASF: a7f1e8cbafbac53ea1150ca50eac870d5c04dacf
-  AWSCore: b6d8dda67f24c6fc4c354334ec6d34238f37b735
-  AWSMobileClient: a9a498884df72531e3e73c9d7bb087f72364204d
-  AWSPluginsCore: 75950cfd39535b0a3654096cb472a7ee5b2ce0fa
-  AWSS3: add6253ef16fea349eac27143885d3a44d62dad9
+  AWSAuthCore: c785a33af10a45aab6456a5fa7150f759dad836f
+  AWSCognitoIdentityProvider: 0bea89a822d7dd76c7dc62212561a1074dee0031
+  AWSCognitoIdentityProviderASF: 425d7f40fb6a520f8437a5f8b991215239ec620b
+  AWSCore: dd7f74ab3f354aad435f83afdbfac91bcb7d44c2
+  AWSMobileClient: fc20c58eaad166b3d2a569ef9ce691d6fed0c5dd
+  AWSPluginsCore: 7a1acaf5c6224bf6c2b678c24800c16563a76361
+  AWSS3: cad52255a6cfa4ef7bd1abc95a726d8670f141c8
   Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
 
-PODFILE CHECKSUM: 657cc6296c41e2f3afba640dff360bd9d11942d7
+PODFILE CHECKSUM: 16d25f4dbde066b43a8e448120b41f76fb3eda3d
 
 COCOAPODS: 1.10.1
