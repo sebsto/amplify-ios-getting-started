@@ -28,3 +28,5 @@ xcodebuild clean archive                  \
            -scheme "$SCHEME"              \
            -archivePath "$ARCHIVE_PATH"   \
            -configuration "$CONFIGURATION"  >> /Users/ec2-user/log/build.log 2>&1
+
+popd

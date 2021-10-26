@@ -68,3 +68,5 @@ PATH=$PATH:/usr/local/bin/ # require to find node
 
 BUILD_NUMBER=`date +%Y%m%d%H%M%S`
 plutil -replace CFBundleVersion -string $BUILD_NUMBER "./getting started/Info.plist"
+
+popd

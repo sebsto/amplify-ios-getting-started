@@ -69,3 +69,5 @@ xcrun altool  \
 		-t ios \
 		-u $APPLE_ID \
 		-p @env:APPLE_SECRET >> $HOME/log/archive.log
+
+popd
