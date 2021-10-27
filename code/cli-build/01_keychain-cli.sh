@@ -9,11 +9,19 @@ mkdir -p $CERTIFICATES_DIR 2>&1 >/dev/null
 
 echo $REGION 
 
+echo "Cleaning Provisioning Profiles"
+rm -rf "$HOME/Library/MobileDevice/Provisioning Profiles"
+
 echo "Prepare keychain"
 KEYCHAIN_PASSWORD=Passw0rd
 KEYCHAIN_NAME=dev.keychain
 SYSTEM_KEYCHAIN=/Library/Keychains/System.keychain
 AUTHORISATION=(-T /usr/bin/security -T /usr/bin/codesign -T /usr/bin/xcodebuild)
+
+echo "Re-Creating System Keychain"
+sudo security delete-keychain "${SYSTEM_KEYCHAIN}" 
+sudo security create-keychain -p "${KEYCHAIN_PASSWORD}" "${SYSTEM_KEYCHAIN}"
+security list-keychains -s "${SYSTEM_KEYCHAIN}"
 
 if [ -f $HOME/Library/Keychains/"${KEYCHAIN_NAME}"-db ]; then
     echo "Deleting old ${KEYCHAIN_NAME} keychain"
