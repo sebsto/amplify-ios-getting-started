@@ -1,4 +1,6 @@
 #!/bin/sh
+set -e 
+set -o pipefail
 
 AWS_CLI=/usr/local/bin/aws
 REGION=$(curl -s 169.254.169.254/latest/meta-data/placement/region/)

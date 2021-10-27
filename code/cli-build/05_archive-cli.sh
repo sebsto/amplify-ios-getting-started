@@ -1,4 +1,6 @@
 #!/bin/sh
+set -e 
+set -o pipefail
 
 HOME=/Users/ec2-user
 CODE_DIR=$HOME/amplify-ios-getting-started/code
