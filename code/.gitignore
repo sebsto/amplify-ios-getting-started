@@ -18,6 +18,9 @@ cli-build/xcode-server
 build_for_testing
 device-farm
 
+graphql
+API.swift
+.graphqlconfig.yml
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
 amplify/.config/local-*
