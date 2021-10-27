@@ -1,6 +1,4 @@
 #!/bin/sh
-set -e 
-set -o pipefail
 
 AWS_CLI=/usr/local/bin/aws
 REGION=$(curl -s 169.254.169.254/latest/meta-data/placement/region/)
@@ -41,8 +39,11 @@ if [ ! -f $CERTIFICATES_DIR/AppleWWDRCAG3.cer ]; then
     echo "Downloadind Apple Worlwide Developer Relation GA3 certificate"
     curl -s -o $CERTIFICATES_DIR/AppleWWDRCAG3.cer https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer
 fi
-echo "Installing Apple Worlwide Developer Relation GA3 certificate into System keychain"
-sudo security import $CERTIFICATES_DIR/AppleWWDRCAG3.cer -t cert -k "${SYSTEM_KEYCHAIN}" "${AUTHORISATION[@]}"
+sudo security find-certificate -c "Apple Worldwide Developer Relations Certification Authority"  /Library/Keychains/System.keychain 2>/dev/null
+if [ $? -ne 0 ]; then
+    echo "Installing Apple Worlwide Developer Relation GA3 certificate into System keychain"
+    sudo security import $CERTIFICATES_DIR/AppleWWDRCAG3.cer -t cert -k "${SYSTEM_KEYCHAIN}" "${AUTHORISATION[@]}"
+fi
 
 echo "Retrieve application dev and dist keys from AWS Secret Manager"
 SIGNING_DEV_KEY_SECRET=apple-signing-dev-certificate
