@@ -20,5 +20,7 @@ phases:
     commands:
       # Run the unit tests
       - SQSProducer $SQS_COMMAND_QUEUE_URL $SQS_RESPONSE_QUEUE_URL code/cli-build/04_unit_tests.sh
+      # Run the GUI tests 
+      - SQSProducer $SQS_COMMAND_QUEUE_URL $SQS_RESPONSE_QUEUE_URL code/cli-build/04_ui_tests.sh
       # export and verify the archive
       - SQSProducer $SQS_COMMAND_QUEUE_URL $SQS_RESPONSE_QUEUE_URL code/cli-build/05_archive-cli.sh

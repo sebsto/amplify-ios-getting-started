@@ -8,7 +8,11 @@ DEVICE_FARM="device-farm"
 
 pushd $HOME/amplify-ios-getting-started/code
 
-xcodebuild -workspace "${APP_NAME}.xcworkspace" -scheme "${APP_NAME}" -destination generic/platform=iOS build-for-testing -derivedDataPath "${BUILD_PATH}"
+xcodebuild build-for-testing                    \
+           -workspace "${APP_NAME}.xcworkspace" \
+           -scheme "${APP_NAME}"                \
+           -destination generic/platform=iOS    \
+           -derivedDataPath "${BUILD_PATH}"
 
 echo "Building Application UI Tests IPA file"
 rm -rf "${DEVICE_FARM}"
