@@ -115,28 +115,27 @@ class Backend  {
         }
     }
     
-    // used by unit tests
-    func isSignedIn() async -> Bool {
-        
-        return await withCheckedContinuation({
-            (continuation: CheckedContinuation<Bool, Never>) in
-                Amplify.Auth.fetchAuthSession { (result) in
-                    do {
-                        let session = try result.get()
-                        
-                        // let's return the value
-                        continuation.resume(returning: session.isSignedIn)
-                        
-                    } catch {
-                        print("Fetch auth session failed with error - \(error)")
-                        continuation.resume(returning: false)
-                    }
-
-                }
-        })
-        
-        
-    }
+//    // used by unit tests
+//    func isSignedIn() async -> Bool {
+//        
+//        return await withCheckedContinuation({
+//            (continuation: CheckedContinuation<Bool, Never>) in
+//                Amplify.Auth.fetchAuthSession { (result) in
+//                    do {
+//                        let session = try result.get()
+//                        
+//                        // let's return the value
+//                        continuation.resume(returning: session.isSignedIn)
+//                        
+//                    } catch {
+//                        print("Fetch auth session failed with error - \(error)")
+//                        continuation.resume(returning: false)
+//                    }
+//
+//                }
+//        })
+//
+//    }
     
     // MARK: API Access
     
@@ -148,14 +147,14 @@ class Backend  {
                 switch result {
                 case .success(let notesData):
                     print("Successfully retrieved list of Notes")
-                    
+
                     for n in notesData {
                         let note = Note.init(from: n)
                         DispatchQueue.main.async() {
                             UserData.shared.notes.append(note)
                         }
                     }
-                    
+
                 case .failure(let error):
                     print("Can not retrieve result : error  \(error.errorDescription)")
                 }
@@ -163,6 +162,11 @@ class Backend  {
                 print("Can not retrieve Notes : error \(error)")
             }
         }
+        
+//        let noteData = NoteData(id: "000", name: "Seb's note", description: "My description", image: "8560906F-5440-47B5-A5B9-1C1BF6478C7A")
+//        let note = Note.init(from: noteData)
+//        UserData.shared.notes.append(note)
+        
     }
     
     func createNote(note: Note) {
@@ -207,7 +211,6 @@ class Backend  {
         Amplify.Storage.uploadData(key: name, data: image, options: options,
             progressListener: { progress in
                 // optionally update a progress bar here
-                print("Image upload in progress")
             }, resultListener: { event in
                 switch event {
                 case .success(let data):
