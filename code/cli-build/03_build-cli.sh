@@ -25,10 +25,11 @@ ARCHIVE_PATH="$BUILD_PATH/getting-started.xcarchive"
 
 security unlock-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN_NAME
 
-xcodebuild clean archive                  \
-           -workspace "$WORKSPACE"        \
-           -scheme "$SCHEME"              \
-           -archivePath "$ARCHIVE_PATH"   \
+xcodebuild clean archive                    \
+           -workspace "$WORKSPACE"          \
+           -scheme "$SCHEME"                \
+           -archivePath "$ARCHIVE_PATH"     \
+           -derivedDataPath "${BUILD_PATH}" \
            -configuration "$CONFIGURATION"  >> /Users/ec2-user/log/build.log 2>&1
 
 popd
