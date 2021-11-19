@@ -6,6 +6,7 @@ set -o pipefail
 # https://medium.com/appssemble/a-guide-to-writing-your-own-ios-ci-cd-integration-script-186be1b99575
 
 AWS_CLI=/usr/local/bin/aws
+AMPLIFY_CLI=$HOME/.amplify/bin/amplify
 REGION=$(curl -s 169.254.169.254/latest/meta-data/placement/region/)
 HOME=/Users/ec2-user
 export LANG=en_US.UTF-8
@@ -54,8 +55,7 @@ PROVIDERS="{\
 }"
 
 
-PATH=$PATH:/usr/local/bin/ # require to find node
-/usr/local/bin/amplify pull \
+$AMPLIFY_CLI pull \
 --amplify $AMPLIFY \
 --frontend $FRONTEND \
 --providers $PROVIDERS \
@@ -63,8 +63,7 @@ PATH=$PATH:/usr/local/bin/ # require to find node
 
 
 # echo "Generate code for application models"
-/usr/local/bin/amplify codegen models 
-
+$AMPLIFY_CLI codegen models 
 # Increase Build Number
 # https://rderik.com/blog/automating-build-and-testflight-upload-for-simple-ios-apps/
 

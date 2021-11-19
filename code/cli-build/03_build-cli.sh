@@ -8,12 +8,6 @@ HOME=/Users/ec2-user
 
 pushd $HOME/amplify-ios-getting-started/code
 
-# Increase Build Number
-# https://rderik.com/blog/automating-build-and-testflight-upload-for-simple-ios-apps/
-
-BUILD_NUMBER=`date +%Y%m%d%H%M%S`
-plutil -replace CFBundleVersion -string $BUILD_NUMBER "./getting started/Info.plist"
-
 KEYCHAIN_PASSWORD=Passw0rd
 KEYCHAIN_NAME=dev.keychain
 

@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# The region where your amplify backend is deployed
+DEFAULT_REGION=eu-central-1 
+
 echo "Update Brew"
 brew update && brew upgrade
 
@@ -15,13 +18,13 @@ brew install fastlane
 echo "Install cocoapods"
 brew install cocoapods 
 
-echo "Install NodeJS and JQ"
-brew install node jq
+echo "Install JQ"
+brew install jq
 
 echo "Install Amplify CLI"
-npm install -g @aws-amplify/cli
+curl -sL https://aws-amplify.github.io/amplify-cli/install | bash && $SHELL
 
 echo "Prepare AWS CLI configuration"
 mkdir ~/.aws
-echo "[default]\nregion=eu-central-1\n\n" > ~/.aws/config
+echo "[default]\nregion=$DEFAULT_REGION\n\n" > ~/.aws/config
 echo "[default]\n\n" > ~/.aws/credentials

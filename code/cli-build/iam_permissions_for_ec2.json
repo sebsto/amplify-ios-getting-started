@@ -2,7 +2,7 @@
     "Version": "2012-10-17",
     "Statement": [
         {
-            "Sid": "VisualEditor0",
+            "Sid": "AmplifyAccess",
             "Effect": "Allow",
             "Action": [
                 "cloudformation:List*",
@@ -11,7 +11,26 @@
                 "cloudformation:Validate*",
                 "cloudformation:Detect*",
                 "amplify:List*",
-                "amplify:Get*",
+                "amplify:Get*"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "AmplifyS3Access",
+            "Effect": "Allow",
+            "Action": [
+                "s3:List*",
+                "s3:Get*"
+            ],
+            "Resource": [
+                "arn:aws:s3:::MY_AMPLIFY_PROJECT_DEPLOYMENT_BUCKET/*",
+                "arn:aws:s3:::MY_AMPLIFY_PROJECT_DEPLOYMENT_BUCKET"
+            ]
+        },
+        {
+            "Sid": "SQSAccess",
+            "Effect": "Allow",
+            "Action": [
                 "sqs:Receive*",
                 "sqs:Send*",
                 "sqs:DeleteMessage"
@@ -19,13 +38,25 @@
             "Resource": "*"
         },
         {
-            "Sid": "VisualEditor1",
+            "Sid": "SecretsManagerAccess",
             "Effect": "Allow",
             "Action": "secretsmanager:GetSecretValue",
             "Resource": [
                 "arn:aws:secretsmanager:REGION:ACCOUNT_ID:secret:amplify*",
                 "arn:aws:secretsmanager:REGION:ACCOUNT_ID:secret:apple*"
             ]
-        }
+        },
+        {
+            "Sid": "DeviceFarmAccess",
+            "Effect": "Allow",
+            "Action": [
+                "devicefarm:CreateUpload",
+                "devicefarm:GetUpload",
+                "devicefarm:ListDevicePools",
+                "devicefarm:ScheduleRun",
+                "devicefarm:GetRun"
+            ],
+            "Resource": "*"
+        }      
     ]
 }
