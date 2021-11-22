@@ -100,27 +100,36 @@ Now that we have our GOLD AMI, let's install the project specific build dependen
    The below file can be [downloaded](https://raw.githubusercontent.com/sebsto/amplify-ios-getting-started/main/code/cli-build/01_AMI_install_dev_dependencies.sh) GitHub.
 
    ```bash
-   echo "Update Ruby and fastlane"
-   brew install ruby fastlane
-   echo '\nexport PATH="/usr/local/opt/ruby/bin:$PATH"' >> ~/.zshrc
+   #!/bin/sh
+
+   # The region where your amplify backend is deployed
+   DEFAULT_REGION=eu-central-1 
+
+   echo "Update Brew"
+   brew update && brew upgrade
+
+   echo "Update Ruby"
+   brew install ruby
+   echo '\n\nexport PATH="/usr/local/opt/ruby/bin:$PATH"' >> ~/.zshrc
    export LDFLAGS="-L/usr/local/opt/ruby/lib"
    export CPPFLAGS="-I/usr/local/opt/ruby/include"
 
+   echo "Install Fastlane"
+   brew install fastlane 
+
    echo "Install cocoapods"
-   brew install cocoapods
-   
-   echo "Install NodeJS and JQ"
-   brew install node jq
+   brew install cocoapods 
+
+   echo "Install JQ"
+   brew install jq
 
    echo "Install Amplify CLI"
-   npm install -g @aws-amplify/cli
+   curl -sL https://aws-amplify.github.io/amplify-cli/install | bash && $SHELL
 
    echo "Prepare AWS CLI configuration"
    mkdir ~/.aws
-   echo "[default]\nregion=eu-central-1\n\n" > ~/.aws/config
+   echo "[default]\nregion=$DEFAULT_REGION\n\n" > ~/.aws/config
    echo "[default]\n\n" > ~/.aws/credentials
-
-   exit
    ```
 
 3. Create a Project GOLD AMI
