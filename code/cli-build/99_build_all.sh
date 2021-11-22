@@ -1,5 +1,8 @@
 #!/bin/sh
 
+set -e 
+set -o pipefail
+
 # https://stackoverflow.com/questions/16908084/bash-script-to-calculate-time-elapsed
 secs_to_human() {
     if [[ -z ${1} || ${1} -lt 60 ]] ;then
