@@ -16,7 +16,7 @@ xcodebuild build-for-testing                    \
            -workspace "${APP_NAME}.xcworkspace" \
            -scheme "${APP_NAME}"                \
            -destination generic/platform=iOS    \
-           -derivedDataPath "${BUILD_PATH}" >> /Users/ec2-user/log/build-for-testing.log 2>&1
+           -derivedDataPath "${BUILD_PATH}" 
 
 echo "Building Application UI Tests IPA file"
 rm -rf "${DEVICE_FARM}"

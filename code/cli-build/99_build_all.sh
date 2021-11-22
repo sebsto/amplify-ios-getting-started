@@ -13,18 +13,30 @@ secs_to_human() {
     echo "Time Elapsed : ${min} minutes and ${secs} seconds."
 }
 
-echo "Starting at $(date)"
 STARTTIME=$(date +%s)
+BUILD_NUMBER=`date +%Y%m%d%H%M%S`
 
-./cli-build/01_keychain-cli.sh
-./cli-build/02_prepare_project.sh
-./cli-build/03_build-cli.sh
-./cli-build/04_unit_tests.sh
-./cli-build/04_ui_tests.sh
-./cli-build/05_archive-cli.sh
+LOGS=/Users/ec2-user/log/$BUILD_NUMBER.log
+
+echo "Starting build ${BUILD_NUMBER} at $(date)"
+echo "Logs are available in ${LOGS}"
+echo "Starting build ${BUILD_NUMBER} at $(date)" > $LOGS
+
+# TODO : send build log to CloudWatch
+
+./cli-build/01_keychain_cli.sh >> $LOGS 2>&1
+./cli-build/02_prepare_project.sh >> $LOGS 2>&1
+./cli-build/03_build_cli.sh >> $LOGS 2>&1
+./cli-build/04_unit_tests.sh >> $LOGS 2>&1
+./cli-build/05_ui_tests.sh >> $LOGS 2>&1
+./cli-build/06_archive_cli.sh >> $LOGS 2>&1
 
 ENDTIME=$(date +%s)
 echo "Ended at $(date)"
 
 secs_to_human "$(($ENDTIME - $STARTTIME))"
+
+echo $(date) >> $LOGS
+echo $(secs_to_human "$(($ENDTIME - $STARTTIME))") >> $LOGS
+echo "---- Build ended ----" >> $LOGS
 

@@ -54,7 +54,7 @@ echo "Creating an Archive"
 xcodebuild -exportArchive \
            -archivePath "$ARCHIVE_PATH" \
            -exportOptionsPlist "$EXPORT_OPTIONS_FILE" \
-           -exportPath "$BUILD_PATH" >> $HOME/log/archive.log
+           -exportPath "$BUILD_PATH" 
 
 echo "Verify Archive"
 xcrun altool  \
@@ -62,7 +62,7 @@ xcrun altool  \
             -f "$BUILD_PATH/$SCHEME.ipa" \
             -t ios \
             -u $APPLE_ID \
-            -p @env:APPLE_SECRET >> $HOME/log/archive.log
+            -p @env:APPLE_SECRET 
 
 echo "Upload to AppStore Connect"
 xcrun altool  \
@@ -70,6 +70,6 @@ xcrun altool  \
 		-f "$BUILD_PATH/$SCHEME.ipa" \
 		-t ios \
 		-u $APPLE_ID \
-		-p @env:APPLE_SECRET >> $HOME/log/archive.log
+		-p @env:APPLE_SECRET 
 
 popd

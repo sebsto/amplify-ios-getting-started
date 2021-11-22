@@ -1,26 +1,7 @@
 version: 0.2
 
 phases:
-  install:
-    commands:
-    # install the keychain and requiered private keys and certificates 
-    - SQSProducer $SQS_COMMAND_QUEUE_URL $SQS_RESPONSE_QUEUE_URL code/cli-build/01_keychain_cli.sh
-
-  pre_build:
-    commands:
-      # pull out the project and its dependencies
-      - SQSProducer $SQS_COMMAND_QUEUE_URL $SQS_RESPONSE_QUEUE_URL code/cli-build/02_prepare_project.sh
-  
   build:
     commands:
-      # build and prepare the archive
-      - SQSProducer $SQS_COMMAND_QUEUE_URL $SQS_RESPONSE_QUEUE_URL code/cli-build/03_build_cli.sh
-
-  post_build:
-    commands:
-      # Run the unit tests
-      - SQSProducer $SQS_COMMAND_QUEUE_URL $SQS_RESPONSE_QUEUE_URL code/cli-build/04_unit_tests.sh
-      # Run the GUI tests 
-      - SQSProducer $SQS_COMMAND_QUEUE_URL $SQS_RESPONSE_QUEUE_URL code/cli-build/05_ui_tests.sh
-      # export and verify the archive
-      - SQSProducer $SQS_COMMAND_QUEUE_URL $SQS_RESPONSE_QUEUE_URL code/cli-build/06_archive_cli.sh
+      # clean, build, test, sign, and upload
+      - SQSProducer $SQS_COMMAND_QUEUE_URL $SQS_RESPONSE_QUEUE_URL code/cli-build/99_build_all.sh
