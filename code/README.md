@@ -124,6 +124,7 @@ Now that we have our GOLD AMI, let's install the project specific build dependen
    brew install jq
 
    echo "Install Amplify CLI"
+   /usr/sbin/softwareupdate --install-rosetta --agree-to-license # on Apple Silicon, manually install Rosetta first
    curl -sL https://aws-amplify.github.io/amplify-cli/install | bash && $SHELL
 
    echo "Prepare AWS CLI configuration"
