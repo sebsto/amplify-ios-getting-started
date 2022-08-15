@@ -115,51 +115,22 @@ GraphQL endpoint: https://yourid.appsync-api.eu-central-1.amazonaws.com/graphql
 
 ## Add API client library to the Xcode project
 
-Before going to the code, you add the Amplify API Library to the dependencies of your project.  Open the `Podfile` file and **add the line** with `AmplifyPlugins/AWSAPIPlugin` or copy / paste the entire file below.
+Before going to the code, you add the Amplify API Library to the dependencies of your project.  Navigate back to the **General** tab of your target and select **AWSAPIPlugin** then click **Add**:
 
-```Podfile
-# you need at least version 13.0 for this tutorial, more recent versions are valid too
-platform :ios, '13.0'
+![Select AWSAPIPlugin as dependencies](img/select-awsapiplugin-dependency.png)
 
-target 'getting started' do
-  # Comment the next line if you don't want to use dynamic frameworks
-  use_frameworks!
+You have now added **AWSAPIPlugin** as a dependency for your project:
 
-  # Pods for getting started
-  pod 'Amplify', '~> 1.0'                             # required amplify dependency
-  pod 'Amplify/Tools', '~> 1.0'                       # allows to call amplify CLI from within Xcode
-
-  pod 'AmplifyPlugins/AWSCognitoAuthPlugin', '~> 1.0' # support for Cognito user authentication
-  pod 'AmplifyPlugins/AWSAPIPlugin', '~> 1.0'         # support for GraphQL API
-
-end
-```
-
-In a terminal, **execute the command**:
-
-```zsh
-pod install
-```
-
-The command takes a few moments to complete. You should see this (actual version numbers may vary):
-
-```zsh
-Analyzing dependencies
-Downloading dependencies
-Installing AmplifyPlugins 1.0.4
-Installing AppSyncRealTimeClient (1.1.6)
-Installing ReachabilitySwift (5.0.0)
-Installing Starscream (3.0.6)
-Generating Pods project
-Integrating client project
-Pod installation complete! There are 4 dependencies from the Podfile and 11 total pods installed.
-```
+![All dependencies with API added](img/awsapiplugin-as-dependency.png)
 
 ## Initialize Amplify Libs at Runtime
 
 Back to Xcode, open `Backend.swift` and add a line in the Amplify initialisation sequence in `private init()` method. Complete code block should lool like this:
 
 ```Swift
+// at top of file
+import AWSAPIPlugin
+
 // initialize amplify
 do {
    try Amplify.add(plugin: AWSCognitoAuthPlugin())

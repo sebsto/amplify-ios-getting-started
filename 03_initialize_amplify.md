@@ -20,19 +20,15 @@ To start to use AWS Amplify in your application, you must install the Amplify co
 
 ## Install Amplify CLI
 
-AWS Amplify CLI depends on [Node.js](https://nodejs.org/en/), refer to [the prerequisites section in the introduction](/01_introduction.md) to install Node.js.
-
 To install AWS Amplify CLI, open a Terminal, and **type the following command**:
 
 ```zsh
 ## Install Amplify CLI
-npm install -g @aws-amplify/cli
+curl -sL https://aws-amplify.github.io/amplify-cli/install | bash && $SHELL
 
 ## Verify installation and version
 amplify --version
-# Scanning for plugins...
-# Plugin scan successful
-# 6.1.0
+# 9.1.0
 ```
 
 ## Initialize an Amplify Backend
@@ -61,14 +57,21 @@ Initialize the Amplify project structure and configuration file. **Execute the f
 
 ```zsh
 amplify init
-```
 
-- *? Enter a name for your project (iOSGettingStarted)*: accept the default, press **enter**
-- *? Enter a name for the environment (dev)*: accept the default, press **enter**
-- *? Choose your default editor*: use the arrow key to select your favorite text editor an press **enter**
-- *? Choose the type of app that you're building*: iOS is already selected, press **enter**
-- *? Do you want to use an AWS profile?*, Y, press **enter**
-- *? Please choose the profile you want to use*: use the arrow keys to select your profile and press **enter**.
+? Enter a name for the project (iOSGettingStarted): accept the default, press enter
+The following configuration will be applied:
+
+Project information
+| Name: iOSGettingStarted
+| Environment: dev
+| Default editor: Visual Studio Code
+| App type: ios
+
+? Initialize the project with the above configuration? Yes, press enter
+Using default provider  awscloudformation, press enter
+? Select the authentication method you want to use: AWS profile, press enter
+? Please choose the profile you want to use: default, press enter
+```
 
 You can create a profile using AWS CLI using `aws configure --profile <name>` if you don't have one yet.
 
@@ -84,93 +87,21 @@ Your project has been successfully initialized and connected to the cloud!
 
 ## Add Amplify Librairies to your Project
 
-1. Before starting this step, please make sure that **you close Xcode**.
+1. Switch back to Xcode. Select `File > Add Packages...`
 
-   Open a terminal and change directories to your project. For example, if you created your project in the folder `~/Developer`, you can:
+![Xcode Add Packages toolbar option](img/xcode-add-packages.png)
 
-    ```zsh
-    cd ~/Developer/iOS\ Getting\ Started
-    ```
+2. Enter the Amplify iOS GitHub repo URL (https://github.com/aws-amplify/amplify-ios) into the search bar and hit **Enter**. Wait for the result to load. You'll see the Amplify iOS repository rules for which version of Amplify you want Swift Package Manager to install. Choose the dependency rule **Up to Next Major Version**, as it will use the latest compatible version of the dependency that can be detected from the main branch, then click **Add Package**.
 
-    To verify you are in the correct directory, it should look like this:
+![Amplify iOS repo URL in Add Packages search bar](img/search-for-amplify-repo.png)
 
-    ```zsh
-    ➜  iOS Getting Started git:(master) ✗ ls -al
-    total 32
-    drwxr-xr-x   9 stormacq  admin   288 Jul  8 15:09 .
-    drwxr-xr-x  17 stormacq  admin   544 Jul  6 16:20 ..
-    -rw-r--r--@  1 stormacq  admin  6148 Jul  8 15:06 .DS_Store
-    drwxr-xr-x   6 stormacq  admin   192 Jul  8 15:26 amplify
-    -rw-r--r--   1 stormacq  admin    64 Jul  8 15:26 amplifyconfiguration.json
-    -rw-r--r--   1 stormacq  admin   116 Jul  8 15:26 awsconfiguration.json
-    drwxr-xr-x   9 stormacq  admin   288 Jul  6 16:12 iOS Getting Started
-    drwxr-xr-x@  5 stormacq  admin   160 Jul  8 15:09 iOS Getting Started.xcodeproj
-    ```
+3. Lastly, choose which of the libraries you want added to your project. For this tutorial, select Amplify, then click **Add Package**.
 
-2. To initialize your project with the [CocoaPods package manager](https://cocoapods.org/), **execute the command**:
-
-   ```zsh
-   ## is Xcode really closed ?
-
-   ## Initialize the Amplify Project
-   pod init
-   ```
-
-   After doing this, you should see a newly created file called `Podfile`. This file is used to describe what packages your project depends on.
-
-3. **Update `Podfile`** to include the following pods and update the platform:
-
-    ```Podfile
-    # you need at least version 13.0 for this tutorial, more recent versions are valid too
-    platform :ios, '13.0'
-
-    target 'iOS Getting Started' do
-      # Comment the next line if you don't want to use dynamic frameworks
-      use_frameworks!
-
-      # Pods for getting started
-      pod 'Amplify', '~> 1.0'             # required amplify dependency
-      pod 'Amplify/Tools', '~> 1.0'       # allows to call amplify CLI from within Xcode
-
-    end
-    ```
-
-4. To download and install the Amplify librairies into your project, **execute the command**:
-
-    ```zsh
-    pod install --repo-update
-    ```
-
-5. After doing this, you should now see a file called `iOS Getting Started.xcworkspace`. You are required to use this file from now on instead of the `iOS Getting Started.xcodeproj` file.
-
-    Your directory should now look like this:
-
-    ```zsh
-    ➜  iOS Getting Started git:(master) ✗ ls -al
-    total 32
-    drwxr-xr-x   9 stormacq  admin   288 Jul  8 15:09 .
-    drwxr-xr-x  17 stormacq  admin   544 Jul  6 16:20 ..
-    -rw-r--r--@  1 stormacq  admin  6148 Jul  8 15:06 .DS_Store
-    drwxr-xr-x   6 stormacq  admin   192 Jul  8 15:26 amplify
-    -rw-r--r--   1 stormacq  admin    64 Jul  8 15:26 amplifyconfiguration.json
-    -rw-r--r--   1 stormacq  admin   116 Jul  8 15:26 awsconfiguration.json
-    -rw-r--r--   1 stormacq  admin   394 Jul  8 15:09 Podfile
-    -rw-r--r--   1 stormacq  admin   359 Jul  8 15:09 Podfile.lock
-    drwxr-xr-x   8 stormacq  admin   256 Jul  8 15:09 Pods
-    drwxr-xr-x   9 stormacq  admin   288 Jul  6 16:12 iOS Getting Started
-    drwxr-xr-x@  5 stormacq  admin   160 Jul  8 15:09 iOS Getting Started.xcodeproj
-    drwxr-xr-x   3 stormacq  admin    96 Jul  8 15:09 iOS Getting Started.xcworkspace
-    ```
-
-    To open your workspace in Xcode, **execute the command**:
-
-    ```zsh
-    xed .
-    ```
+![AWS Amplify Package Products](img/amplify-package-product.png)
 
 ## Initialize Amplify at Runtime
 
-At runtime, the Amplify libraries require the amplify configuration files generated by the CLI.
+At runtime, the Amplify libraries require the Amplify configuration files generated by the CLI.
 
 1. Add the Amplify Configuration Files to our Project
 
@@ -187,7 +118,6 @@ At runtime, the Amplify libraries require the amplify configuration files genera
     Create a new swift text file `Backend.swift`, add it to your Xcode project (**CTRL-N**) and add this code:
 
     ```swift
-
     import UIKit
     import Amplify
 
@@ -211,16 +141,13 @@ At runtime, the Amplify libraries require the amplify configuration files genera
 
     We initialize our singleton `Backend` object when application finishes launching.
 
-    Open the `AppDelegate.swift` file and add `Backend.initialize()` in the `application(:didFinishLaunchingWithOptions:)` method, just like this:
+    Open the `<PROJECT_NAME>App.swift` file and add `Backend.initialize()` in the `init()` method, just like this:
 
     ```swift
-    // inside the AppDelegate.swift file 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-
+    // inside the <PROJECT_NAME>App.swift file 
+    init() {
         // initialize Amplify
         Backend.initialize()
-
-        return true
     }
     ```
 
