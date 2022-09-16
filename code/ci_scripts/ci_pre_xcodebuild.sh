@@ -46,13 +46,10 @@ PROVIDERS="{\
 echo "---------------------------------------------------------"
 echo $HOME
 echo "---------------------------------------------------------"
-ls -alR ~
-echo "---------------------------------------------------------"
-ls -alR ~/.amplify
+ls -alR ~/.amplify/bin
 echo "---------------------------------------------------------"
 
-$AMPLIFY_CLI=$HOME/.amplify/bin/amplify
-$AMPLIFY_CLI pull        \
+~/.amplify/bin/amplify pull \
 --region $AMPLIFY_REGION \
 --amplify $AMPLIFY       \
 --frontend $FRONTEND     \
