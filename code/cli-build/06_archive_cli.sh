@@ -17,7 +17,9 @@ if [ ${arch_name} = "arm64" ]; then
     AWS_CLI=/opt/homebrew/bin/aws
 else
     AWS_CLI=/usr/local/bin/aws 
-fiREGION=$(curl -s 169.254.169.254/latest/meta-data/placement/region/)
+fi
+
+REGION=$(curl -s 169.254.169.254/latest/meta-data/placement/region/)
 
 APPLE_ID_SECRET=apple-id
 APPLE_SECRET_SECRET=apple-secret
