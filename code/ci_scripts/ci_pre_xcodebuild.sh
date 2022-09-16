@@ -43,7 +43,7 @@ PROVIDERS="{\
 \"awscloudformation\":$AWSCLOUDFORMATIONCONFIG\
 }"
 
-
+$AMPLIFY_CLI=$HOME/.amplify/bin/amplify
 $AMPLIFY_CLI pull        \
 --region $AMPLIFY_REGION \
 --amplify $AMPLIFY       \
