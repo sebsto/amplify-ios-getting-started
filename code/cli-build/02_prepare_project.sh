@@ -17,12 +17,12 @@ REGION=$(curl -s 169.254.169.254/latest/meta-data/placement/region/)
 HOME=/Users/ec2-user
 export LANG=en_US.UTF-8
 
-pushd $HOME 
-if [ -d amplify-ios-getting-started ]; then
-    rm -rf amplify-ios-getting-started
-fi
-git clone https://github.com/sebsto/amplify-ios-getting-started.git
-popd
+# pushd $HOME 
+# if [ -d amplify-ios-getting-started ]; then
+#     rm -rf amplify-ios-getting-started
+# fi
+# git clone https://github.com/sebsto/amplify-ios-getting-started.git
+# popd
 
 CODE_DIR=$HOME/amplify-ios-getting-started/code
 echo "Changing to code directory at $CODE_DIR"
