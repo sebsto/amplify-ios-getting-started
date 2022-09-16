@@ -632,6 +632,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 56U756R2L2;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 56U756R2L2;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -643,7 +644,11 @@
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=*]" = "com.stormacq.ios.getting-started-ui-tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "getting-started-ios-tests-xctrunner";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "amplify-ios-getting-started-uitests";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -660,6 +665,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 56U756R2L2;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 56U756R2L2;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -671,7 +677,11 @@
 				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = "com.stormacq.ios.getting-started-ui-tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "getting-started-ios-tests-xctrunner";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "amplify-ios-getting-started-uitests";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
