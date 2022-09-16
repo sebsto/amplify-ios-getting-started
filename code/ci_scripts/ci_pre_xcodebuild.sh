@@ -51,7 +51,7 @@ echo "---------------------------------------------------------"
 pwd
 echo "---------------------------------------------------------"
 
-pushd code
+pushd /Volumes/workspace/repository/code
 ~/.amplify/bin/amplify pull \
 --region $AMPLIFY_REGION \
 --amplify $AMPLIFY       \
