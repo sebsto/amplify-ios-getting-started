@@ -33,7 +33,7 @@ struct ListRow: View {
 }
 
 struct ContentView: View {
-    @ObservedObject private var userData: UserData = .shared
+    @ObservedObject public var user: UserData
     @State var showCreateNote = false
     
     @State var name : String        = "New Note"
@@ -43,22 +43,26 @@ struct ContentView: View {
     var body: some View {
 
         ZStack {
-            if (userData.isSignedIn) {
+            if ($user.isSignedIn.wrappedValue) {
                 NavigationView {
                     List {
-                        ForEach(userData.notes) { note in
+                        ForEach(user.notes) { note in
                             ListRow(note: note)
                         }.onDelete { indices in
                             indices.forEach {
                                 // removing from user data will refresh UI
-                                let note = self.userData.notes.remove(at: $0)
+                                let note = self.user.notes.remove(at: $0)
                                 
                                 // asynchronously remove from database
-                                Backend.shared.deleteNote(note: note)
+                                Task {
+                                    await Backend.shared.deleteNote(note: note)
+                                }
                                 
                                 if let n = note.imageName {
-                                    // asynchronously delete the image
-                                    Backend.shared.deleteImage(name: n)
+                                    Task {
+                                        // asynchronously delete the image
+                                        await Backend.shared.deleteImage(name: n)
+                                    }
                                 }
                             }
                         }
@@ -82,7 +86,7 @@ struct ContentView: View {
                 .navigationViewStyle(.stack)
 
                 .sheet(isPresented: $showCreateNote) {
-                    AddNoteView(isPresented: self.$showCreateNote, userData: self.userData)
+                    AddNoteView(isPresented: self.$showCreateNote, userData: self.user)
                 }
             } else {
                 VStack {
@@ -148,13 +152,17 @@ struct AddNoteView: View {
                         note.imageName = UUID().uuidString
                         note.image = Image(uiImage: smallImage)
 
-                        // asynchronously store the image (and assume it will work)
-                        print("Initiating the image upload")
-                        Backend.shared.storeImage(name: note.imageName!, image: (smallImage.pngData())!)
+                        Task {
+                            // asynchronously store the image (and assume it will work)
+                            print("Initiating the image upload")
+                            await Backend.shared.storeImage(name: note.imageName!, image: (smallImage.pngData())!)
+                        }
                     }
                     
                     // asynchronously store the note (and assume it will succeed)
-                    Backend.shared.createNote(note: note)
+                    Task {
+                        await Backend.shared.createNote(note: note)
+                    }
                     
                     // add the new note in our userdata, this will refresh UI
                     withAnimation { self.userData.notes.append(note) }
@@ -168,7 +176,7 @@ struct AddNoteView: View {
     
 struct SignInButton: View {
     var body: some View {
-        Button(action: { Backend.shared.signIn() }){
+        Button(action: { Task { await Backend.shared.signIn() }}){
             HStack {
                 Image(systemName: "person.fill")
                     .scaleEffect(1.5)
@@ -187,7 +195,7 @@ struct SignInButton: View {
 struct SignOutButton : View {
 
     var body: some View {
-        Button(action: { Backend.shared.signOut() }) {
+        Button(action: { Task { await Backend.shared.signOut() }}) {
                 Text("Sign Out")
         }
     }
@@ -197,9 +205,9 @@ struct SignOutButton : View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
 
-        prepareTestData()
+        let user = prepareTestData()
         
-        return ContentView()
+        return ContentView(user: user)
 //        return AddNoteView(isPresented: .constant(true), userData: UserData.shared)
     }
 }

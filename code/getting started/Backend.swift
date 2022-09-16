@@ -1,61 +1,58 @@
-import Foundation
+import SwiftUI
 import Amplify
-import AmplifyPlugins
+import AWSCognitoAuthPlugin
+import AWSAPIPlugin
+import AWSS3StoragePlugin
 
 class Backend  {
     
     static let shared = Backend()
     
-    @discardableResult
-    static func initialize() -> Backend {
-        return .shared
-    }
     private init() {
         // initialize amplify
         do {
-           try Amplify.add(plugin: AWSCognitoAuthPlugin())
-           try Amplify.add(plugin: AWSAPIPlugin(modelRegistration: AmplifyModels()))
-           try Amplify.add(plugin: AWSS3StoragePlugin())
+//            Amplify.Logging.logLevewl = .info
+
+            try Amplify.add(plugin: AWSCognitoAuthPlugin())
+            try Amplify.add(plugin: AWSAPIPlugin(modelRegistration: AmplifyModels()))
+            try Amplify.add(plugin: AWSS3StoragePlugin())
             
-           try Amplify.configure()
-           print("Initialized Amplify")
+            try Amplify.configure()
+            print("Initialized Amplify")
         } catch {
-           print("Could not initialize Amplify: \(error)")
+            print("Could not initialize Amplify: \(error)")
         }
         
-        // let's check if user is signedIn or not
-        Amplify.Auth.fetchAuthSession { (result) in
-
-            do {
-                let session = try result.get()
-                
-                // let's update UserData and the UI
-                self.updateUserData(withSignInStatus: session.isSignedIn)
-                
-            } catch {
-                print("Fetch auth session failed with error - \(error)")
-            }
-
+        // asynchronously
+        Task {
+            // let's check if user is signedIn or not
+            let session = try await Amplify.Auth.fetchAuthSession()
+            
+            // let's update UserData and the UI
+            await self.updateUserData(withSignInStatus: session.isSignedIn)
         }
         
         // listen to auth events.
         // see https://github.com/aws-amplify/amplify-ios/blob/master/Amplify/Categories/Auth/Models/AuthEventName.swift
-        _ = Amplify.Hub.listen(to: .auth) { (payload) in
-
+        let _  = Amplify.Hub.listen(to: .auth) { payload in
+            
             switch payload.eventName {
-
+                
             case HubPayload.EventName.Auth.signedIn:
-                print("==HUB== User signed In, update UI")
-                self.updateUserData(withSignInStatus: true)
-
+                Task {
+                    print("==HUB== User signed In, update UI")
+                    await self.updateUserData(withSignInStatus: true)
+                }
             case HubPayload.EventName.Auth.signedOut:
-                print("==HUB== User signed Out, update UI")
-                self.updateUserData(withSignInStatus: false)
-
+                Task {
+                    print("==HUB== User signed Out, update UI")
+                    await self.updateUserData(withSignInStatus: false)
+                }
             case HubPayload.EventName.Auth.sessionExpired:
-                print("==HUB== Session expired, show sign in aui")
-                self.updateUserData(withSignInStatus: false)
-
+                Task {
+                    print("==HUB== Session expired, show sign in aui")
+                    await self.updateUserData(withSignInStatus: false)
+                }
             default:
                 //print("==HUB== \(payload)")
                 break
@@ -65,194 +62,154 @@ class Backend  {
     
     // MARK: Authentication
     // change our internal state, this triggers an UI update on the main thread
-    func updateUserData(withSignInStatus status : Bool) {
-        DispatchQueue.main.async() {
-            let userData : UserData = .shared
-            userData.isSignedIn = status
-
-            // when user is signed in, query the database, otherwise empty our model
-            if (status && userData.notes.isEmpty) {
-                self.queryNotes()
-            } else {
-                userData.notes = []
-            }
+    @MainActor
+    func updateUserData(withSignInStatus status : Bool) async {
+        let userData : UserData = .shared
+        userData.isSignedIn = status
+        
+        // when user is signed in, query the database, otherwise empty our model
+        if (status && userData.notes.isEmpty) {
+            userData.notes = await self.queryNotes()
+        } else {
+            userData.notes = []
         }
     }
     
-    public func signIn() {
-
-        // UIApplication.shared.windows.first is dprecated on iOS 15
+    @MainActor
+    private func anchorWindow() async -> UIWindow {
+        // UIApplication.shared.windows.first is deprecated on iOS 15
         // solution from https://stackoverflow.com/questions/57134259/how-to-resolve-keywindow-was-deprecated-in-ios-13-0/57899013
         
         let w = UIApplication
-                    .shared
-                    .connectedScenes
-                    .compactMap { $0 as? UIWindowScene }
-                    .flatMap { $0.windows }
-                    .first { $0.isKeyWindow }
+            .shared
+            .connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .flatMap { $0.windows }
+            .first { $0.isKeyWindow }
         
-        
-        Amplify.Auth.signInWithWebUI(presentationAnchor: w!) { result in
-            switch result {
-            case .success(_):
-                print("Sign in succeeded")
-            case .failure(let error):
-                print("Sign in failed \(error)")
-            }
-        }
+        return w!
     }
-
-    // signout
-    public func signOut() {
-
-        Amplify.Auth.signOut() { (result) in
-            switch result {
-            case .success:
-                print("Successfully signed out")
-            case .failure(let error):
-                print("Sign out failed with error \(error)")
+    
+    public func signIn() async {
+        
+        do {
+            let window = await self.anchorWindow()
+            let result = try await Amplify.Auth.signInWithWebUI(presentationAnchor: window)
+            if (result.isSignedIn) {
+                print("Sign in succeeded")
+            } else {
+                print("Signin failed or required a next step")
             }
+        } catch {
+            print("Error while presenting web ui : \(error)")
         }
     }
     
-//    // used by unit tests
-//    func isSignedIn() async -> Bool {
-//        
-//        return await withCheckedContinuation({
-//            (continuation: CheckedContinuation<Bool, Never>) in
-//                Amplify.Auth.fetchAuthSession { (result) in
-//                    do {
-//                        let session = try result.get()
-//                        
-//                        // let's return the value
-//                        continuation.resume(returning: session.isSignedIn)
-//                        
-//                    } catch {
-//                        print("Fetch auth session failed with error - \(error)")
-//                        continuation.resume(returning: false)
-//                    }
-//
-//                }
-//        })
-//
-//    }
+    // signout
+    public func signOut() async {
+        
+        let _ =  await Amplify.Auth.signOut()
+    }
     
     // MARK: API Access
     
-    func queryNotes() {
+    func queryNotes() async -> [ Note ] {
         
-        Amplify.API.query(request: .list(NoteData.self)) { event in
-            switch event {
-            case .success(let result):
-                switch result {
-                case .success(let notesData):
-                    print("Successfully retrieved list of Notes")
-
-                    for n in notesData {
-                        let note = Note.init(from: n)
-                        DispatchQueue.main.async() {
-                            UserData.shared.notes.append(note)
-                        }
-                    }
-
-                case .failure(let error):
-                    print("Can not retrieve result : error  \(error.errorDescription)")
-                }
-            case .failure(let error):
-                print("Can not retrieve Notes : error \(error)")
+        do {
+            let queryResult = try await Amplify.API.query(request: .list(NoteData.self))
+            print("Successfully retrieved list of Notes")
+            
+            // convert [ NoteData ] to [ Note ]
+            let result = try queryResult.get().map { noteData in
+                Note.init(from: noteData)
             }
+            
+            return result
+            
+        } catch let error as APIError {
+            print("Failed to load data from api : \(error)")
+        } catch {
+            print("Unexpected error while calling API : \(error)")
         }
         
-//        let noteData = NoteData(id: "000", name: "Seb's note", description: "My description", image: "8560906F-5440-47B5-A5B9-1C1BF6478C7A")
-//        let note = Note.init(from: noteData)
-//        UserData.shared.notes.append(note)
+        return []
         
     }
     
-    func createNote(note: Note) {
+    func createNote(note: Note) async {
         
-        Amplify.API.mutate(request: .create(note.data)) { event in
-            switch event {
-            case .success(let result):
-                switch result {
-                case .success(let data):
-                    print("Successfully created note: \(data)")
-                case .failure(let error):
-                    print("Got failed result with \(error.errorDescription)")
-                }
-            case .failure(let error):
-                print("Got failed event with error \(error)")
-            }
+        do {
+            let result = try await Amplify.API.mutate(request: .create(note.data))
+            let data = try result.get()
+            print("Successfully created note: \(data)")
+        } catch let error as APIError {
+            print("Failed to create note: \(error)")
+        } catch {
+            print("Unexpected error while calling create API : \(error)")
         }
+
     }
     
-    func deleteNote(note: Note) {
+    func deleteNote(note: Note) async {
         
-        Amplify.API.mutate(request: .delete(note.data)) { event in
-            switch event {
-            case .success(let result):
-                switch result {
-                case .success(let data):
-                    print("Successfully deleted note: \(data)")
-                case .failure(let error):
-                    print("Got failed result with \(error.errorDescription)")
-                }
-            case .failure(let error):
-                print("Got failed event with error \(error)")
-            }
+        do {
+            let result = try await Amplify.API.mutate(request: .delete(note.data))
+            let data = try result.get()
+            print("Successfully deleted note: \(data)")
+            
+        } catch let error as APIError {
+            print("Failed to delete note: \(error)")
+        } catch {
+            print("Unexpected error while calling delete API : \(error)")
         }
     }
     
     // MARK: Image Access
     
-    func storeImage(name: String, image: Data) {
+    func storeImage(name: String, image: Data) async {
         
-        let options = StorageUploadDataRequest.Options(accessLevel: .private)
-        Amplify.Storage.uploadData(key: name, data: image, options: options,
-            progressListener: { progress in
-                // optionally update a progress bar here
-            }, resultListener: { event in
-                switch event {
-                case .success(let data):
-                    print("Image upload completed: \(data)")
-                case .failure(let storageError):
-                    print("Image upload failed: \(storageError.errorDescription). \(storageError.recoverySuggestion)")
-            }
-        })
+        do {
+            let options = StorageUploadDataRequest.Options(accessLevel: .private)
+            let task = try await Amplify.Storage.uploadData(key: name, data: image, options: options)
+            let result = try await task.value
+            print("Image upload completed: \(result)")
+
+        } catch let error as StorageError {
+            print("Can not upload image \(name): \(error.errorDescription). \(error.recoverySuggestion)")
+        } catch {
+            print("Unknown error when uploading image \(name): \(error)")
+        }
     }
     
-    func retrieveImage(name: String, completed: @escaping (Data) -> Void) {
-
-        let options = StorageDownloadDataRequest.Options(accessLevel: .private)
-        Amplify.Storage.downloadData(key: name, options: options,
-            progressListener: { progress in
-                // in case you want to monitor progress
-            }, resultListener: { (event) in
-                switch event {
-                case let .success(data):
-                    print("Image \(name) loaded")
-                    completed(data)
-                case let .failure(storageError):
-                    print("Can not download image: \(storageError.errorDescription). \(storageError.recoverySuggestion)")
-                }
-            }
-        )
-    }
-
-    func deleteImage(name: String) {
+    func retrieveImage(name: String) async -> Data {
         
-        let options = StorageRemoveRequest.Options(accessLevel: .private)
-        Amplify.Storage.remove(key: name, options: options,
-            resultListener: { (event) in
-                switch event {
-                case let .success(data):
-                    print("Image \(data) deleted")
-                case let .failure(storageError):
-                    print("Can not delete image: \(storageError.errorDescription). \(storageError.recoverySuggestion)")
-                }
-            }
-        )
-    }
+        do {
+            let options = StorageDownloadDataRequest.Options(accessLevel: .private)
+            let task = try await Amplify.Storage.downloadData(key: name, options: options)
+            let data = try await task.value
+            print("Successfully downloaded image: \(data)")
 
+            return data
+            
+        } catch let error as StorageError {
+            print("Can not retrieve image \(name): \(error.errorDescription). \(error.recoverySuggestion)")
+        } catch {
+            print("Unknown error when retrieving image \(name): \(error)")
+        }
+        return Data() // could return a default image
+
+    }
+    
+    func deleteImage(name: String) async {
+        
+        do {
+            let options = StorageRemoveRequest.Options(accessLevel: .private)
+            let result = try await Amplify.Storage.remove(key: name, options: options)
+            print("Image \(name) deleted (result: \(result)")
+        } catch let error as StorageError {
+            print("Can not delete image \(name): \(error.errorDescription). \(error.recoverySuggestion)")
+        } catch {
+            print("Unknown error when deleting image \(name): \(error)")
+        }
+    }
 }
-    

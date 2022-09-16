@@ -22,7 +22,7 @@ echo "Install JQ"
 brew install jq
 
 echo "Install Amplify CLI"
-/usr/sbin/softwareupdate --install-rosetta --agree-to-license # on Apple Silicon, manually install Rosetta first
+# /usr/sbin/softwareupdate --install-rosetta --agree-to-license # on Apple Silicon, manually install Rosetta first
 curl -sL https://aws-amplify.github.io/amplify-cli/install | bash && $SHELL
 
 echo "Prepare AWS CLI configuration"

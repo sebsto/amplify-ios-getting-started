@@ -6,6 +6,16 @@
 //  Copyright © 2020 Stormacq, Sebastien. All rights reserved.
 //
 
+/*
+ Please check
+ NoteData+Schema.swift :26
+ model.listPluralName = "NoteData"
+
+ https://github.com/aws-amplify/amplify-ios/issues/1443
+ https://github.com/aws-amplify/amplify-codegen/pull/255
+ https://github.com/aws-amplify/amplify-ios/pull/1451
+ */
+
 import Foundation
 import SwiftUI
 
@@ -33,24 +43,37 @@ class Note : Identifiable, ObservableObject {
     }
 
     // the callback is just used for testability
-    convenience init(from data: NoteData, _ completion: ((Image?) -> Void)? = nil ) {
+    //convenience init(from data: NoteData, _ completion: ((Image?) -> Void)? = nil ) {
+    convenience init(from data: NoteData) {
         self.init(id: data.id, name: data.name, description: data.description, image: data.image)
         
         if let name = self.imageName {
-            // asynchronously download the image
-            Backend.shared.retrieveImage(name: name) { (data) in
-                DispatchQueue.main.async() {
-                    let uim = UIImage(data: data)
-                    self.image = Image(uiImage: uim!)
-                    if let completion = completion {
-                        completion(self.image)
-                    }
-                }
+            
+            // asynchronously download the image.
+            Task {
+                let data = await Backend.shared.retrieveImage(name: name)
+                
+                // run in a separate function
+                // updates the UI on the main thread
+                await self.updateImageData(data)
             }
+            
         }
         // store API object for easy retrieval later
         self._data = data
     }
+
+    // asynchronously update the UI
+    @MainActor
+    private func updateImageData(_ data: Data) async {
+        
+        // convert Data -> UIImage -> Image
+        let uim = UIImage(data: data)
+        self.image = Image(uiImage: uim!) // this line will trigger an UI update
+
+    }
+    
+    // MARK: mapping between Note and NoteData
     
     fileprivate var _data : NoteData?
     

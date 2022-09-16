@@ -7,7 +7,6 @@
 //
 
 import XCTest
-
 @testable import getting_started
 
 
@@ -30,13 +29,11 @@ class getting_started_unit_tests: XCTestCase {
         //this is just for a demo. Test is not really pertinent as it just tests swift array's append
         let note1 = Note(id: "000", name: "Seb's note", description: "My description", image: "s3 image")
         userData.notes.append(note1)
-        
-        XCTAssert(userData.notes.count == 1, "Wrong number of notes in the array")
+        XCTAssertEqual(userData.notes.count, 1, "Wrong number of notes in the array")
 
         let note2 = Note(id: "001", name: "Seb's note", description: "My description", image: "s3 image")
         userData.notes.append(note2)
-        
-        XCTAssert(userData.notes.count == 2, "Wrong number of notes in the array")
+        XCTAssertEqual(userData.notes.count, 2, "Wrong number of notes in the array")
 
     }
     
@@ -77,11 +74,5 @@ class getting_started_unit_tests: XCTestCase {
 //        }
 //
 //    }
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
 
 }

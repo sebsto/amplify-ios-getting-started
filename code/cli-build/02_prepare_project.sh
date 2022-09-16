@@ -5,7 +5,13 @@ set -o pipefail
 # Thanks to 
 # https://medium.com/appssemble/a-guide-to-writing-your-own-ios-ci-cd-integration-script-186be1b99575
 
-AWS_CLI=/usr/local/bin/aws
+arch_name="$(uname -m)"
+if [ ${arch_name} = "arm64" ]; then 
+    AWS_CLI=/opt/homebrew/bin/aws
+else
+    AWS_CLI=/usr/local/bin/aws 
+fi
+
 AMPLIFY_CLI=$HOME/.amplify/bin/amplify
 REGION=$(curl -s 169.254.169.254/latest/meta-data/placement/region/)
 HOME=/Users/ec2-user
@@ -23,7 +29,11 @@ echo "Changing to code directory at $CODE_DIR"
 pushd $CODE_DIR
 
 echo "Installing pods"
-/usr/local/bin/pod install
+if [ ${arch_name} = "arm64" ]; then 
+    /opt/homebrew/bin/pod install
+else
+    /usr/local/bin/pod install
+fi
 
 echo "Pulling amplify environment"
 
