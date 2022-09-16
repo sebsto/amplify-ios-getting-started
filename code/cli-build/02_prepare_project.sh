@@ -28,13 +28,6 @@ CODE_DIR=$HOME/amplify-ios-getting-started/code
 echo "Changing to code directory at $CODE_DIR"
 pushd $CODE_DIR
 
-echo "Installing pods"
-if [ ${arch_name} = "arm64" ]; then 
-    /opt/homebrew/bin/pod install
-else
-    /usr/local/bin/pod install
-fi
-
 echo "Pulling amplify environment"
 
 AMPLIFY_APPID_SECRET=amplify-app-id
@@ -69,7 +62,7 @@ $AMPLIFY_CLI pull \
 --amplify $AMPLIFY \
 --frontend $FRONTEND \
 --providers $PROVIDERS \
---yes --region $REGION
+--yes --region $DEFAULT_REGION
 
 
 # echo "Generate code for application models"
