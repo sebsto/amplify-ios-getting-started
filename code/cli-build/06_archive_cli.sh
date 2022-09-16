@@ -38,7 +38,7 @@ cat << EOF > $EXPORT_OPTIONS_FILE
 	<key>provisioningProfiles</key>
 	<dict>
 		<key>com.amazonaws.amplify.mobile.getting-started</key>
-		<string>getting-started-ios-dist</string>
+		<string>amplify-ios-getting-started-dist</string>
 	</dict>
 	<key>signingCertificate</key>
 	<string>Apple Distribution</string>
