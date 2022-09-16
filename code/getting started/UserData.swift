@@ -26,6 +26,13 @@ class UserData : ObservableObject {
     
     @Published var notes      : [Note] = []
     @Published var isSignedIn : Bool   = false
+    
+    // be sure we are on the main thread to update the UI
+    // changes to [ Note ] trigger a UI update
+    @MainActor
+    func addNote(_ note: Note) async {
+        self.notes.append(note)
+    }
 }
 
 class Note : Identifiable, ObservableObject {
@@ -62,7 +69,7 @@ class Note : Identifiable, ObservableObject {
         // store API object for easy retrieval later
         self._data = data
     }
-
+    
     // asynchronously update the UI
     @MainActor
     private func updateImageData(_ data: Data) async {

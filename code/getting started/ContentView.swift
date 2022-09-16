@@ -51,6 +51,7 @@ struct ContentView: View {
                         }.onDelete { indices in
                             indices.forEach {
                                 // removing from user data will refresh UI
+                                // this runs on the UI Thread : OK
                                 let note = self.user.notes.remove(at: $0)
                                 
                                 // asynchronously remove from database
@@ -165,7 +166,11 @@ struct AddNoteView: View {
                     }
                     
                     // add the new note in our userdata, this will refresh UI
-                    withAnimation { self.userData.notes.append(note) }
+                    // I use a separate method to ensure it runs on the UI Thread
+                    // (withAnimation has a different thread)
+                    withAnimation {
+                       let _ = Task { await self.userData.addNote(note) }
+                    }
                 }) {
                     Text("Create this note")
                 }
