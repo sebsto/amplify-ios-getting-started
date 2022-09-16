@@ -2,8 +2,12 @@
 set -e 
 set -o pipefail
 
-AWS_CLI=/usr/local/bin/aws
-REGION=$(curl -s 169.254.169.254/latest/meta-data/placement/region/)
+arch_name="$(uname -m)"
+if [ ${arch_name} = "arm64" ]; then 
+    AWS_CLI=/opt/homebrew/bin/aws
+else
+    AWS_CLI=/usr/local/bin/aws 
+fiREGION=$(curl -s 169.254.169.254/latest/meta-data/placement/region/)
 HOME=/Users/ec2-user
 
 BUILD_PATH="./build"
