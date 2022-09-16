@@ -1,0 +1,33 @@
+name: ContinuousIntegration
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: PrepareKeychain
+      run: code/cli-build/01_keychain_cli.sh
+    - name: Build
+      run: code/cli-build/03_build_cli.sh
+
+  test:
+
+    needs: build
+    
+    runs-on: self-hosted
+
+    steps:
+
+    - name: UnitTest
+      run: code/cli-build/04_unit_tests.sh
+    - name: UITest
+      run: code/cli-build/05_ui_tests.sh
