@@ -48,14 +48,17 @@ echo $HOME
 echo "---------------------------------------------------------"
 ls -alR ~/.amplify/bin
 echo "---------------------------------------------------------"
+pwd
+echo "---------------------------------------------------------"
 
+pushd code
 ~/.amplify/bin/amplify pull \
 --region $AMPLIFY_REGION \
 --amplify $AMPLIFY       \
 --frontend $FRONTEND     \
 --providers $PROVIDERS   \
 --yes
-
+popd
 
 # A command or script succeeded.
 echo "✅ Done."
