@@ -15,9 +15,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
     - name: PrepareKeychain
-      run: code/cli-build/01_keychain_cli.sh
+      run: code/ci_actions/01_keychain.sh
+    - name: PrepareAmplify
+      run: code/ci_actions/02_amplify.sh
     - name: Build
-      run: code/cli-build/03_build_cli.sh
+      run: code/ci_actions/03_build.sh
 
   test:
 
@@ -28,6 +30,6 @@ jobs:
     steps:
 
     - name: UnitTest
-      run: code/cli-build/04_unit_tests.sh
+      run: code/ci_actions/04_unit_tests.sh
     - name: UITest
-      run: code/cli-build/05_ui_tests.sh
+      run: code/ci_actions/05_ui_tests.sh
