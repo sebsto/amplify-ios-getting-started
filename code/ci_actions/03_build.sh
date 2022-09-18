@@ -9,7 +9,7 @@ else
     AWS_CLI=/usr/local/bin/aws 
 fi
 REGION=$(curl -s 169.254.169.254/latest/meta-data/placement/region/)
-CODE_DIR=/Users/ec2-user/actions-runner/_work/amplify-ios-getting-started/code
+CODE_DIR=/Users/ec2-user/actions-runner/_work/amplify-ios-getting-started/amplify-ios-getting-started/code
 export LANG=en_US.UTF-8
 echo "Changing to code directory at $CODE_DIR"
 pushd $CODE_DIR

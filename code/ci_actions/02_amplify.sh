@@ -13,7 +13,7 @@ else
 fi
 
 AMPLIFY_CLI=/Users/ec2-user/.amplify/bin/amplify
-CODE_DIR=/Users/ec2-user/actions-runner/_work/amplify-ios-getting-started/code
+CODE_DIR=/Users/ec2-user/actions-runner/_work/amplify-ios-getting-started/amplify-ios-getting-started/code
 REGION=$(curl -s 169.254.169.254/latest/meta-data/placement/region/)
 export LANG=en_US.UTF-8
 
