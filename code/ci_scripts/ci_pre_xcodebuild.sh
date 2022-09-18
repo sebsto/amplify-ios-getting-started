@@ -43,14 +43,6 @@ PROVIDERS="{\
 \"awscloudformation\":$AWSCLOUDFORMATIONCONFIG\
 }"
 
-echo "---------------------------------------------------------"
-echo $HOME
-echo "---------------------------------------------------------"
-ls -alR ~/.amplify/bin
-echo "---------------------------------------------------------"
-pwd
-echo "---------------------------------------------------------"
-
 pushd /Volumes/workspace/repository/code
 ~/.amplify/bin/amplify pull \
 --region $AMPLIFY_REGION \
@@ -58,8 +50,14 @@ pushd /Volumes/workspace/repository/code
 --frontend $FRONTEND     \
 --providers $PROVIDERS   \
 --yes
-popd
+
+echo "💫 Generating code"
+~/.amplify/bin/amplify codegen models
+# Not necessary to copy the files. Xcode project has a folder pointing to amplify/generated/models
+# cp amplify/generated/models/*.swift "getting started"
 
 # A command or script succeeded.
 echo "✅ Done."
+popd
+
 exit 0

@@ -65,7 +65,7 @@ $AMPLIFY_CLI pull \
 --yes --region $DEFAULT_REGION
 
 
-# echo "Generate code for application models"
+echo "Generate code for application models"
 $AMPLIFY_CLI codegen models 
 # Increase Build Number
 # https://rderik.com/blog/automating-build-and-testflight-upload-for-simple-ios-apps/

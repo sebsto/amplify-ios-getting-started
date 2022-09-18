@@ -64,6 +64,9 @@
 		00F8F9BD2705A84C00786187 /* getting_started_ui_testsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getting_started_ui_testsLaunchTests.swift; sourceTree = "<group>"; };
 		00FA7E7424A9EC46007042EA /* Backend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backend.swift; sourceTree = "<group>"; };
 		00FA7E7624AA1DB0007042EA /* CaptureImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureImageView.swift; sourceTree = "<group>"; };
+		00FD171828D5029D004C4CC9 /* ci_pre_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_pre_xcodebuild.sh; sourceTree = "<group>"; };
+		00FD171928D502B3004C4CC9 /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
+		00FD171A28D502CC004C4CC9 /* ci_post_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_xcodebuild.sh; sourceTree = "<group>"; };
 		4807AE5EEA9DBD613F5DC845 /* AmplifyModels.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; name = AmplifyModels.swift; path = amplify/generated/models/AmplifyModels.swift; sourceTree = "<group>"; };
 		5143D6592CCDA4A3277EA67D /* awsconfiguration.json */ = {isa = PBXFileReference; explicitFileType = text.json; path = awsconfiguration.json; sourceTree = "<group>"; };
 		8CF1AA48D0C5E2C960263F45 /* amplifyconfiguration.json */ = {isa = PBXFileReference; explicitFileType = text.json; path = amplifyconfiguration.json; sourceTree = "<group>"; };
@@ -103,6 +106,7 @@
 		0084716424A60D82002CD90D = {
 			isa = PBXGroup;
 			children = (
+				00FD171728D5028C004C4CC9 /* ci_scripts */,
 				0084716F24A60D82002CD90D /* getting started */,
 				00E757492704CB720018F166 /* getting started unit tests */,
 				00F8F9BA2705A84C00786187 /* getting started ui tests */,
@@ -163,6 +167,16 @@
 				00F8F9BD2705A84C00786187 /* getting_started_ui_testsLaunchTests.swift */,
 			);
 			path = "getting started ui tests";
+			sourceTree = "<group>";
+		};
+		00FD171728D5028C004C4CC9 /* ci_scripts */ = {
+			isa = PBXGroup;
+			children = (
+				00FD171928D502B3004C4CC9 /* ci_post_clone.sh */,
+				00FD171828D5029D004C4CC9 /* ci_pre_xcodebuild.sh */,
+				00FD171A28D502CC004C4CC9 /* ci_post_xcodebuild.sh */,
+			);
+			path = ci_scripts;
 			sourceTree = "<group>";
 		};
 		4BAE36455AC9823D09E807BF /* AmplifyConfig */ = {
