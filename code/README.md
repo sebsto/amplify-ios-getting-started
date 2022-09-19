@@ -1,4 +1,10 @@
-![Build status](https://codebuild.us-east-2.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiVFpRMy9XOXVubXFyR1dRTHhXRGdEZjBYU3Q2R2lsQ2R0RjRpaDRGcllQYjdaUmQ2V01kVWZ2OENvZGVJckRIMkdVc1YrK0pTQjVQa21mN3hQdW5iQUxvPSIsIml2UGFyYW1ldGVyU3BlYyI6IlM1dk41dDhNVDZ1dWNXN0UiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=main)
+<!--![Build status](https://codebuild.us-east-2.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiVFpRMy9XOXVubXFyR1dRTHhXRGdEZjBYU3Q2R2lsQ2R0RjRpaDRGcllQYjdaUmQ2V01kVWZ2OENvZGVJckRIMkdVc1YrK0pTQjVQa21mN3hQdW5iQUxvPSIsIml2UGFyYW1ldGVyU3BlYyI6IlM1dk41dDhNVDZ1dWNXN0UiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=main)
+-->
+
+[![Build Status](https://github.com/sebsto/amplify-ios-getting-started/actions/workflows/ContinuousIntegration.yml/badge.svg)](https://github.com/sebsto/amplify-ios-getting-started/actions/workflows/ContinuousIntegration.yml)
+![language](https://img.shields.io/badge/swift-5.7-blue)
+![platform](https://img.shields.io/badge/platform-ios-green)
+[![license](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
 # Instructions to build on Amazon EC2
 
