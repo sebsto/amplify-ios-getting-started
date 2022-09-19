@@ -33,3 +33,14 @@ jobs:
       run: code/ci_actions/04_unit_tests.sh
     - name: UITest
       run: code/ci_actions/05_ui_tests.sh
+
+  cleanup:
+
+    needs: test
+    
+    runs-on: self-hosted
+
+    steps:
+
+    - name: cleanup
+      run: code/ci_actions/06_cleanup.sh
