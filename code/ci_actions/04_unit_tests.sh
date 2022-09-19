@@ -23,6 +23,6 @@ IOS_VERSION="15.5"
 xcodebuild test \
     -workspace "$WORKSPACE" \
     -scheme "$SCHEME"       \
-    -destination platform="iOS Simulator",name="${PHONE_MODEL}",OS=${IOS_VERSION} 
+    -destination platform="iOS Simulator",name="${PHONE_MODEL}",OS=${IOS_VERSION}  | xcbeautify
 
 popd
