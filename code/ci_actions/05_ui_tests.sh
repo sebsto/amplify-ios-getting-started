@@ -19,8 +19,6 @@ BUILD_PATH="./build"
 APP_NAME="getting started"
 DEVICE_FARM="device-farm"
 
-pushd $HOME/amplify-ios-getting-started/code
-
 xcodebuild build-for-testing                    \
            -workspace "${APP_NAME}.xcworkspace" \
            -scheme "${APP_NAME}"                \
