@@ -210,17 +210,20 @@ struct SignOutButton : View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
 
-        let user = prepareTestData()
-        
-        return ContentView(user: user)
-//        return AddNoteView(isPresented: .constant(true), userData: UserData.shared)
+        let user1 = prepareTestData(isSignedIn: true)
+        let user2 = prepareTestData(isSignedIn: false)
+        return Group {
+            ContentView(user: user1)
+            ContentView(user: user2)
+            AddNoteView(isPresented: .constant(true), userData: user1)
+        }
     }
 }
 
 @discardableResult
-func prepareTestData() -> UserData {
-    let userData = UserData.shared
-    userData.isSignedIn = true
+func prepareTestData(isSignedIn : Bool) -> UserData {
+    let userData = UserData()
+    userData.isSignedIn = isSignedIn
     let desc = "this is a very long description that should fit on multiiple lines.\nit even has a line break\nor two."
     
     let n1 = Note(id: "01", name: "Hello world", description: desc, image: "mic")

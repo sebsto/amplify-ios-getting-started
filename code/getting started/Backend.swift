@@ -8,6 +8,8 @@ class Backend  {
     
     static let shared = Backend()
     
+    var userData = UserData()
+    
     private init() {
         // initialize amplify
         do {
@@ -22,14 +24,17 @@ class Backend  {
         } catch {
             print("Could not initialize Amplify: \(error)")
         }
-        
-        // asynchronously
-        Task {
-            // let's check if user is signedIn or not
-            let session = try await Amplify.Auth.fetchAuthSession()
-            
-            // let's update UserData and the UI
-            await self.updateUserData(withSignInStatus: session.isSignedIn)
+
+        // when running swift UI preview - do not change isSignedIn flag
+        if !EnvironmentVariable.isPreview {
+            // asynchronously
+            Task {
+                // let's check if user is signedIn or not
+                let session = try await Amplify.Auth.fetchAuthSession()
+                
+                // let's update UserData and the UI
+                await self.updateUserData(withSignInStatus: session.isSignedIn)
+            }
         }
         
         // listen to auth events.
@@ -64,8 +69,7 @@ class Backend  {
     // change our internal state, this triggers an UI update on the main thread
     @MainActor
     func updateUserData(withSignInStatus status : Bool) async {
-        let userData : UserData = .shared
-        userData.isSignedIn = status
+        self.userData.isSignedIn = status
         
         // when user is signed in, query the database, otherwise empty our model
         if (status && userData.notes.isEmpty) {
@@ -212,4 +216,12 @@ class Backend  {
             print("Unknown error when deleting image \(name): \(error)")
         }
     }
+}
+
+struct EnvironmentVariable {
+
+    static var isPreview: Bool {
+        return ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
+    }
+
 }

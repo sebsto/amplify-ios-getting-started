@@ -21,8 +21,6 @@ import SwiftUI
 
 // singleton object to store user data
 class UserData : ObservableObject {
-    private init() {}
-    static let shared = UserData()
     
     @Published var notes      : [Note] = []
     @Published var isSignedIn : Bool   = false
