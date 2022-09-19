@@ -29,6 +29,6 @@ xcodebuild clean archive                    \
            -scheme "$SCHEME"                \
            -archivePath "$ARCHIVE_PATH"     \
            -derivedDataPath "${BUILD_PATH}" \
-           -configuration "$CONFIGURATION"  
+           -configuration "$CONFIGURATION"  | xcbeautify
 
 popd

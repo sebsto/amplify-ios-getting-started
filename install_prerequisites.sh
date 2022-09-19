@@ -3,6 +3,9 @@
 # install the AWS CLI
 brew install awscli
 
+# pretty xcodebuild output 
+brew install xcbeautify
+
 #
 # Verification (Actual version might be more recent)
 #
@@ -14,3 +17,4 @@ brew --version
 
 aws --version
 # aws-cli/2.7.31 Python/3.10.6 Darwin/21.6.0 source/arm64 prompt/off
+
