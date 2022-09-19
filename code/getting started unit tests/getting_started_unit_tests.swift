@@ -24,7 +24,8 @@ class getting_started_unit_tests: XCTestCase {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
 
-        let userData = UserData.shared
+        let userData = UserData()
+        userData.isSignedIn = true
 
         //this is just for a demo. Test is not really pertinent as it just tests swift array's append
         let note1 = Note(id: "000", name: "Seb's note", description: "My description", image: "s3 image")
