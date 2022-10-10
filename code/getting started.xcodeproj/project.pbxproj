@@ -572,7 +572,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.amazonaws.amplify.mobile.getting-started";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match amplify getting started development";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "amplify-ios-getting-started-dev";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
