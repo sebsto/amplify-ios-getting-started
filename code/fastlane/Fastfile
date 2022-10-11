@@ -18,11 +18,11 @@ default_platform(:ios)
 # keychain is managed outside of Fastlane Match, with command line scripts.
 # if you decide to switch to Fastlane Match, you have to change the project signing settings as well.
 
-unlock_keychain( 
-  path: "/Users/ec2-user/Library/Keychains/dev.keychain-db",
-  password: "Passw0rd",
-  set_default: true
-)
+#unlock_keychain( 
+#  path: "/Users/ec2-user/Library/Keychains/dev.keychain-db",
+#  password: "Passw0rd",
+#  set_default: true
+#)
 
 platform :ios do
   
@@ -34,7 +34,7 @@ platform :ios do
   lane :beta do
     desc "Push a new beta build to TestFlight"
     increment_build_number(xcodeproj: "getting started.xcodeproj")
-    build_app(workspace: "getting started.xcworkspace", scheme: "getting started")
+    build # call build lane
     upload_to_testflight
   end
   
@@ -45,7 +45,12 @@ platform :ios do
               skip_archive: false,
               output_directory: ".build",
               output_name: "getting_started.ipa",
-              export_method: "development")
+              export_method: "development",
+              export_options: {
+                 provisioningProfiles: { 
+                    "com.amazonaws.amplify.mobile.getting-started" => "match Development com.amazonaws.amplify.mobile.getting-started 1665469423"
+                 }
+              })
   end
 
 end
