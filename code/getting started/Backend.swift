@@ -3,6 +3,7 @@ import Amplify
 import AWSCognitoAuthPlugin
 import AWSAPIPlugin
 import AWSS3StoragePlugin
+import ClientRuntime
 
 class Backend  {
     
@@ -14,6 +15,8 @@ class Backend  {
         // initialize amplify
         do {
 //            Amplify.Logging.logLevewl = .info
+            // reduce verbosity of AWS SDK
+            SDKLoggingSystem.initialize(logLevel: .warning)
 
             try Amplify.add(plugin: AWSCognitoAuthPlugin())
             try Amplify.add(plugin: AWSAPIPlugin(modelRegistration: AmplifyModels()))
