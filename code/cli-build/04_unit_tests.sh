@@ -16,8 +16,8 @@ pushd $HOME/amplify-ios-getting-started/code
 
 WORKSPACE="getting started.xcworkspace"
 SCHEME="getting started"
-PHONE_MODEL="iPhone 13"
-IOS_VERSION="15.5"
+PHONE_MODEL="iPhone 14 Pro"
+IOS_VERSION="16.1"
 
 xcodebuild test \
     -workspace "$WORKSPACE" \
