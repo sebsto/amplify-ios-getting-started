@@ -52,7 +52,7 @@ Now that the authentication service has been configured locally, you can deploy 
 ```zsh
 amplify push
 
-# press Y when asked to continue
+# press Enter (Y) when asked to continue
 ```
 
 After a while, you should see the following message:
@@ -66,47 +66,17 @@ Test Your Hosted UI Endpoint: https://iosgettingstarted-dev.auth.eu-central-1.am
 
 ## Add Amplify Authentication Library to the Project
 
-Before going to the code, you add the Amplify Authentication Library to the dependencies of your project.  Open the `Podfile` file and **add the line** with `AmplifyPlugins/AWSCognitoAuthPlugin` or copy / paste the entire file below.
+Before going to the code, you add the Amplify Authentication Library to the dependencies of your project.  Navigate to the **General** tab of your Target application (Your Project > Targets > General) and click the plus (+) in the **Frameworks, Libraries, and Embedded Content** section:
 
-```Podfile
-# you need at least version 13.0 for this tutorial, more recent versions are valid too
-platform :ios, '13.0'
+![Targets General Tab](img/navigate-to-targets-general-tab.png)
 
-target 'getting started' do
-  # Comment the next line if you don't want to use dynamic frameworks
-  use_frameworks!
+Select **AWSCognitoAuthPlugin** and click **Add**: 
 
-  # Pods for getting started
-  pod 'Amplify', '~> 1.0'                             # required amplify dependency
-  pod 'Amplify/Tools', '~> 1.0'                       # allows to call amplify CLI from within Xcode
+![Add AWSCognitoAuthPlugin package](img/select-awscognitoauthplugin-dependency.png)
 
-  pod 'AmplifyPlugins/AWSCognitoAuthPlugin', '~> 1.0' # support for Cognito user authentication
+You will now see **AWSCognitoAuthPlugin** as a dependency for your project:
 
-end
-```
-
-In a terminal, **execute the command**:
-
-```zsh
-pod install
-```
-
-The command takes a few seconds to complete. You should see this (actual version numbers may vary):
-
-```zsh
-Analyzing dependencies
-Downloading dependencies
-Installing AWSAuthCore (2.14.1)
-Installing AWSCognitoIdentityProvider (2.14.1)
-Installing AWSCognitoIdentityProviderASF (1.0.1)
-Installing AWSCore (2.14.1)
-Installing AWSMobileClient (2.14.1)
-Installing AWSPluginsCore (1.0.4)
-Installing AmplifyPlugins (1.0.4)
-Generating Pods project
-Integrating client project
-Pod installation complete! There are 3 dependencies from the Podfile and 8 total pods installed.
-```
+![AWSCognitoAuthPlugin as a dependency](img/awscognitoauthplugin-as-dependency.png)
 
 ## Configure Amplify Authentication library at runtime
 
@@ -119,7 +89,8 @@ Complete code block should look like this:
 
 ```swift
 // at the top of the file
-import AmplifyPlugins
+import Amplify
+import AWSCognitoAuthPlugin
 
 private init () {
   // initialize amplify
@@ -297,33 +268,18 @@ The remaining code change tracks the status of user (are they signed in or not?)
 
     Finally, we must ensure our app is launched at the end of the web authentication sequence, provided by Cognito hosted user interface.  We add the `gettingstarted` URI scheme to the app's `Info.plist` file.
 
-    In Xcode, select the `Info.plist` file, right click on it and **select Open As**, **Source Code**.
+    In Xcode, navigate to the Info.plist file (Project > Targets > Info) and add **URL types** as a key:
 
-    ![Open as Source Code](img/03_20.png)
+    ![Add URL types to Info.plist](img/add-url-types-to-info-plist.png)
 
-    Add the below `<key>` and `<array>` elements **inside** the top `<dict>` element.
+    Expand the **URL types** drop down and add **URL Schemes** to **Item 0 ()**:
 
-    ```xml
-    <plist version="1.0">
+    ![Add URL Schemes to URL types](img/add-url-schemes-to-url-types.png)
 
-        <dict>
-        <!-- YOUR OTHER PLIST ENTRIES HERE -->
+    Lastly add the value `gettingstarted` to **Item 0** under **URL Schemes**:
 
-        <!-- ADD AN ENTRY TO CFBundleURLTypes for Cognito Auth -->
-        <!-- IF YOU DO NOT HAVE CFBundleURLTypes, YOU CAN COPY THE WHOLE BLOCK BELOW -->
-        <key>CFBundleURLTypes</key>
-        <array>
-            <dict>
-                <key>CFBundleURLSchemes</key>
-                <array>
-                    <string>gettingstarted</string>
-                </array>
-            </dict>
-        </array>
+    ![Add URI as value to URL Schemes](img/add-uri-value.png)
 
-        <!-- ... -->
-        </dict>
-    ```
 
 5. Build and Test
 

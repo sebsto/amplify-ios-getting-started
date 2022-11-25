@@ -18,17 +18,17 @@ In this module, we’ll begin by creating a new iOS application to take travel n
 
 ## Create an iOS Project
 
-Start Xcode and select **Create a new Xcode project** from the splash screen:
+Start Xcode and create a new project by going to **File > New > Project...** or by hitting **Cmd + Shift + N**
 
-![xcode splash](img/02_10.png)
+![New Xcode Project](img/new-xcode-project.png)
 
 Under **iOS**, **Applications**, select **Single View App** and click **Next**
 
-![xcode type of app](img/02_20.png)
+![xcode type of app](img/xcode-ios-app.png)
 
 Type a name for your project, for example **iOS Getting Started**.  Make sure Language is **Swift** and User Interface is **Swift UI**, then click **Next**
 
-![xcode project details](img/02_30.png)
+![Xcode iOS App](img/xcode-project-configuration.png)
 
 Finally, select a directory and click **Create** to create the project.
 
@@ -147,15 +147,15 @@ func prepareTestData() -> UserData {
 
 Check the Canvas to verify the layout is as desired.  If you do not see the canvas, you can enable it using the **Editor** menu, then click **Canvas**. You may also need to click the **Resume** button in the Canvas to generate the preview of the layout.
 
-![xcode project preview](img/02_40.png)
+![ContentView Preview](img/contentview-preview.png)
 
 Note that the data for the preview are generated in the code (starting at line 67), the data does not appear at runtime. If everything looks OK, Build and launch the app in the simulator. Click **Product** menu and select **Run** or type **&#8984;R**. Alternatively, you can click the **Play** ▶️  button in the toolbar.
 
-![xcode build and launch](img/02_50.png)
+![xcode build and launch](img/build-and-launch.png)
 
 After a while, the app starts in the iOS Simulator, with an initial empty screen.
 
-![ios simulator - empty app](img/02_60.png)
+![Initial Demo Screenshot on Simulator](img/initial-demo-screenshot.png)
 
 The preview data does not render at runtime, they are only intended for previews inside Xcode.
 

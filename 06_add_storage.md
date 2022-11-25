@@ -51,50 +51,22 @@ Press **Y** to confirm and, after a while, you should see:
 
 ## Add Amplify Storage Libraries to the Xcode Project
 
-Before going to the code, you add the Amplify Storage Library to the dependencies of your project.  Open the `Podfile` file and **add the line** with `AmplifyPlugins/AWSS3StoragePlugin` or copy / paste the entire file below.
+Before going to the code, you add the Amplify Storage Library to the dependencies of your project.  Navigate back to the **General** tab of your target and select **AWSS3StoragePlugin** then click **Add**:
 
-```Podfile
-# you need at least version 13.0 for this tutorial, more recent versions are valid too
-platform :ios, '13.0'
+![Select AWSS3StoragePlugin as dependencies](img/select-awss3storageplugin-dependency.png)
 
-target 'getting started' do
-  # Comment the next line if you don't want to use dynamic frameworks
-  use_frameworks!
+You have now added **AWSS3StoragePlugin** as a dependency for your project:
 
-  # Pods for getting started
-  pod 'Amplify', '~> 1.0'                             # required amplify dependency
-  pod 'Amplify/Tools', '~> 1.0'                       # allows to call amplify CLI from within Xcode
-
-  pod 'AmplifyPlugins/AWSCognitoAuthPlugin', '~> 1.0' # support for Cognito user authentication
-  pod 'AmplifyPlugins/AWSAPIPlugin', '~> 1.0'         # support for GraphQL API
-  pod 'AmplifyPlugins/AWSS3StoragePlugin', '~> 1.0'   # support for Amazon S3 storage
-
-end
-```
-
-In a terminal, **execute the command**:
-
-```zsh
-pod install
-```
-
-The command takes a few moments to complete. You should see this (actual version numbers may vary):
-
-```text
-Analyzing dependencies
-Downloading dependencies
-Installing AWSS3 (2.14.2)
-Installing AmplifyPlugins 1.0.4
-Generating Pods project
-Integrating client project
-Pod installation complete! There are 5 dependencies from the Podfile and 12 total pods installed.
-```
+![All dependencies with Storage added](img/awss3storageplugin-as-dependency.png)
 
 ## Initialize Amplify Storage plugin at runtime
 
 Back to Xcode, open `Backend.swift` and add a line in the Amplify initialisation sequence in `private init()` method. Complete code block should look like this:
 
 ```swift
+// at the top of the file
+import AWSS3StoragePlugin
+
 // initialize amplify
 do {
    try Amplify.add(plugin: AWSCognitoAuthPlugin())
@@ -109,7 +81,7 @@ do {
 
 ## Add Image CRUD methods to the `Backend` Class
 
-Open `Backedn.swift`. Anywhere in the `Backend` class, **add** the the following methods:
+Open `Backend.swift`. Anywhere in the `Backend` class, **add** the the following methods:
 
 ```Swift
 // MARK: - Image Storage
@@ -119,7 +91,7 @@ func storeImage(name: String, image: Data) {
     let options = StorageUploadDataRequest.Options(accessLevel: .private)
     Amplify.Storage.uploadData(key: name, data: image, options: options,
         progressListener: { progress in
-            // optionlly update a progress bar here
+            // optionally update a progress bar here
         }, resultListener: { event in
             switch event {
             case .success(let data):
