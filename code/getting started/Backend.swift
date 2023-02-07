@@ -177,7 +177,7 @@ class Backend  {
         
         do {
             let options = StorageUploadDataRequest.Options(accessLevel: .private)
-            let task = try await Amplify.Storage.uploadData(key: name, data: image, options: options)
+            let task = Amplify.Storage.uploadData(key: name, data: image, options: options)
             let result = try await task.value
             print("Image upload completed: \(result)")
 
@@ -192,7 +192,7 @@ class Backend  {
         
         do {
             let options = StorageDownloadDataRequest.Options(accessLevel: .private)
-            let task = try await Amplify.Storage.downloadData(key: name, options: options)
+            let task = Amplify.Storage.downloadData(key: name, options: options)
             let data = try await task.value
             print("Successfully downloaded image: \(data)")
 

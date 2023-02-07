@@ -14,8 +14,8 @@ struct ListRow: View {
         
         return HStack(alignment: .center, spacing: 5.0) {
             
-            if (note.image != nil) {
-                note.image!
+            if let image = note.image {
+                image
                 .resizable()
                 .frame(width: 50, height: 50)
             }
@@ -24,11 +24,12 @@ struct ListRow: View {
                 Text(note.name)
                 .bold()
                     
-                if ((note.description) != nil) {
-                    Text(note.description!)
+                if let description = note.description {
+                    Text(description)
                 }
             }
         }
+        .background(.gray)
     }
 }
 
@@ -57,14 +58,12 @@ struct ContentView: View {
                                 // asynchronously remove from database
                                 Task {
                                     await Backend.shared.deleteNote(note: note)
-                                }
-                                
-                                if let n = note.imageName {
-                                    Task {
-                                        // asynchronously delete the image
+                                    
+                                    if let n = note.imageName {
                                         await Backend.shared.deleteImage(name: n)
                                     }
                                 }
+                                
                             }
                         }
                     }
