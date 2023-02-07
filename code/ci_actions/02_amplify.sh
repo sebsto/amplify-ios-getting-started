@@ -18,7 +18,11 @@ if [ ! -z ${GITHUB_ACTION} ]; then #we are running from a github runner
     CODE_DIR=$GITHUB_WORKSPACE/code
 fi
 if [ ! -z ${CI_BUILDS_DIR} ]; then #we are running from a gitlab runner
-    CODE_DIR=$CI_BUILDS_DIR/code
+    CODE_DIR=$CI_PROJECT_DIR/code
+fi
+if [ ! -z ${CODE_DIR} ]; then
+    echo Neither GitLab nor GitHub detected. Where are we running ?
+    exit -1 
 fi
 
 REGION=$(curl -s 169.254.169.254/latest/meta-data/placement/region/)
