@@ -75,11 +75,4 @@ $AMPLIFY_CLI pull \
 echo "Generate code for application models"
 $AMPLIFY_CLI codegen models 
 
-# Increase Build Number
-# https://rderik.com/blog/automating-build-and-testflight-upload-for-simple-ios-apps/
-
-BUILD_NUMBER=`date +%Y%m%d%H%M%S`
-echo "Updated build number is " $BUILD_NUMBER
-plutil -replace CFBundleVersion -string $BUILD_NUMBER "./getting started/Info.plist"
-
 popd
