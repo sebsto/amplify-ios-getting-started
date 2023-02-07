@@ -43,4 +43,4 @@ jobs:
     steps:
 
     - name: cleanup
-      run: code/ci_actions/06_cleanup.sh
+      run: code/ci_actions/07_cleanup.sh
