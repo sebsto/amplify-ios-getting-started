@@ -27,13 +27,11 @@ variables:
   GIT_CLEAN_FLAGS: none # do not git clean to preserve files created by amplify pull
 
 prepare-keychain:
-    variables: {}
     stage: pre-build
     script:
         - code/ci_actions/01_keychain.sh
 
 prepare-amplify:
-    variables: {}
     stage: pre-build
     script:
         - code/ci_actions/02_amplify.sh
