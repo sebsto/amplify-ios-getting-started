@@ -14,6 +14,12 @@
     "categories": {
       "auth": {
         "iosgettingstarted2ee74a53": {}
+      },
+      "api": {
+        "iosgettingstarted": {}
+      },
+      "storage": {
+        "image": {}
       }
     }
   }
