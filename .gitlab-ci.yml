@@ -50,7 +50,7 @@ local-test:
 devicefarm-test: 
   stage: test    
   script:
-    - echo "Not implemented yet"
+    - code/ci_actions/05_devicefarm_tests.sh
   variables:
     GIT_CLEAN_FLAGS: none # do not git clean to preserve files created by amplify pull
 
@@ -58,6 +58,8 @@ deploy:
   stage: deploy 
   script:
     - code/ci_actions/06_deploy_testflight.sh
+  variables:
+    GIT_CLEAN_FLAGS: none # do not git clean to preserve files created by amplify pull
 
 cleanup:
     stage: post-build
