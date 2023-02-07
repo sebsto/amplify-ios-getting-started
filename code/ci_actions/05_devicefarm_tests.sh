@@ -7,7 +7,7 @@ if [ ${arch_name} = "arm64" ]; then
     BREW_PATH=/opt/homebrew/bin
     AWS_CLI=$BREW_PATH/aws
 else
-    BREW_PATH=/usr/local/bin/aws 
+    BREW_PATH=/usr/local/bin
     AWS_CLI=$BREW_PATH/aws
 fi
 
