@@ -76,7 +76,7 @@ echo "Creating an Archive"
 xcodebuild -exportArchive \
            -archivePath "$ARCHIVE_PATH" \
            -exportOptionsPlist "$EXPORT_OPTIONS_FILE" \
-           -exportPath "$BUILD_PATH"  | xcbeautify
+           -exportPath "$BUILD_PATH"  | $BREW_PATH/xcbeautify
 
 echo "Verify Archive"
 xcrun altool  \
