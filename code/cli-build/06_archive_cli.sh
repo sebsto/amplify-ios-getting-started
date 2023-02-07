@@ -21,6 +21,10 @@ fi
 
 REGION=$(curl -s 169.254.169.254/latest/meta-data/placement/region/)
 
+KEYCHAIN_PASSWORD=Passw0rd
+KEYCHAIN_NAME=dev.keychain
+security unlock-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN_NAME
+
 APPLE_ID_SECRET=apple-id
 APPLE_SECRET_SECRET=apple-secret
 APPLE_ID=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $APPLE_ID_SECRET --query SecretString --output text)
@@ -48,8 +52,6 @@ cat << EOF > $EXPORT_OPTIONS_FILE
 	<true/>
 	<key>teamID</key>
 	<string>56U756R2L2</string>
-	<key>uploadBitcode</key>
-	<true/>
 	<key>uploadSymbols</key>
 	<true/>
 </dict>
@@ -60,7 +62,7 @@ echo "Creating an Archive"
 xcodebuild -exportArchive \
            -archivePath "$ARCHIVE_PATH" \
            -exportOptionsPlist "$EXPORT_OPTIONS_FILE" \
-           -exportPath "$BUILD_PATH" 
+           -exportPath "$BUILD_PATH"  | xcbeautify
 
 echo "Verify Archive"
 xcrun altool  \

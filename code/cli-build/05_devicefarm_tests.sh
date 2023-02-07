@@ -12,6 +12,10 @@ fi
 REGION=$(curl -s 169.254.169.254/latest/meta-data/placement/region/)
 HOME=/Users/ec2-user
 
+KEYCHAIN_PASSWORD=Passw0rd
+KEYCHAIN_NAME=dev.keychain
+security unlock-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN_NAME
+
 BUILD_PATH="./build"
 APP_NAME="getting started"
 DEVICE_FARM="device-farm"
@@ -22,7 +26,7 @@ xcodebuild build-for-testing                    \
            -workspace "${APP_NAME}.xcworkspace" \
            -scheme "${APP_NAME}"                \
            -destination generic/platform=iOS    \
-           -derivedDataPath "${BUILD_PATH}" 
+           -derivedDataPath "${BUILD_PATH}" | xcbeautify
 
 echo "Building Application UI Tests IPA file"
 rm -rf "${DEVICE_FARM}"
