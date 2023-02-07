@@ -8,9 +8,21 @@ if [ ${arch_name} = "arm64" ]; then
 else
     AWS_CLI=/usr/local/bin/aws 
 fi
+
 REGION=$(curl -s 169.254.169.254/latest/meta-data/placement/region/)
-CODE_DIR=/Users/ec2-user/actions-runner/_work/amplify-ios-getting-started/amplify-ios-getting-started/code
 export LANG=en_US.UTF-8
+
+if [ ! -z ${GITHUB_ACTION} ]; then #we are running from a github runner
+    CODE_DIR=$GITHUB_WORKSPACE/code
+fi
+if [ ! -z ${CI_BUILDS_DIR} ]; then #we are running from a gitlab runner
+    CODE_DIR=$CI_PROJECT_DIR/code
+fi
+if [ -z ${CODE_DIR} ]; then
+    echo Neither GitLab nor GitHub detected. Where are we running ?
+    exit -1 
+fi
+
 echo "Changing to code directory at $CODE_DIR"
 pushd $CODE_DIR
 
