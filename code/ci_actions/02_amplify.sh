@@ -60,12 +60,14 @@ PROVIDERS="{\
 \"awscloudformation\":$AWSCLOUDFORMATIONCONFIG\
 }"
 
+# the region where the backend is deployed
+BACKEND_REGION=eu-central-1 
 
 $AMPLIFY_CLI pull \
 --amplify $AMPLIFY \
 --frontend $FRONTEND \
 --providers $PROVIDERS \
---yes --region $DEFAULT_REGION
+--yes --region $BACKEND_REGION
 
 
 echo "Generate code for application models"
