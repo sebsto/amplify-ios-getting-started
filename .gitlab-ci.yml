@@ -25,22 +25,22 @@ stages:
 prepare-keychain:
     stage: pre-build
     script:
-        - code/ci_actions/01_keychain.sh
+        - ci_actions/01_keychain.sh
 
 prepare-amplify:
     stage: pre-build
     script:
-        - code/ci_actions/02_amplify.sh
+        - ci_actions/02_amplify.sh
 
 build:       
   stage: build
   script:
-    - code/ci_actions/03_build.sh
+    - amplify-ios-getting-started/code/ci_actions/03_build.sh
 
 local-test: 
   stage: test    
   script:
-    - code/ci_actions/04_local_tests.sh
+    - amplify-ios-getting-started/code/ci_actions/04_local_tests.sh
 
 
 # deploy:
@@ -53,6 +53,6 @@ local-test:
 cleanup:
     stage: post-build
     script:
-        - code/ci_actions/06_cleanup.sh
+        - amplify-ios-getting-started/code/ci_actions/06_cleanup.sh
 
 
