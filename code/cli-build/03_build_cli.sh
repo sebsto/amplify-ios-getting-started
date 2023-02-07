@@ -19,7 +19,7 @@ KEYCHAIN_NAME=dev.keychain
 WORKSPACE="getting started.xcworkspace"
 SCHEME="getting started"
 CONFIGURATION="Release"
-BUILD_PATH="./build"
+BUILD_PATH="./build-release"
 ARCHIVE_PATH="$BUILD_PATH/getting-started.xcarchive"
 
 security unlock-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN_NAME

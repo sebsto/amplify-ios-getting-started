@@ -7,7 +7,7 @@ CODE_DIR=$HOME/amplify-ios-getting-started/code
 echo "Changing to code directory at $CODE_DIR"
 pushd $CODE_DIR
 
-BUILD_PATH="./build"
+BUILD_PATH="./build-release"
 ARCHIVE_PATH="$BUILD_PATH/getting-started.xcarchive"
 EXPORT_OPTIONS_FILE="./exportOptions.plist"
 SCHEME="getting started"

@@ -28,7 +28,7 @@ fi
 echo "Changing to code directory at $CODE_DIR"
 pushd $CODE_DIR
 
-BUILD_PATH="./build"
+BUILD_PATH="./build-test"
 APP_NAME="getting started"
 DEVICE_FARM="device-farm"
 

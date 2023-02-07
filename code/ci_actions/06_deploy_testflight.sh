@@ -30,7 +30,7 @@ fi
 echo "Changing to code directory at $CODE_DIR"
 pushd $CODE_DIR
 
-BUILD_PATH="./build"
+BUILD_PATH="./build-release"
 ARCHIVE_PATH="$BUILD_PATH/getting-started.xcarchive"
 EXPORT_OPTIONS_FILE="./exportOptions.plist"
 SCHEME="getting started"
@@ -71,15 +71,6 @@ cat << EOF > $EXPORT_OPTIONS_FILE
 </dict>
 </plist>
 EOF
-
-
-# Increase Build Number
-# https://rderik.com/blog/automating-build-and-testflight-upload-for-simple-ios-apps/
-
-BUILD_NUMBER=`date +%Y%m%d%H%M%S`
-echo "Updated build number is " $BUILD_NUMBER
-plutil -replace CFBundleVersion -string $BUILD_NUMBER "./getting started/Info.plist"
-
 
 echo "Creating an Archive"
 xcodebuild -exportArchive \

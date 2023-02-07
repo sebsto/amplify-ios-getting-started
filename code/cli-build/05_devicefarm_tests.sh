@@ -16,7 +16,7 @@ KEYCHAIN_PASSWORD=Passw0rd
 KEYCHAIN_NAME=dev.keychain
 security unlock-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN_NAME
 
-BUILD_PATH="./build"
+BUILD_PATH="./build-test"
 APP_NAME="getting started"
 DEVICE_FARM="device-farm"
 
@@ -58,7 +58,7 @@ REGION=us-west-2
 
 
 #TODO move this to secrets manager 
-PROJECT_ARN="arn:aws:devicefarm:us-west-2:486652066693:project:a8cc6b43-ba3b-4b93-9bd9-1800c99f9118"
+PROJECT_ARN="arn:aws:devicefarm:us-west-2:486652066693:project:c146d6b2-cc08-4213-8042-b53389051898"
 
 APP_BUNDLE="${APP_NAME}.ipa"
 TEST_BUNDLE="${APP_NAME}-UI.ipa"
