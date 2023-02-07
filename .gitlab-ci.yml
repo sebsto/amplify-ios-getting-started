@@ -31,6 +31,7 @@ prepare-keychain:
 prepare-amplify:
     stage: pre-build
     script:
+        - pwd
         - code/ci_actions/02_amplify.sh
 
 build:       
