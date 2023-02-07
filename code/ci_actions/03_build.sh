@@ -4,9 +4,11 @@ set -o pipefail
 
 arch_name="$(uname -m)"
 if [ ${arch_name} = "arm64" ]; then 
-    AWS_CLI=/opt/homebrew/bin/aws
+    BREW_PATH=/opt/homebrew/bin
+    AWS_CLI=$BREW_PATH/aws
 else
-    AWS_CLI=/usr/local/bin/aws 
+    BREW_PATH=/usr/local/bin/aws 
+    AWS_CLI=$BREW_PATH/aws
 fi
 
 REGION=$(curl -s 169.254.169.254/latest/meta-data/placement/region/)
@@ -42,6 +44,6 @@ xcodebuild clean archive                    \
            -scheme "$SCHEME"                \
            -archivePath "$ARCHIVE_PATH"     \
            -derivedDataPath "${BUILD_PATH}" \
-           -configuration "$CONFIGURATION"   | xcbeautify
+           -configuration "$CONFIGURATION"   | $BREW_PATH/xcbeautify
 
 popd

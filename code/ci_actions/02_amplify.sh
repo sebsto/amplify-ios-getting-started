@@ -7,9 +7,11 @@ set -o pipefail
 
 arch_name="$(uname -m)"
 if [ ${arch_name} = "arm64" ]; then 
-    AWS_CLI=/opt/homebrew/bin/aws
+    BREW_PATH=/opt/homebrew/bin
+    AWS_CLI=$BREW_PATH/aws
 else
-    AWS_CLI=/usr/local/bin/aws 
+    BREW_PATH=/usr/local/bin/aws 
+    AWS_CLI=$BREW_PATH/aws
 fi
 
 AMPLIFY_CLI=/Users/ec2-user/.amplify/bin/amplify
