@@ -30,9 +30,9 @@ jobs:
     steps:
 
     - name: UnitTest
-      run: code/ci_actions/04_unit_tests.sh
+      run: code/ci_actions/04_local_tests.sh
     - name: UITest
-      run: code/ci_actions/05_ui_tests.sh
+      run: code/ci_actions/05_devicefarm_tests.sh
 
   cleanup:
 

@@ -30,8 +30,8 @@ echo "Starting build ${BUILD_NUMBER} at $(date)" > $LOGS
 ./cli-build/01_keychain_cli.sh >> $LOGS 2>&1
 ./cli-build/02_prepare_project.sh >> $LOGS 2>&1
 ./cli-build/03_build_cli.sh >> $LOGS 2>&1
-./cli-build/04_unit_tests.sh >> $LOGS 2>&1
-./cli-build/05_ui_tests.sh >> $LOGS 2>&1
+./cli-build/04_local_tests.sh >> $LOGS 2>&1
+./cli-build/05_devicefarm_tests.sh >> $LOGS 2>&1
 ./cli-build/06_archive_cli.sh >> $LOGS 2>&1
 
 ENDTIME=$(date +%s)
