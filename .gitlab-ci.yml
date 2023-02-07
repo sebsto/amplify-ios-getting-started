@@ -20,6 +20,7 @@ stages:
   - pre-build
   - build
   - test
+  - deploy
   - post-build
 
 prepare-keychain:
@@ -46,17 +47,21 @@ local-test:
   variables:
     GIT_CLEAN_FLAGS: none # do not git clean to preserve files created by amplify pull
 
+devicefarm-test: 
+  stage: test    
+  script:
+    - echo "Not implemented yet"
+  variables:
+    GIT_CLEAN_FLAGS: none # do not git clean to preserve files created by amplify pull
 
-# deploy:
-#   stage: deploy 
-#   environment: beta
-#   script:
-#     - echo "Deploying application..."
-#     - echo "Application successfully deployed."
+deploy:
+  stage: deploy 
+  script:
+    - code/ci_actions/06_deploy_testflight.sh
 
 cleanup:
     stage: post-build
     script:
-        - code/ci_actions/06_cleanup.sh
+        - code/ci_actions/07_cleanup.sh
 
 
