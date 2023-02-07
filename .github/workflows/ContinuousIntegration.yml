@@ -29,9 +29,9 @@ jobs:
 
     steps:
 
-    - name: UnitTest
+    - name: LocalTest
       run: code/ci_actions/04_local_tests.sh
-    - name: UITest
+    - name: DeviceFarmTest
       run: code/ci_actions/05_devicefarm_tests.sh
 
   cleanup:
