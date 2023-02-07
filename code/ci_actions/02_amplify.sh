@@ -16,10 +16,10 @@ fi
 
 AMPLIFY_CLI=/Users/ec2-user/.amplify/bin/amplify
 
-if [ ! -z ${GITHUB_ACTION} ]; then #we are running from a github runner
+if [ ! -z ${GITHUB_ACTION} ]; then # we are running from a github runner
     CODE_DIR=$GITHUB_WORKSPACE/code
 fi
-if [ ! -z ${CI_BUILDS_DIR} ]; then #we are running from a gitlab runner
+if [ ! -z ${CI_BUILDS_DIR} ]; then # we are running from a gitlab runner
     CODE_DIR=$CI_PROJECT_DIR/code
 fi
 if [ -z ${CODE_DIR} ]; then
