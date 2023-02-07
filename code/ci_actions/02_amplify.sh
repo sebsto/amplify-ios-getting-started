@@ -20,7 +20,7 @@ fi
 if [ ! -z ${CI_BUILDS_DIR} ]; then #we are running from a gitlab runner
     CODE_DIR=$CI_PROJECT_DIR/code
 fi
-if [ ! -z ${CODE_DIR} ]; then
+if [ -z ${CODE_DIR} ]; then
     echo Neither GitLab nor GitHub detected. Where are we running ?
     exit -1 
 fi
