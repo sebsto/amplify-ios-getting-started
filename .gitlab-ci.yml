@@ -25,12 +25,13 @@ stages:
 prepare-keychain:
     stage: pre-build
     script:
-        - ci_actions/01_keychain.sh
+        - pwd
+        - code/ci_actions/01_keychain.sh
 
 prepare-amplify:
     stage: pre-build
     script:
-        - ci_actions/02_amplify.sh
+        - code/ci_actions/02_amplify.sh
 
 build:       
   stage: build
