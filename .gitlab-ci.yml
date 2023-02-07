@@ -25,24 +25,26 @@ stages:
 prepare-keychain:
     stage: pre-build
     script:
-        - pwd
         - code/ci_actions/01_keychain.sh
 
 prepare-amplify:
     stage: pre-build
     script:
-        - pwd
         - code/ci_actions/02_amplify.sh
 
 build:       
   stage: build
   script:
-    - amplify-ios-getting-started/code/ci_actions/03_build.sh
+    - code/ci_actions/03_build.sh
+  variables:
+    GIT_CLEAN_FLAGS: none # do not git clean to preserve files created by amplify pull
 
 local-test: 
   stage: test    
   script:
-    - amplify-ios-getting-started/code/ci_actions/04_local_tests.sh
+    - code/ci_actions/04_local_tests.sh
+  variables:
+    GIT_CLEAN_FLAGS: none # do not git clean to preserve files created by amplify pull
 
 
 # deploy:
@@ -55,6 +57,6 @@ local-test:
 cleanup:
     stage: post-build
     script:
-        - amplify-ios-getting-started/code/ci_actions/06_cleanup.sh
+        - code/ci_actions/06_cleanup.sh
 
 
