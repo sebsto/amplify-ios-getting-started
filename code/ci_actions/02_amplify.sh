@@ -13,7 +13,14 @@ else
 fi
 
 AMPLIFY_CLI=/Users/ec2-user/.amplify/bin/amplify
-CODE_DIR=/Users/ec2-user/actions-runner/_work/amplify-ios-getting-started/amplify-ios-getting-started/code
+
+if [ ! -z ${GITHUB_ACTION} ]; then #we are running from a github runner
+    CODE_DIR=$GITHUB_WORKSPACE/code
+fi
+if [ ! -z ${CI_BUILDS_DIR} ]; then #we are running from a gitlab runner
+    CODE_DIR=$CI_BUILDS_DIR/code
+fi
+
 REGION=$(curl -s 169.254.169.254/latest/meta-data/placement/region/)
 export LANG=en_US.UTF-8
 
