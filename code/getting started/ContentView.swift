@@ -29,7 +29,7 @@ struct ListRow: View {
                 }
             }
         }
-        .background(.gray)
+//        .background(.gray)
     }
 }
 
