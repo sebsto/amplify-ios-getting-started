@@ -14,8 +14,7 @@ fi
 export REGION=$(curl -s 169.254.169.254/latest/meta-data/placement/region/)
 export LANG=en_US.UTF-8
 
-echo "Default region: $REGION"
-
+export HOME=/Users/ec2-user/
 export CODE_DIR=$HOME/code # default value
 if [ ! -z ${GITHUB_ACTION} ]; then # we are running from a github runner
     export CODE_DIR=$GITHUB_WORKSPACE/code
@@ -23,3 +22,8 @@ fi
 if [ ! -z ${CI_BUILDS_DIR} ]; then # we are running from a gitlab runner
     export CODE_DIR=$CI_PROJECT_DIR/code
 fi
+
+echo "Default region: $REGION"
+echo "AWS CLI       : $AWS_CLI"
+echo "Code Directory: $CODE_DIR"
+echo "Home Direcrory: $HOME"

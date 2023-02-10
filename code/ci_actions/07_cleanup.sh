@@ -1,4 +1,8 @@
 #!/bin/sh 
+set -e 
+set -o pipefail
+
+. code/ci_actions/00_common.sh
 
 # delete build secrets 
 echo "Delete certificates directory"
