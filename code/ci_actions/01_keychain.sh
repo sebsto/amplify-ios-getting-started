@@ -1,19 +1,9 @@
 #!/bin/sh
 
-arch_name="$(uname -m)"
-if [ ${arch_name} = "arm64" ]; then 
-    AWS_CLI=/opt/homebrew/bin/aws
-else
-    AWS_CLI=/usr/local/bin/aws 
-fi
-
-REGION=$(curl -s 169.254.169.254/latest/meta-data/placement/region/)
-HOME=/Users/ec2-user
+. code/ci_actions/00_common.sh
 
 CERTIFICATES_DIR=$HOME/certificates
 mkdir -p $CERTIFICATES_DIR 2>&1 >/dev/null
-
-echo $REGION 
 
 echo "Cleaning Provisioning Profiles"
 rm -rf "$HOME/Library/MobileDevice/Provisioning Profiles"
