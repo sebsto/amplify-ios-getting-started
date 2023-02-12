@@ -1,6 +1,4 @@
 #!/bin/sh
-set -e 
-set -o pipefail
 
 . code/ci_actions/00_common.sh
 

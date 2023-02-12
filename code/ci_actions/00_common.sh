@@ -1,6 +1,4 @@
 #!/bin/sh
-set -e 
-set -o pipefail
 
 arch_name="$(uname -m)"
 if [ ${arch_name} = "arm64" ]; then 
