@@ -21,6 +21,8 @@ jobs:
 
   build:
 
+    needs: pre-build
+
     runs-on: self-hosted
 
     steps:
