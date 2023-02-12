@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  pre-build:
 
     runs-on: self-hosted
 
@@ -18,6 +18,12 @@ jobs:
       run: code/ci_actions/01_keychain.sh
     - name: PrepareAmplify
       run: code/ci_actions/02_amplify.sh
+
+  build:
+
+    runs-on: self-hosted
+
+    steps:
     - name: Build
       run: code/ci_actions/03_build.sh
 
