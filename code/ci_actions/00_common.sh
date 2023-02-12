@@ -25,5 +25,5 @@ fi
 
 echo "Default region: $REGION"
 echo "AWS CLI       : $AWS_CLI"
-echo "Code Directory: $CODE_DIR"
-echo "Home Direcrory: $HOME"
+echo "Code directory: $CODE_DIR"
+echo "Home directory: $HOME"

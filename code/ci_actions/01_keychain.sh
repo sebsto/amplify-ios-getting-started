@@ -6,6 +6,7 @@ set -o pipefail
 
 CERTIFICATES_DIR=$HOME/certificates
 mkdir -p $CERTIFICATES_DIR 2>&1 >/dev/null
+echo "Certificates directory: $CERTIFICATES_DIR"
 
 echo "Cleaning Provisioning Profiles"
 rm -rf "$HOME/Library/MobileDevice/Provisioning Profiles"
