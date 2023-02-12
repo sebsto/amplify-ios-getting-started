@@ -14,7 +14,7 @@ fi
 export REGION=$(curl -s 169.254.169.254/latest/meta-data/placement/region/)
 export LANG=en_US.UTF-8
 
-export HOME=/Users/ec2-user/
+export HOME=/Users/ec2-user
 export CODE_DIR=$HOME/code # default value
 if [ ! -z ${GITHUB_ACTION} ]; then # we are running from a github runner
     export CODE_DIR=$GITHUB_WORKSPACE/code
