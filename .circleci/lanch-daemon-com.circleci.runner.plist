@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>Label</key>
+        <string>com.circleci.runner</string>
+
+        <key>Program</key>
+        <string>/opt/circleci/circleci-launch-agent</string>
+
+        <key>ProgramArguments</key>
+        <array>
+            <string>/Users/ec2-user/circle-ci/darwin/arm64/circleci-launch-agent</string>
+            <string>--config</string>
+            <string>/Library/Preferences/com.circleci.runner/launch-agent-config.yaml</string>
+        </array>
+
+        <key>RunAtLoad</key>
+        <true/>
+
+        <!-- The agent needs to run at all times -->
+        <key>KeepAlive</key>
+        <true/>
+
+        <!-- This prevents macOS from limiting the resource usage of the agent -->
+        <key>ProcessType</key>
+        <string>Interactive</string>
+
+        <!-- Increase the frequency of restarting the agent on failure, or post-update -->
+        <key>ThrottleInterval</key>
+        <integer>3</integer>
+
+        <!-- Wait for 10 minutes for the agent to shut down (the agent itself waits for tasks to complete) -->
+        <key>ExitTimeOut</key>
+        <integer>600</integer>
+
+        <!-- The agent uses its own logging and rotation to file -->
+        <key>StandardOutPath</key>
+        <string>/dev/null</string>
+        <key>StandardErrorPath</key>
+        <string>/dev/null</string>
+
+        <key>EnvironmentVariables</key>
+        <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        </dict>      
+
+        <key>UserName</key>
+        <string>ec2-user</string>
+        <key>GroupName</key>
+        <string>staff</string>
+
+    </dict>
+</plist>

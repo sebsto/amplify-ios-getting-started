@@ -1,0 +1,11 @@
+api:
+  auth_token: <secret>
+
+runner:
+  name: amplify-ios-getting-started
+  command_prefix : ["sudo", "-niHu", "ec2-user", "--"]
+  working_directory: /Users/ec2-users/circle-ci/workdir
+  cleanup_working_directory: true
+
+logging:
+  file: /Users/ec2-user/circle-ci/logs/com.circleci.runner.log
