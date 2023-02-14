@@ -38,11 +38,9 @@ cat << EOF > /Library/LaunchDaemons/$RUNNER_NAME.plist
     <dict> 
       <key>ACTIONS_RUNNER_SVC</key>
       <string>1</string>
+      <key>PATH</key>
+      <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
     </dict>
-    <!--
-    <key>ProcessType</key>
-    <string>Interactive</string>
-    -->
     <key>SessionCreate</key>
     <true/>
   </dict>
