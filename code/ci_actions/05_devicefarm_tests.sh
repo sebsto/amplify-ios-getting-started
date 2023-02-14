@@ -9,8 +9,8 @@ function upload_bundle() {
     echo "Preparing an upload to Device Farm"
     local UPLOAD_NAME=$(basename "${FILE}")
     local UPLOAD_OUTPUT=$(${AWS_CLI} devicefarm create-upload --region ${REGION} --project-arn ${PROJECT_ARN} --name "${UPLOAD_NAME}" --type ${TYPE})
-    local S3_UPLOAD_URL=$(echo $UPLOAD_OUTPUT | jq -r '.upload.url')
-    local UPLOAD_ARN=$(echo $UPLOAD_OUTPUT | jq -r '.upload.arn')
+    local S3_UPLOAD_URL=$(echo $UPLOAD_OUTPUT | $BREW_PATH/jq -r '.upload.url')
+    local UPLOAD_ARN=$(echo $UPLOAD_OUTPUT | $BREW_PATH/jq -r '.upload.arn')
 
     echo "Uploading"
     curl -T "$FILE" "$S3_UPLOAD_URL" 2>/dev/null
@@ -46,8 +46,8 @@ function wait_test_complete() {
     
     echo "Waiting for test to complete"
     local TEST_RUN_OUTPUT=$(${AWS_CLI} devicefarm --region ${REGION} get-run --arn ${ARN} --no-cli-pager)
-    local TEST_RUN_STATUS=$(echo $TEST_RUN_OUTPUT | jq -r '.run.status')
-    local TEST_RUN_RESULT=$(echo $TEST_RUN_OUTPUT | jq -r '.run.result')
+    local TEST_RUN_STATUS=$(echo $TEST_RUN_OUTPUT | $BREW_PATH/jq -r '.run.status')
+    local TEST_RUN_RESULT=$(echo $TEST_RUN_OUTPUT | $BREW_PATH/jq -r '.run.result')
     local ATTEMPT=0
     local MAX_ATTEMPT=30
     local WAIT_TIME=60
@@ -57,8 +57,8 @@ function wait_test_complete() {
         sleep $WAIT_TIME
 
         TEST_RUN_OUTPUT=$(${AWS_CLI} devicefarm --region ${REGION} get-run --arn ${ARN} --no-cli-pager)
-        TEST_RUN_STATUS=$(echo $TEST_RUN_OUTPUT | jq -r '.run.status')
-        TEST_RUN_RESULT=$(echo $TEST_RUN_OUTPUT | jq -r '.run.result')
+        TEST_RUN_STATUS=$(echo $TEST_RUN_OUTPUT | $BREW_PATH/jq -r '.run.status')
+        TEST_RUN_RESULT=$(echo $TEST_RUN_OUTPUT | $BREW_PATH/jq -r '.run.result')
         echo "Test run status : $TEST_RUN_STATUS"
 
         ATTEMPT=$(( ATTEMPT + 1 ))
@@ -144,7 +144,7 @@ SCHEDULE_RUN_OUTPUT="$(${AWS_CLI} devicefarm schedule-run --region ${REGION}  \
 
 
 # Forloop to test until run is complete 
-SCHEDULED_RUN_ARN=$(echo $SCHEDULE_RUN_OUTPUT | jq -r '.run.arn')
+SCHEDULED_RUN_ARN=$(echo $SCHEDULE_RUN_OUTPUT | $BREW_PATH/jq -r '.run.arn')
 wait_test_complete $SCHEDULED_RUN_ARN
 
 popd
