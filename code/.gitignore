@@ -15,8 +15,8 @@
 
 cli-build/secrets
 cli-build/xcode-server
-build_for_testing
 device-farm
+build-**
 
 graphql
 API.swift
