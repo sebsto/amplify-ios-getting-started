@@ -16,6 +16,8 @@
 cli-build/secrets
 cli-build/xcode-server
 build-**
+issues
+**/xcuserdata/**
 
 graphql
 API.swift
