@@ -52,6 +52,7 @@
             "Action": [
                 "devicefarm:CreateUpload",
                 "devicefarm:GetUpload",
+                "devicefarm:ListUploads",
                 "devicefarm:ListDevicePools",
                 "devicefarm:ScheduleRun",
                 "devicefarm:GetRun"
