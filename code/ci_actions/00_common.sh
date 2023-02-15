@@ -20,6 +20,9 @@ fi
 if [ ! -z ${CI_BUILDS_DIR} ]; then # we are running from a gitlab runner
     export CODE_DIR=$CI_PROJECT_DIR/code
 fi
+if [ ! -z ${CIRCLE_WORKING_DIRECTORY} ]; then # we are running from a gitlab runner
+    export CODE_DIR=$CIRCLE_WORKING_DIRECTORY/code
+fi
 
 echo "Default region: $REGION"
 echo "AWS CLI       : $AWS_CLI"
