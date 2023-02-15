@@ -22,9 +22,8 @@ jobs:
     resource_class: sebsto/amplify-ios-getting-started
     steps:
       - checkout
-      - run: pwd && ls -al
-      - run: amplify-ios-getting-started/code/ci_actions/01_keychain.sh
-      - run: amplify-ios-getting-started/code/ci_actions/02_amplify.sh
+      - run: code/ci_actions/01_keychain.sh
+      - run: code/ci_actions/02_amplify.sh
 
   build:
     machine: true
