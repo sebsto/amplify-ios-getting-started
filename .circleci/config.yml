@@ -1,11 +1,32 @@
 version: 2.1
 workflows:
-  testing:
+  amplify-ios-getting-started:
     jobs:
-      - runner-test
+      - pre-build
+      - build:
+          requires:
+              - pre-build
+      - test:
+          requires:
+              - build
+      - deploy:
+          requires:
+              - test
+      - post-build:
+          requires:
+              - deploy
+
 jobs:
-  runner-test:
+  pre-build:
     machine: true
     resource_class: sebsto/amplify-ios-getting-started
     steps:
-      - run: echo "Hi I'm on Runners!"
+      - run: code/ci_actions/01_keychain.sh
+      - run: code/ci_actions/02_amplify.sh
+
+  build:
+    machine: true
+    resource_class: sebsto/amplify-ios-getting-started
+    steps:
+      - run: code/ci_actions/03_build.sh
+
