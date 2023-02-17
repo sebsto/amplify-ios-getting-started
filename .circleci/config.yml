@@ -29,22 +29,26 @@ jobs:
     machine: true
     resource_class: sebsto/amplify-ios-getting-started
     steps:
+      - checkout
       - run: code/ci_actions/03_build.sh
 
   test:
     machine: true
     resource_class: sebsto/amplify-ios-getting-started
     steps:
+      - checkout
       - run: echo "Test"
 
   deploy:
     machine: true
     resource_class: sebsto/amplify-ios-getting-started
     steps:
+      - checkout
       - run: echo "deploy"
 
   post-build:
     machine: true
     resource_class: sebsto/amplify-ios-getting-started
     steps:
+      - checkout
       - run: echo "Post build"
