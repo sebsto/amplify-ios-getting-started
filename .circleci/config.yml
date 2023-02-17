@@ -22,6 +22,7 @@ jobs:
     resource_class: sebsto/amplify-ios-getting-started
     steps:
       - checkout
+      - run: pwd && ls -al
       - run: code/ci_actions/01_keychain.sh
       - run: code/ci_actions/02_amplify.sh
 
@@ -30,6 +31,7 @@ jobs:
     resource_class: sebsto/amplify-ios-getting-started
     steps:
       - checkout
+      - run: pwd && ls -al
       - run: code/ci_actions/03_build.sh
 
   test:
