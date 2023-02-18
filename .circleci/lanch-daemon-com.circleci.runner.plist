@@ -5,9 +5,6 @@
         <key>Label</key>
         <string>com.circleci.runner</string>
 
-        <key>Program</key>
-        <string>/opt/circleci/circleci-launch-agent</string>
-
         <key>ProgramArguments</key>
         <array>
             <string>/Users/ec2-user/circle-ci/darwin/arm64/circleci-launch-agent</string>
@@ -17,6 +14,10 @@
 
         <key>RunAtLoad</key>
         <true/>
+
+        <!-- Create a user session to manipulate keychains -->
+        <key>SessionCreate</key>
+        <true/>        
 
         <!-- The agent needs to run at all times -->
         <key>KeepAlive</key>
