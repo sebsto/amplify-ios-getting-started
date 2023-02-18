@@ -26,16 +26,18 @@ jobs:
       - run: code/ci_actions/01_keychain.sh
       - run: code/ci_actions/02_amplify.sh
       - persist_to_workspace:
-          root: .
+          root: ./code
           paths:
-            - *
+            - amplify/*
+            - amplifyconfiguration.json
+            - awsconfiguration.json
 
   build:
     machine: true
     resource_class: sebsto/amplify-ios-getting-started
     steps:
       - attach_workspace:
-          at: .
+          at: ./code
       - run: pwd && ls -al
       - run: code/ci_actions/03_build.sh
 
