@@ -40,6 +40,10 @@ jobs:
       - attach_workspace:
           at: ./code
       - run: code/ci_actions/03_build.sh
+      - persist_to_workspace:
+          root: ./code
+          paths:
+            - build-release/*
 
   test:
     machine: true
@@ -49,10 +53,6 @@ jobs:
       - attach_workspace:
           at: ./code
       - run: code/ci_actions/04_local_tests.sh
-      - persist_to_workspace:
-          root: ./code
-          paths:
-            - build-release/*
 
   deploy:
     machine: true
