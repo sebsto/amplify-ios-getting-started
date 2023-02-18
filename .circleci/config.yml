@@ -48,7 +48,7 @@ jobs:
       - checkout
       - attach_workspace:
           at: ./code
-      - run: code/ci_actions/04_build.sh
+      - run: code/ci_actions/04_local_test.sh
 
   deploy:
     machine: true
