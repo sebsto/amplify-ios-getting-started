@@ -39,7 +39,6 @@ jobs:
       - checkout
       - attach_workspace:
           at: ./code
-      - run: pwd && ls -al
       - run: code/ci_actions/03_build.sh
 
   test:
@@ -47,18 +46,22 @@ jobs:
     resource_class: sebsto/amplify-ios-getting-started
     steps:
       - checkout
-      - run: echo "Test"
+      - attach_workspace:
+          at: ./code
+      - run: code/ci_actions/04_build.sh
 
   deploy:
     machine: true
     resource_class: sebsto/amplify-ios-getting-started
     steps:
       - checkout
-      - run: echo "deploy"
+      - attach_workspace:
+          at: ./code
+      - run: code/ci_actions/06_deploy_testflight.sh
 
   post-build:
     machine: true
     resource_class: sebsto/amplify-ios-getting-started
     steps:
       - checkout
-      - run: echo "Post build"
+      - run: code/ci_actions/07_cleanup.sh
