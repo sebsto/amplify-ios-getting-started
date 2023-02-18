@@ -36,6 +36,7 @@ jobs:
     machine: true
     resource_class: sebsto/amplify-ios-getting-started
     steps:
+      - checkout
       - attach_workspace:
           at: ./code
       - run: pwd && ls -al
