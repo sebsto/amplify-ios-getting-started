@@ -53,6 +53,7 @@ jobs:
       - attach_workspace:
           at: ./code
       - run: code/ci_actions/04_local_tests.sh
+      - run: code/ci_actions/05_devicefarm_tests.sh
 
   deploy:
     machine: true
