@@ -34,7 +34,7 @@ enum AppState {
 
 // singleton object to store user data
 @MainActor
-class MainViewModel : ObservableObject {
+class ViewModel : ObservableObject {
     
     @Published var state : AppState = .signedOut
     
@@ -125,12 +125,12 @@ class MainViewModel : ObservableObject {
     }
 }
 
-extension MainViewModel {
-    static var mock : MainViewModel = mockedData(isSignedIn: true)
-    static var signedOutMock : MainViewModel = mockedData(isSignedIn: false)
+extension ViewModel {
+    static var mock : ViewModel = mockedData(isSignedIn: true)
+    static var signedOutMock : ViewModel = mockedData(isSignedIn: false)
 
-    private static func mockedData(isSignedIn: Bool) -> MainViewModel {
-        let model = MainViewModel()
+    private static func mockedData(isSignedIn: Bool) -> ViewModel {
+        let model = ViewModel()
         let desc = "this is a very long description that should fit on multiiple lines.\nit even has a line break\nor two."
         
         let n1 = Note(id: "01", name: "Hello world", description: desc, image: "mic")

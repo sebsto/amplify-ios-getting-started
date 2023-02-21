@@ -18,7 +18,7 @@ struct GettingStartedApp: App {
     var body: some Scene {
 
         WindowGroup {
-            MainView().environmentObject(MainViewModel())
+            ContentView().environmentObject(ViewModel())
         }
     }
 }

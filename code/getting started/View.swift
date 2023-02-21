@@ -8,8 +8,8 @@
 
 import SwiftUI
 
-struct MainView: View {
-    @EnvironmentObject public var model: MainViewModel
+struct ContentView: View {
+    @EnvironmentObject public var model: ViewModel
     @State var showCreateNote = false
     
     var body: some View {
@@ -115,7 +115,7 @@ struct ListRow: View {
 
 struct AddNoteView: View {
     @Binding var isPresented: Bool
-    var model: MainViewModel
+    var model: ViewModel
 
     @State var name : String        = "New memory"
     @State var description : String = "These are my notes from this moment"
@@ -202,11 +202,11 @@ struct SignOutButton : View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
 
-        let user1 = MainViewModel.mock
-        let user2 = MainViewModel.signedOutMock
+        let user1 = ViewModel.mock
+        let user2 = ViewModel.signedOutMock
         return Group {
-            MainView().environmentObject(user1)
-            MainView().environmentObject(user2)
+            ContentView().environmentObject(user1)
+            ContentView().environmentObject(user2)
             AddNoteView(isPresented: .constant(true), model: user1)
         }
     }
