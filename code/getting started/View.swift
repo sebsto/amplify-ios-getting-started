@@ -19,6 +19,7 @@ struct ContentView: View {
             case .signedOut:
                 VStack {
                     SignInButton(model : self.model)
+                        .padding(.bottom)
                     SignOutButton(model : self.model)
                 }
                 
@@ -178,10 +179,11 @@ struct SignInButton: View {
         Button(action: { self.model.signIn() }){
             HStack {
                 Image(systemName: "person.fill")
-                    .scaleEffect(1.5)
+                    .scaleEffect(2)
                     .padding()
                 Text("Sign In")
                     .font(.largeTitle)
+                    .bold()
             }
             .padding()
             .foregroundColor(.white)

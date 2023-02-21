@@ -159,7 +159,11 @@ extension ViewModel {
         let n1 = Note(id: "01", name: "Hello world", description: desc, image: "mic")
         let n2 = Note(id: "02", name: "A new note", description: desc, image: "phone")
         model.notes = [ n1, n2 ]
-        model.state = .dataAvailable(model.notes)
+        if isSignedIn {
+            model.state = .dataAvailable(model.notes)
+        } else {
+            model.state = .signedOut
+        }
 
         let url = Bundle.main.url(forResource: "amplify_logo-10", withExtension: "png")
         n1.imageURL = url
