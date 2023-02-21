@@ -5,12 +5,11 @@ import AWSAPIPlugin
 import AWSS3StoragePlugin
 import ClientRuntime
 
+
 class Backend  {
     
     static let shared = Backend()
-    
-    var userData = UserData()
-    
+        
     private init() {
         // initialize amplify
         do {
@@ -28,80 +27,49 @@ class Backend  {
             print("Could not initialize Amplify: \(error)")
         }
 
-        // when running swift UI preview - do not change isSignedIn flag
-        if !EnvironmentVariable.isPreview {
-            // asynchronously
-            Task {
-                // let's check if user is signedIn or not
-                let session = try await Amplify.Auth.fetchAuthSession()
-                
-                // let's update UserData and the UI
-                await self.updateUserData(withSignInStatus: session.isSignedIn)
-            }
-        }
+    }
+
+    public func getInitialAuthStatus() async throws -> AuthStatus {
+        // let's check if user is signedIn or not
+        let session = try await Amplify.Auth.fetchAuthSession()
+        return session.isSignedIn ? AuthStatus.signedIn : AuthStatus.signedOut
+    }
+    
+    public func listenAuthUpdate() async -> AsyncStream<AuthStatus> {
         
-        // listen to auth events.
-        // see https://github.com/aws-amplify/amplify-ios/blob/master/Amplify/Categories/Auth/Models/AuthEventName.swift
-        let _  = Amplify.Hub.listen(to: .auth) { payload in
+        return AsyncStream { continuation in
             
-            switch payload.eventName {
+            continuation.onTermination = { @Sendable status in
+                       print("[BACKEND] streaming auth status terminated with status : \(status)")
+            }
+            
+            // listen to auth events.
+            // see https://github.com/aws-amplify/amplify-ios/blob/master/Amplify/Categories/Auth/Models/AuthEventName.swift
+            let _  = Amplify.Hub.listen(to: .auth) { payload in
                 
-            case HubPayload.EventName.Auth.signedIn:
-                Task {
+                switch payload.eventName {
+                    
+                case HubPayload.EventName.Auth.signedIn:
                     print("==HUB== User signed In, update UI")
-                    await self.updateUserData(withSignInStatus: true)
-                }
-            case HubPayload.EventName.Auth.signedOut:
-                Task {
+                    continuation.yield(AuthStatus.signedIn)
+                case HubPayload.EventName.Auth.signedOut:
                     print("==HUB== User signed Out, update UI")
-                    await self.updateUserData(withSignInStatus: false)
-                }
-            case HubPayload.EventName.Auth.sessionExpired:
-                Task {
+                    continuation.yield(AuthStatus.signedOut)
+                case HubPayload.EventName.Auth.sessionExpired:
                     print("==HUB== Session expired, show sign in aui")
-                    await self.updateUserData(withSignInStatus: false)
+                    continuation.yield(AuthStatus.sessionExpired)
+                default:
+                    //print("==HUB== \(payload)")
+                    break
                 }
-            default:
-                //print("==HUB== \(payload)")
-                break
             }
         }
-    }
-    
-    // MARK: Authentication
-    // change our internal state, this triggers an UI update on the main thread
-    @MainActor
-    func updateUserData(withSignInStatus status : Bool) async {
-        self.userData.isSignedIn = status
-        
-        // when user is signed in, query the database, otherwise empty our model
-        if (status && userData.notes.isEmpty) {
-            userData.notes = await self.queryNotes()
-        } else {
-            userData.notes = []
-        }
-    }
-    
-    @MainActor
-    private func anchorWindow() async -> UIWindow {
-        // UIApplication.shared.windows.first is deprecated on iOS 15
-        // solution from https://stackoverflow.com/questions/57134259/how-to-resolve-keywindow-was-deprecated-in-ios-13-0/57899013
-        
-        let w = UIApplication
-            .shared
-            .connectedScenes
-            .compactMap { $0 as? UIWindowScene }
-            .flatMap { $0.windows }
-            .first { $0.isKeyWindow }
-        
-        return w!
     }
     
     public func signIn() async {
         
         do {
-            let window = await self.anchorWindow()
-            let result = try await Amplify.Auth.signInWithWebUI(presentationAnchor: window)
+            let result = try await Amplify.Auth.signInWithWebUI(options: .preferPrivateSession())
             if (result.isSignedIn) {
                 print("Sign in succeeded")
             } else {
@@ -146,7 +114,7 @@ class Backend  {
     func createNote(note: Note) async {
         
         do {
-            let result = try await Amplify.API.mutate(request: .create(note.data))
+            let result = try await Amplify.API.mutate(request: .create(note.forApi()))
             let data = try result.get()
             print("Successfully created note: \(data)")
         } catch let error as APIError {
@@ -160,7 +128,7 @@ class Backend  {
     func deleteNote(note: Note) async {
         
         do {
-            let result = try await Amplify.API.mutate(request: .delete(note.data))
+            let result = try await Amplify.API.mutate(request: .delete(note.forApi()))
             let data = try result.get()
             print("Successfully deleted note: \(data)")
             
@@ -188,23 +156,18 @@ class Backend  {
         }
     }
     
-    func retrieveImage(name: String) async -> Data {
+    func imageURL(name: String) async -> URL? {
         
+        var result: URL? = nil
         do {
-            let options = StorageDownloadDataRequest.Options(accessLevel: .private)
-            let task = Amplify.Storage.downloadData(key: name, options: options)
-            let data = try await task.value
-            print("Successfully downloaded image: \(data)")
-
-            return data
-            
+            let options = StorageGetURLRequest.Options(accessLevel: .private)
+            result = try await Amplify.Storage.getURL(key: name, options: options)
         } catch let error as StorageError {
-            print("Can not retrieve image \(name): \(error.errorDescription). \(error.recoverySuggestion)")
+            print("Can not retrieve URL for image \(name): \(error.errorDescription). \(error.recoverySuggestion)")
         } catch {
-            print("Unknown error when retrieving image \(name): \(error)")
+            print("Unknown error when retrieving URL for image \(name): \(error)")
         }
-        return Data() // could return a default image
-
+        return result
     }
     
     func deleteImage(name: String) async {

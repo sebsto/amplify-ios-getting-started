@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0084717524A60D82002CD90D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0084717424A60D82002CD90D /* ContentView.swift */; };
-		0084717724A60D86002CD90D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0084717624A60D86002CD90D /* Assets.xcassets */; };
+		006E5EE229A4BDD300BF4871 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 006E5EE129A4BDD300BF4871 /* Assets.xcassets */; };
+		006E5EE929A4BFAA00BF4871 /* amplify_logo-10.png in Resources */ = {isa = PBXBuildFile; fileRef = 006E5EE629A4BFAA00BF4871 /* amplify_logo-10.png */; };
+		0084717524A60D82002CD90D /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0084717424A60D82002CD90D /* MainView.swift */; };
 		0084717A24A60D86002CD90D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0084717924A60D86002CD90D /* Preview Assets.xcassets */; };
-		0084717D24A60D86002CD90D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0084717B24A60D86002CD90D /* LaunchScreen.storyboard */; };
 		009D73A628D4A3100066DEA4 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 009D73A528D4A3100066DEA4 /* App.swift */; };
-		00A017DA2542A646003977CB /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A017D92542A646003977CB /* UserData.swift */; };
+		00A017DA2542A646003977CB /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A017D92542A646003977CB /* MainViewModel.swift */; };
 		00BB8D91291D359E00756622 /* AWSAPIPlugin in Frameworks */ = {isa = PBXBuildFile; productRef = 00BB8D90291D359E00756622 /* AWSAPIPlugin */; };
 		00BB8D93291D359E00756622 /* AWSCognitoAuthPlugin in Frameworks */ = {isa = PBXBuildFile; productRef = 00BB8D92291D359E00756622 /* AWSCognitoAuthPlugin */; };
 		00BB8D95291D359E00756622 /* AWSS3StoragePlugin in Frameworks */ = {isa = PBXBuildFile; productRef = 00BB8D94291D359E00756622 /* AWSS3StoragePlugin */; };
@@ -48,14 +48,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		006E5EE129A4BDD300BF4871 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		006E5EE629A4BFAA00BF4871 /* amplify_logo-10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "amplify_logo-10.png"; sourceTree = "<group>"; };
 		0084716D24A60D82002CD90D /* getting started.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "getting started.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		0084717424A60D82002CD90D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		0084717624A60D86002CD90D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		0084717424A60D82002CD90D /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		0084717924A60D86002CD90D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		0084717C24A60D86002CD90D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0084717E24A60D86002CD90D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		009D73A528D4A3100066DEA4 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
-		00A017D92542A646003977CB /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
+		00A017D92542A646003977CB /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		00E757482704CB710018F166 /* getting started unit tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "getting started unit tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E7574A2704CB720018F166 /* getting_started_unit_tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getting_started_unit_tests.swift; sourceTree = "<group>"; };
 		00F8F9B22704E4EE00786187 /* UIImage+resize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+resize.swift"; sourceTree = "<group>"; };
@@ -103,6 +103,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		006E5EE329A4BE1700BF4871 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				006E5EE629A4BFAA00BF4871 /* amplify_logo-10.png */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		0084716424A60D82002CD90D = {
 			isa = PBXGroup;
 			children = (
@@ -110,6 +118,7 @@
 				0084716F24A60D82002CD90D /* getting started */,
 				00E757492704CB720018F166 /* getting started unit tests */,
 				00F8F9BA2705A84C00786187 /* getting started ui tests */,
+				006E5EE329A4BE1700BF4871 /* Resources */,
 				0084716E24A60D82002CD90D /* Products */,
 				DDCB08E54FCB31B13653CF2B /* Frameworks */,
 				4BAE36455AC9823D09E807BF /* AmplifyConfig */,
@@ -131,14 +140,13 @@
 			isa = PBXGroup;
 			children = (
 				00FA7E7424A9EC46007042EA /* Backend.swift */,
-				00A017D92542A646003977CB /* UserData.swift */,
-				0084717424A60D82002CD90D /* ContentView.swift */,
+				00A017D92542A646003977CB /* MainViewModel.swift */,
+				0084717424A60D82002CD90D /* MainView.swift */,
 				00FA7E7624AA1DB0007042EA /* CaptureImageView.swift */,
 				00F8F9B22704E4EE00786187 /* UIImage+resize.swift */,
 				009D73A528D4A3100066DEA4 /* App.swift */,
-				0084717624A60D86002CD90D /* Assets.xcassets */,
-				0084717B24A60D86002CD90D /* LaunchScreen.storyboard */,
 				0084717E24A60D86002CD90D /* Info.plist */,
+				006E5EE129A4BDD300BF4871 /* Assets.xcassets */,
 				0084717824A60D86002CD90D /* Preview Content */,
 			);
 			path = "getting started";
@@ -322,10 +330,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0084717D24A60D86002CD90D /* LaunchScreen.storyboard in Resources */,
 				0084717A24A60D86002CD90D /* Preview Assets.xcassets in Resources */,
-				0084717724A60D86002CD90D /* Assets.xcassets in Resources */,
 				B38FBC3FA55B3AAAF1F89548 /* awsconfiguration.json in Resources */,
+				006E5EE929A4BFAA00BF4871 /* amplify_logo-10.png in Resources */,
+				006E5EE229A4BDD300BF4871 /* Assets.xcassets in Resources */,
 				9ED2BAC10236F879FD353ACA /* amplifyconfiguration.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -352,8 +360,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				009D73A628D4A3100066DEA4 /* App.swift in Sources */,
-				0084717524A60D82002CD90D /* ContentView.swift in Sources */,
-				00A017DA2542A646003977CB /* UserData.swift in Sources */,
+				0084717524A60D82002CD90D /* MainView.swift in Sources */,
+				00A017DA2542A646003977CB /* MainViewModel.swift in Sources */,
 				00FA7E7724AA1DB0007042EA /* CaptureImageView.swift in Sources */,
 				00FA7E7524A9EC46007042EA /* Backend.swift in Sources */,
 				8F07D5E87234E68690BFCD5B /* AmplifyModels.swift in Sources */,
@@ -394,17 +402,6 @@
 			targetProxy = 00F8F9BF2705A84C00786187 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		0084717B24A60D86002CD90D /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0084717C24A60D86002CD90D /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		0084717F24A60D86002CD90D /* Debug */ = {
@@ -753,7 +750,7 @@
 			repositoryURL = "https://github.com/aws-amplify/amplify-swift";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.3.0;
+				minimumVersion = 2.4.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
