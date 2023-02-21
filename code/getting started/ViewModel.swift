@@ -38,6 +38,8 @@ class ViewModel : ObservableObject {
     
     @Published var state : AppState = .signedOut
     
+    // MARK: Manage the notes
+    
     // just a local cache
     var notes : [Note] = []
 
@@ -46,8 +48,8 @@ class ViewModel : ObservableObject {
     func loadNotes() async -> [Note] {
         if self.notes.isEmpty {
             self.notes = await Backend.shared.queryNotes()
-            self.state = .dataAvailable(self.notes)
         }
+        self.state = .dataAvailable(self.notes)
         return self.notes
     }
 
@@ -117,11 +119,32 @@ class ViewModel : ObservableObject {
             for try await status in await Backend.shared.listenAuthUpdate() {
                 print("AUTH STATUS LOOP yielded \(status)")
                 switch status {
-                case .signedIn: self.state = .loading
-                case .signedOut, .sessionExpired:  self.state = .signedOut
+                case .signedIn:
+                    self.state = .loading
+                case .signedOut, .sessionExpired:
+                    self.notes = []
+                    self.state = .signedOut
                 }
             }
             print("==== EXITED AUTH STATUS LOOP =====")
+    }
+    
+    // asynchronously sign in
+    // change of sttaus will be picked up by `listenAuthUpdate`
+    // that will trigger the UI update
+    public func signIn() {
+        Task {
+            await Backend.shared.signIn()
+        }
+    }
+    
+    // asynchronously sign out
+    // change of sttaus will be picked up by `listenAuthUpdate`
+    // that will trigger the UI update
+    public func signOut() {
+        Task {
+            await Backend.shared.signOut()
+        }
     }
 }
 

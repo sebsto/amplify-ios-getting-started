@@ -91,6 +91,7 @@ class Backend  {
     func queryNotes() async -> [ Note ] {
         
         do {
+            print("Loading notes")
             let queryResult = try await Amplify.API.query(request: .list(NoteData.self))
             print("Successfully retrieved list of Notes")
             
@@ -162,6 +163,7 @@ class Backend  {
         do {
             let options = StorageGetURLRequest.Options(accessLevel: .private)
             result = try await Amplify.Storage.getURL(key: name, options: options)
+
         } catch let error as StorageError {
             print("Can not retrieve URL for image \(name): \(error.errorDescription). \(error.recoverySuggestion)")
         } catch {

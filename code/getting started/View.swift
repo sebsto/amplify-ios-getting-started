@@ -18,8 +18,8 @@ struct ContentView: View {
             switch(model.state) {
             case .signedOut:
                 VStack {
-                    SignInButton()
-                    SignOutButton()
+                    SignInButton(model : self.model)
+                    SignOutButton(model : self.model)
                 }
                 
             case .loading:
@@ -58,11 +58,11 @@ struct ContentView: View {
                     }
                 }
             }
-            .navigationTitle(Text("Your Memories"))
+            .navigationTitle(Text("My Memories"))
 
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    SignOutButton()
+                    SignOutButton(model: self.model)
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
@@ -173,8 +173,9 @@ struct AddNoteView: View {
 }
     
 struct SignInButton: View {
+    var model : ViewModel
     var body: some View {
-        Button(action: { Task { await Backend.shared.signIn() }}){
+        Button(action: { self.model.signIn() }){
             HStack {
                 Image(systemName: "person.fill")
                     .scaleEffect(1.5)
@@ -191,9 +192,9 @@ struct SignInButton: View {
 }
 
 struct SignOutButton : View {
-
+    var model : ViewModel
     var body: some View {
-        Button(action: { Task { await Backend.shared.signOut() }}) {
+        Button(action: { self.model.signOut() }) {
                 Text("Sign Out")
         }
     }
