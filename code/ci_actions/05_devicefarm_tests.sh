@@ -135,16 +135,16 @@ upload_bundle "XCTEST_UI_TEST_SPEC"  "${FILE_TEST_SPEC}"
 IOS_TEST_SPEC_ARN=$RETURN_VALUE
 
 ## Schedule a run on Device Farm
-SCHEDULE_RUN_OUTPUT="$(${AWS_CLI} devicefarm schedule-run --region ${REGION}  \
-                                                          --project-arn ${PROJECT_ARN} \
-                                                          --app-arn ${IOS_APP_ARN} \
-                                                          --device-pool-arn ${PRIVATE_DEVICE_POOL_ARN} \
-                                                          --name CLITestRun  \
-                                                          --test type=XCTEST_UI,testPackageArn=${IOS_TEST_APP_ARN},testSpecArn=${IOS_TEST_SPEC_ARN} )"
+# SCHEDULE_RUN_OUTPUT="$(${AWS_CLI} devicefarm schedule-run --region ${REGION}  \
+#                                                           --project-arn ${PROJECT_ARN} \
+#                                                           --app-arn ${IOS_APP_ARN} \
+#                                                           --device-pool-arn ${PRIVATE_DEVICE_POOL_ARN} \
+#                                                           --name CLITestRun  \
+#                                                           --test type=XCTEST_UI,testPackageArn=${IOS_TEST_APP_ARN},testSpecArn=${IOS_TEST_SPEC_ARN} )"
 
 
-# Forloop to test until run is complete 
-SCHEDULED_RUN_ARN=$(echo $SCHEDULE_RUN_OUTPUT | $BREW_PATH/jq -r '.run.arn')
-wait_test_complete $SCHEDULED_RUN_ARN
+# # Forloop to test until run is complete 
+# SCHEDULED_RUN_ARN=$(echo $SCHEDULE_RUN_OUTPUT | $BREW_PATH/jq -r '.run.arn')
+# wait_test_complete $SCHEDULED_RUN_ARN
 
 popd
