@@ -86,7 +86,7 @@ struct ListRow: View {
         
         VStack(alignment: .leading) {
             
-            Text("2023-06-23")
+            Text(note.date)
                 .bold()
             
             AsyncImage(url: note.imageURL) { image in

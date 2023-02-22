@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0054616E29A670EE00D4B110 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0054616D29A670EE00D4B110 /* Model.swift */; };
 		00678A6329A646FB00CA03EF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 00678A6129A646FB00CA03EF /* LaunchScreen.storyboard */; };
 		006E5EE229A4BDD300BF4871 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 006E5EE129A4BDD300BF4871 /* Assets.xcassets */; };
 		006E5EE929A4BFAA00BF4871 /* amplify_logo-10.png in Resources */ = {isa = PBXBuildFile; fileRef = 006E5EE629A4BFAA00BF4871 /* amplify_logo-10.png */; };
@@ -49,6 +50,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0054616D29A670EE00D4B110 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		00678A6229A646FB00CA03EF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		006E5EE129A4BDD300BF4871 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		006E5EE629A4BFAA00BF4871 /* amplify_logo-10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "amplify_logo-10.png"; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 			children = (
 				00FA7E7424A9EC46007042EA /* Backend.swift */,
 				00A017D92542A646003977CB /* ViewModel.swift */,
+				0054616D29A670EE00D4B110 /* Model.swift */,
 				0084717424A60D82002CD90D /* ContentView.swift */,
 				00FA7E7624AA1DB0007042EA /* CaptureImageView.swift */,
 				00F8F9B22704E4EE00786187 /* UIImage+resize.swift */,
@@ -376,6 +379,7 @@
 				00A017DA2542A646003977CB /* ViewModel.swift in Sources */,
 				00FA7E7724AA1DB0007042EA /* CaptureImageView.swift in Sources */,
 				00FA7E7524A9EC46007042EA /* Backend.swift in Sources */,
+				0054616E29A670EE00D4B110 /* Model.swift in Sources */,
 				8F07D5E87234E68690BFCD5B /* AmplifyModels.swift in Sources */,
 				D2322EA3AC392E1784EBA94E /* NoteData+Schema.swift in Sources */,
 				55DD6BBFE7609CE8705E3E7B /* NoteData.swift in Sources */,

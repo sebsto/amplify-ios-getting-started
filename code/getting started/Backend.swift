@@ -8,6 +8,12 @@ import ClientRuntime
 
 class Backend  {
     
+    enum AuthStatus {
+        case signedIn
+        case signedOut
+        case sessionExpired
+    }
+    
     static let shared = Backend()
         
     private init() {
@@ -100,7 +106,18 @@ class Backend  {
                 Note.init(from: noteData)
             }
             
-            return result
+            // in real life you probably want to sort on the server side
+            // to do this, you need to implement your own query
+            // https://docs.amplify.aws/lib/graphqlapi/advanced-workflows/q/platform/ios/#subset-of-data
+            // and use a query + sort
+            // https://docs.amplify.aws/guides/api-graphql/query-with-sorting/q/platform/ios/#implementation
+            return result.sorted { lhs, rhs in
+                if let ldate = lhs.createdAt, let rdate = rhs.createdAt {
+                    return ldate > rdate
+                } else {
+                    return false
+                }
+            }
             
         } catch let error as APIError {
             print("Failed to load data from api : \(error)")
@@ -115,7 +132,7 @@ class Backend  {
     func createNote(note: Note) async {
         
         do {
-            let result = try await Amplify.API.mutate(request: .create(note.forApi()))
+            let result = try await Amplify.API.mutate(request: .create(note.data))
             let data = try result.get()
             print("Successfully created note: \(data)")
         } catch let error as APIError {
@@ -129,7 +146,7 @@ class Backend  {
     func deleteNote(note: Note) async {
         
         do {
-            let result = try await Amplify.API.mutate(request: .delete(note.forApi()))
+            let result = try await Amplify.API.mutate(request: .delete(note.data))
             let data = try result.get()
             print("Successfully deleted note: \(data)")
             

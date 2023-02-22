@@ -19,12 +19,6 @@
 import Foundation
 import SwiftUI
 
-enum AuthStatus {
-    case signedIn
-    case signedOut
-    case sessionExpired
-}
-
 enum AppState {
     case signedOut
     case loading
@@ -58,7 +52,8 @@ class ViewModel : ObservableObject {
 
         let note = Note(id : UUID().uuidString,
                         name: name,
-                        description: description)
+                        description: description,
+                        createdAt: Date.now)
 
         // asynchronously store the note (and assume it will succeed)
         Task {
@@ -108,6 +103,7 @@ class ViewModel : ObservableObject {
         if !EnvironmentVariable.isPreview {
             
             let status = try await Backend.shared.getInitialAuthStatus()
+            print("INITIAL AUTH STATUS is \(status)")
             switch status {
             case .signedIn: self.state = .loading
             case .signedOut, .sessionExpired:  self.state = .signedOut
@@ -173,38 +169,3 @@ extension ViewModel {
     }
 }
 
-class Note : Identifiable, ObservableObject {
-    var id          : String
-    var name        : String
-    var description : String?
-    var imageName   : String?
-    @MainActor @Published var imageURL : URL?
-    
-    init(id: String, name: String, description: String? = nil, image: String? = nil ) {
-        self.id          = id
-        self.name        = name
-        self.description = description
-        self.imageName   = image
-    }
-    
-    // convert from backend data struct to our model
-    convenience init(from data: NoteData) {
-        self.init(id: data.id, name: data.name, description: data.description, image: data.image)
-        
-        if let name = self.imageName {
-            
-            // asynchronously generate the URL of the image.
-            Task { @MainActor () -> Void in
-                self.imageURL = await Backend.shared.imageURL(name: name)
-            }
-        }
-    }
-    
-    // convert our model to backend data format
-    func forApi() -> NoteData {
-        return NoteData(id: self.id,
-                        name: self.name,
-                        description: self.description,
-                        image: self.imageName)
-    }
-}
