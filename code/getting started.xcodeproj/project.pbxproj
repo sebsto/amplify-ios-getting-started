@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00678A6329A646FB00CA03EF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 00678A6129A646FB00CA03EF /* LaunchScreen.storyboard */; };
 		006E5EE229A4BDD300BF4871 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 006E5EE129A4BDD300BF4871 /* Assets.xcassets */; };
 		006E5EE929A4BFAA00BF4871 /* amplify_logo-10.png in Resources */ = {isa = PBXBuildFile; fileRef = 006E5EE629A4BFAA00BF4871 /* amplify_logo-10.png */; };
 		0084717524A60D82002CD90D /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0084717424A60D82002CD90D /* View.swift */; };
@@ -48,6 +49,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		00678A6229A646FB00CA03EF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		006E5EE129A4BDD300BF4871 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		006E5EE629A4BFAA00BF4871 /* amplify_logo-10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "amplify_logo-10.png"; sourceTree = "<group>"; };
 		0084716D24A60D82002CD90D /* getting started.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "getting started.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -103,6 +105,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		00678A6029A646FB00CA03EF /* Base.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				00678A6129A646FB00CA03EF /* LaunchScreen.storyboard */,
+			);
+			path = Base.lproj;
+			sourceTree = "<group>";
+		};
 		006E5EE329A4BE1700BF4871 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -147,6 +157,7 @@
 				009D73A528D4A3100066DEA4 /* App.swift */,
 				0084717E24A60D86002CD90D /* Info.plist */,
 				006E5EE129A4BDD300BF4871 /* Assets.xcassets */,
+				00678A6029A646FB00CA03EF /* Base.lproj */,
 				0084717824A60D86002CD90D /* Preview Content */,
 			);
 			path = "getting started";
@@ -333,6 +344,7 @@
 				0084717A24A60D86002CD90D /* Preview Assets.xcassets in Resources */,
 				B38FBC3FA55B3AAAF1F89548 /* awsconfiguration.json in Resources */,
 				006E5EE929A4BFAA00BF4871 /* amplify_logo-10.png in Resources */,
+				00678A6329A646FB00CA03EF /* LaunchScreen.storyboard in Resources */,
 				006E5EE229A4BDD300BF4871 /* Assets.xcassets in Resources */,
 				9ED2BAC10236F879FD353ACA /* amplifyconfiguration.json in Resources */,
 			);
@@ -402,6 +414,17 @@
 			targetProxy = 00F8F9BF2705A84C00786187 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		00678A6129A646FB00CA03EF /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				00678A6229A646FB00CA03EF /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		0084717F24A60D86002CD90D /* Debug */ = {
