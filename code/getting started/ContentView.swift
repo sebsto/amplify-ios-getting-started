@@ -8,102 +8,118 @@
 
 import SwiftUI
 
+struct ContentView: View {
+    @EnvironmentObject public var model: ViewModel
+    @State var showCreateNote = false
+    
+    var body: some View {
+
+        ZStack {
+            switch(model.state) {
+            case .signedOut:
+                VStack {
+                    SignInButton(model : self.model)
+                        .padding(.bottom)
+                    SignOutButton(model : self.model)
+                }
+                
+            case .loading:
+                ProgressView()
+                    .task() {
+                        await self.model.loadNotes()
+                    }
+                
+            case .dataAvailable(let notes):
+                navigationView(notes: notes)
+                
+            case .error(let error):
+                Text("There was an error: \(error.localizedDescription)")
+            }
+
+        }
+        .task {
+            
+            // get the initial authentication status. This call will change app state according to result
+            try? await self.model.getInitialAuthStatus()
+            
+            // start a long polling to listen to auth updates
+            await self.model.listenAuthUpdate()
+        }
+    }
+    
+    @ViewBuilder
+    func navigationView(notes: [Note]) -> some View {
+        NavigationView {
+            List {
+                ForEach(notes) { note in
+                    ListRow(note: note)
+                }.onDelete { indices in
+                    indices.forEach {
+                        self.model.deleteNote(at: $0)
+                    }
+                }
+            }
+            .navigationTitle(Text("My Memories"))
+
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    SignOutButton(model: self.model)
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        self.showCreateNote.toggle()
+                    }) {
+                        Image(systemName: "plus")
+                    }
+                }
+            }
+        }
+        .sheet(isPresented: $showCreateNote) {
+            AddNoteView(isPresented: self.$showCreateNote, model: self.model)
+        }
+    }
+}
+
 struct ListRow: View {
     @ObservedObject var note : Note
     var body: some View {
         
-        return HStack(alignment: .center, spacing: 5.0) {
+        VStack(alignment: .leading) {
             
-            if let image = note.image {
-                image
-                .resizable()
-                .frame(width: 50, height: 50)
-            }
-            
-            VStack(alignment: .leading, spacing: 5.0) {
-                Text(note.name)
+            Text("2023-06-23")
                 .bold()
-                    
+            
+            AsyncImage(url: note.imageURL) { image in
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .padding(.bottom)
+            } placeholder: {
+                ProgressView()
+                    .frame(maxWidth: .infinity)
+            }
+
+            Group {
+                Text(note.name)
+                    .bold()
+                
                 if let description = note.description {
                     Text(description)
+                        .foregroundColor(.gray)
                 }
             }
+            .background(.gray)
         }
-        .background(.gray)
-    }
-}
-
-struct ContentView: View {
-    @ObservedObject public var user: UserData
-    @State var showCreateNote = false
-    
-    @State var name : String        = "New Note"
-    @State var description : String = "This is a new note"
-    @State var image : String       = "image"
-
-    var body: some View {
-
-        ZStack {
-            if ($user.isSignedIn.wrappedValue) {
-                NavigationView {
-                    List {
-                        ForEach(user.notes) { note in
-                            ListRow(note: note)
-                        }.onDelete { indices in
-                            indices.forEach {
-                                // removing from user data will refresh UI
-                                // this runs on the UI Thread : OK
-                                let note = self.user.notes.remove(at: $0)
-                                
-                                // asynchronously remove from database
-                                Task {
-                                    await Backend.shared.deleteNote(note: note)
-                                    
-                                    if let n = note.imageName {
-                                        await Backend.shared.deleteImage(name: n)
-                                    }
-                                }
-                                
-                            }
-                        }
-                    }
-                    .navigationTitle(Text("Notes"))
-
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarLeading) {
-                            SignOutButton()
-                        }
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            Button(action: {
-                                self.showCreateNote.toggle()
-                            }) {
-                                Image(systemName: "plus")
-                            }
-                        }
-                    }
-                    
-                }
-                .navigationViewStyle(.stack)
-
-                .sheet(isPresented: $showCreateNote) {
-                    AddNoteView(isPresented: self.$showCreateNote, userData: self.user)
-                }
-            } else {
-                VStack {
-                    SignInButton()
-                    SignOutButton()
-                }
-            }
-        }
+        .padding([.top, .bottom], 20)
     }
 }
 
 struct AddNoteView: View {
     @Binding var isPresented: Bool
-    var userData: UserData
+    var model: ViewModel
 
-    @State var name : String        = "New Note"
-    @State var description : String = "This is a new note"
+    @State var name : String        = "New memory"
+    @State var description : String = "These are my notes from this moment"
     @State var image : UIImage?
     @State var showCaptureImageView = false
 
@@ -143,35 +159,14 @@ struct AddNoteView: View {
                 Button(action: {
                     self.isPresented = false
                     
-                    let note = Note(id : UUID().uuidString,
-                                    name: self.$name.wrappedValue,
-                                    description: self.$description.wrappedValue)
-
-                    if let i = self.image  {
-                        let smallImage = i.resize(to: 0.10)
-                        note.imageName = UUID().uuidString
-                        note.image = Image(uiImage: smallImage)
-
-                        Task {
-                            // asynchronously store the image (and assume it will work)
-                            print("Initiating the image upload")
-                            await Backend.shared.storeImage(name: note.imageName!, image: (smallImage.pngData())!)
+                    withAnimation {
+                        let _ = Task { await self.model.addNote(name: self.name,
+                                                                description: self.description,
+                                                                image: self.image)
                         }
                     }
-                    
-                    // asynchronously store the note (and assume it will succeed)
-                    Task {
-                        await Backend.shared.createNote(note: note)
-                    }
-                    
-                    // add the new note in our userdata, this will refresh UI
-                    // I use a separate method to ensure it runs on the UI Thread
-                    // (withAnimation has a different thread)
-                    withAnimation {
-                       let _ = Task { await self.userData.addNote(note) }
-                    }
                 }) {
-                    Text("Create this note")
+                    Text("Create this memory")
                 }
             }
         }
@@ -179,14 +174,16 @@ struct AddNoteView: View {
 }
     
 struct SignInButton: View {
+    var model : ViewModel
     var body: some View {
-        Button(action: { Task { await Backend.shared.signIn() }}){
+        Button(action: { self.model.signIn() }){
             HStack {
                 Image(systemName: "person.fill")
-                    .scaleEffect(1.5)
+                    .scaleEffect(2)
                     .padding()
                 Text("Sign In")
                     .font(.largeTitle)
+                    .bold()
             }
             .padding()
             .foregroundColor(.white)
@@ -197,39 +194,24 @@ struct SignInButton: View {
 }
 
 struct SignOutButton : View {
-
+    var model : ViewModel
     var body: some View {
-        Button(action: { Task { await Backend.shared.signOut() }}) {
+        Button(action: { self.model.signOut() }) {
                 Text("Sign Out")
         }
     }
 }
 
-
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
 
-        let user1 = prepareTestData(isSignedIn: true)
-        let user2 = prepareTestData(isSignedIn: false)
+        let user1 = ViewModel.mock
+        let user2 = ViewModel.signedOutMock
         return Group {
-            ContentView(user: user1)
-            ContentView(user: user2)
-            AddNoteView(isPresented: .constant(true), userData: user1)
+            ContentView().environmentObject(user1)
+            ContentView().environmentObject(user2)
+            AddNoteView(isPresented: .constant(true), model: user1)
         }
     }
 }
 
-@discardableResult
-func prepareTestData(isSignedIn : Bool) -> UserData {
-    let userData = UserData()
-    userData.isSignedIn = isSignedIn
-    let desc = "this is a very long description that should fit on multiiple lines.\nit even has a line break\nor two."
-    
-    let n1 = Note(id: "01", name: "Hello world", description: desc, image: "mic")
-    let n2 = Note(id: "02", name: "A new note", description: desc, image: "phone")
-    userData.notes = [ n1, n2 ]
-
-    n1.image = Image(systemName: n1.imageName!)
-    n2.image = Image(systemName: n2.imageName!)
-    return userData
-}
