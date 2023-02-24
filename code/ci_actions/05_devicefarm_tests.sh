@@ -2,6 +2,14 @@
 set -e 
 set -o pipefail
 
+#########
+
+# for demo I can't afford to wait 20 minutes for testing.
+exit 0 
+
+########
+
+
 function upload_bundle() {
     local TYPE=$1
     local FILE=$2
@@ -71,80 +79,80 @@ function wait_test_complete() {
     fi
 }
 
-# . code/ci_actions/00_common.sh
+. code/ci_actions/00_common.sh
 
-# echo "Changing to code directory at $CODE_DIR"
-# pushd $CODE_DIR
+echo "Changing to code directory at $CODE_DIR"
+pushd $CODE_DIR
 
-# BUILD_PATH="./build-test"
-# APP_NAME="getting started"
-# DEVICE_FARM="./build-device-farm"
+BUILD_PATH="./build-test"
+APP_NAME="getting started"
+DEVICE_FARM="./build-device-farm"
 
-# echo "Build for testing"
-# xcodebuild build-for-testing                    \
-#            -workspace "${APP_NAME}.xcworkspace" \
-#            -scheme "${APP_NAME}"                \
-#            -destination generic/platform=iOS    \
-#            -derivedDataPath "${BUILD_PATH}"   | $BREW_PATH/xcbeautify
+echo "Build for testing"
+xcodebuild build-for-testing                    \
+           -workspace "${APP_NAME}.xcworkspace" \
+           -scheme "${APP_NAME}"                \
+           -destination generic/platform=iOS    \
+           -derivedDataPath "${BUILD_PATH}"   | $BREW_PATH/xcbeautify
 
-# echo "Building Application UI Tests IPA file"
-# rm -rf "${DEVICE_FARM}"
-# mkdir -p "${DEVICE_FARM}/Payload"
-# cp -r "${BUILD_PATH}/Build/Products/Debug-iphoneos/${APP_NAME} ui tests-Runner.app" "${DEVICE_FARM}/Payload"
-# (cd ${DEVICE_FARM} && zip -r "${APP_NAME}-UI.ipa" Payload)
+echo "Building Application UI Tests IPA file"
+rm -rf "${DEVICE_FARM}"
+mkdir -p "${DEVICE_FARM}/Payload"
+cp -r "${BUILD_PATH}/Build/Products/Debug-iphoneos/${APP_NAME} ui tests-Runner.app" "${DEVICE_FARM}/Payload"
+(cd ${DEVICE_FARM} && zip -r "${APP_NAME}-UI.ipa" Payload)
 
-# echo "Building Application IPA file"
-# rm -rf "${DEVICE_FARM}/Payload"
-# mkdir -p "${DEVICE_FARM}/Payload"
-# cp -r "${BUILD_PATH}/Build/Products/Debug-iphoneos/${APP_NAME}.app" "${DEVICE_FARM}/Payload"
-# (cd ${DEVICE_FARM} && zip -r "${APP_NAME}.ipa" Payload)
-# rm -rf "${DEVICE_FARM}/Payload"
+echo "Building Application IPA file"
+rm -rf "${DEVICE_FARM}/Payload"
+mkdir -p "${DEVICE_FARM}/Payload"
+cp -r "${BUILD_PATH}/Build/Products/Debug-iphoneos/${APP_NAME}.app" "${DEVICE_FARM}/Payload"
+(cd ${DEVICE_FARM} && zip -r "${APP_NAME}.ipa" Payload)
+rm -rf "${DEVICE_FARM}/Payload"
 
-# ###############
-# #
-# # Device Farm 
-# #
-# ###############
+###############
+#
+# Device Farm 
+#
+###############
 
-# # device farm is only available in us-west-2 
-# REGION=us-west-2 
+# device farm is only available in us-west-2 
+REGION=us-west-2 
 
-# # TODO move these to secrets manager ?
-# PROJECT_ARN="arn:aws:devicefarm:us-west-2:486652066693:project:7fb4f0f3-2772-4123-97c0-d323084db635"
-# PRIVATE_DEVICE_POOL_ARN="arn:aws:devicefarm:us-west-2:486652066693:devicepool:7fb4f0f3-2772-4123-97c0-d323084db635/0658c78b-8df7-439d-9785-e4f087dbcc55"
+# TODO move these to secrets manager ?
+PROJECT_ARN="arn:aws:devicefarm:us-west-2:486652066693:project:7fb4f0f3-2772-4123-97c0-d323084db635"
+PRIVATE_DEVICE_POOL_ARN="arn:aws:devicefarm:us-west-2:486652066693:devicepool:7fb4f0f3-2772-4123-97c0-d323084db635/0658c78b-8df7-439d-9785-e4f087dbcc55"
 
-# APP_BUNDLE="${APP_NAME}.ipa"
-# TEST_BUNDLE="${APP_NAME}-UI.ipa"
-# FILE_APP_BUNDLE="${DEVICE_FARM}/${APP_NAME}.ipa"
-# FILE_TEST_BUNDLE="${DEVICE_FARM}/${APP_NAME}-UI.ipa"
-# FILE_TEST_SPEC="ci_actions/xctestui.yaml"
+APP_BUNDLE="${APP_NAME}.ipa"
+TEST_BUNDLE="${APP_NAME}-UI.ipa"
+FILE_APP_BUNDLE="${DEVICE_FARM}/${APP_NAME}.ipa"
+FILE_TEST_BUNDLE="${DEVICE_FARM}/${APP_NAME}-UI.ipa"
+FILE_TEST_SPEC="ci_actions/xctestui.yaml"
 
-# ## Upload app
-# echo "Uploading App"
-# upload_bundle "IOS_APP" "${FILE_APP_BUNDLE}"
-# IOS_APP_ARN=$RETURN_VALUE
+## Upload app
+echo "Uploading App"
+upload_bundle "IOS_APP" "${FILE_APP_BUNDLE}"
+IOS_APP_ARN=$RETURN_VALUE
 
-# ## Upload Test
-# echo "Uploading Test App"
-# upload_bundle "XCTEST_UI_TEST_PACKAGE" "${FILE_TEST_BUNDLE}"
-# IOS_TEST_APP_ARN=$RETURN_VALUE
+## Upload Test
+echo "Uploading Test App"
+upload_bundle "XCTEST_UI_TEST_PACKAGE" "${FILE_TEST_BUNDLE}"
+IOS_TEST_APP_ARN=$RETURN_VALUE
 
-# ## Upload Test Script
-# echo "Preparing Test Script to Device Farm"
-# upload_bundle "XCTEST_UI_TEST_SPEC"  "${FILE_TEST_SPEC}"
-# IOS_TEST_SPEC_ARN=$RETURN_VALUE
+## Upload Test Script
+echo "Preparing Test Script to Device Farm"
+upload_bundle "XCTEST_UI_TEST_SPEC"  "${FILE_TEST_SPEC}"
+IOS_TEST_SPEC_ARN=$RETURN_VALUE
 
-## Schedule a run on Device Farm
-# SCHEDULE_RUN_OUTPUT="$(${AWS_CLI} devicefarm schedule-run --region ${REGION}  \
-#                                                           --project-arn ${PROJECT_ARN} \
-#                                                           --app-arn ${IOS_APP_ARN} \
-#                                                           --device-pool-arn ${PRIVATE_DEVICE_POOL_ARN} \
-#                                                           --name CLITestRun  \
-#                                                           --test type=XCTEST_UI,testPackageArn=${IOS_TEST_APP_ARN},testSpecArn=${IOS_TEST_SPEC_ARN} )"
+# Schedule a run on Device Farm
+SCHEDULE_RUN_OUTPUT="$(${AWS_CLI} devicefarm schedule-run --region ${REGION}  \
+                                                          --project-arn ${PROJECT_ARN} \
+                                                          --app-arn ${IOS_APP_ARN} \
+                                                          --device-pool-arn ${PRIVATE_DEVICE_POOL_ARN} \
+                                                          --name CLITestRun  \
+                                                          --test type=XCTEST_UI,testPackageArn=${IOS_TEST_APP_ARN},testSpecArn=${IOS_TEST_SPEC_ARN} )"
 
 
-# # Forloop to test until run is complete 
-# SCHEDULED_RUN_ARN=$(echo $SCHEDULE_RUN_OUTPUT | $BREW_PATH/jq -r '.run.arn')
-# wait_test_complete $SCHEDULED_RUN_ARN
+# Forloop to test until run is complete 
+SCHEDULED_RUN_ARN=$(echo $SCHEDULE_RUN_OUTPUT | $BREW_PATH/jq -r '.run.arn')
+wait_test_complete $SCHEDULED_RUN_ARN
 
-# popd
+popd
