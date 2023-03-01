@@ -19,7 +19,7 @@ class Backend  {
     private init() {
         // initialize amplify
         do {
-//            Amplify.Logging.logLevewl = .info
+//            Amplify.Logging.logLevel = .info
             // reduce verbosity of AWS SDK
             SDKLoggingSystem.initialize(logLevel: .warning)
 
