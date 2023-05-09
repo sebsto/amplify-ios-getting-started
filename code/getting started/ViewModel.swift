@@ -161,9 +161,8 @@ extension ViewModel {
             model.state = .signedOut
         }
 
-        let url = Bundle.main.url(forResource: "amplify_logo-10", withExtension: "png")
-        n1.imageURL = url
-        n2.imageURL = url
+        n1.imageURL = Bundle.main.url(forResource: "4BC64B0D-A56E-4218-9993-C5C4EDF9C044", withExtension: "png")
+        n2.imageURL = Bundle.main.url(forResource: "27F5F399-2D1D-476F-84BB-E50913535352", withExtension: "png")
 
         return model
     }

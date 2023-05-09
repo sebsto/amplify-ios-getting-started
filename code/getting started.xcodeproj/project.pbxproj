@@ -13,6 +13,8 @@
 		006E5EE929A4BFAA00BF4871 /* amplify_logo-10.png in Resources */ = {isa = PBXBuildFile; fileRef = 006E5EE629A4BFAA00BF4871 /* amplify_logo-10.png */; };
 		0084717524A60D82002CD90D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0084717424A60D82002CD90D /* ContentView.swift */; };
 		0084717A24A60D86002CD90D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0084717924A60D86002CD90D /* Preview Assets.xcassets */; };
+		00904A582A0A3FD400961C2F /* 4BC64B0D-A56E-4218-9993-C5C4EDF9C044.png in Resources */ = {isa = PBXBuildFile; fileRef = 00904A562A0A3FD300961C2F /* 4BC64B0D-A56E-4218-9993-C5C4EDF9C044.png */; };
+		00904A592A0A3FD400961C2F /* 27F5F399-2D1D-476F-84BB-E50913535352.png in Resources */ = {isa = PBXBuildFile; fileRef = 00904A572A0A3FD400961C2F /* 27F5F399-2D1D-476F-84BB-E50913535352.png */; };
 		009D73A628D4A3100066DEA4 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 009D73A528D4A3100066DEA4 /* App.swift */; };
 		00A017DA2542A646003977CB /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A017D92542A646003977CB /* ViewModel.swift */; };
 		00BB8D91291D359E00756622 /* AWSAPIPlugin in Frameworks */ = {isa = PBXBuildFile; productRef = 00BB8D90291D359E00756622 /* AWSAPIPlugin */; };
@@ -58,6 +60,8 @@
 		0084717424A60D82002CD90D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		0084717924A60D86002CD90D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0084717E24A60D86002CD90D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		00904A562A0A3FD300961C2F /* 4BC64B0D-A56E-4218-9993-C5C4EDF9C044.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "4BC64B0D-A56E-4218-9993-C5C4EDF9C044.png"; sourceTree = "<group>"; };
+		00904A572A0A3FD400961C2F /* 27F5F399-2D1D-476F-84BB-E50913535352.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "27F5F399-2D1D-476F-84BB-E50913535352.png"; sourceTree = "<group>"; };
 		009D73A528D4A3100066DEA4 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		00A017D92542A646003977CB /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		00E757482704CB710018F166 /* getting started unit tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "getting started unit tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -118,6 +122,8 @@
 		006E5EE329A4BE1700BF4871 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				00904A562A0A3FD300961C2F /* 4BC64B0D-A56E-4218-9993-C5C4EDF9C044.png */,
+				00904A572A0A3FD400961C2F /* 27F5F399-2D1D-476F-84BB-E50913535352.png */,
 				006E5EE629A4BFAA00BF4871 /* amplify_logo-10.png */,
 			);
 			path = Resources;
@@ -345,10 +351,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				0084717A24A60D86002CD90D /* Preview Assets.xcassets in Resources */,
+				00904A582A0A3FD400961C2F /* 4BC64B0D-A56E-4218-9993-C5C4EDF9C044.png in Resources */,
 				B38FBC3FA55B3AAAF1F89548 /* awsconfiguration.json in Resources */,
 				006E5EE929A4BFAA00BF4871 /* amplify_logo-10.png in Resources */,
 				00678A6329A646FB00CA03EF /* LaunchScreen.storyboard in Resources */,
 				006E5EE229A4BDD300BF4871 /* Assets.xcassets in Resources */,
+				00904A592A0A3FD400961C2F /* 27F5F399-2D1D-476F-84BB-E50913535352.png in Resources */,
 				9ED2BAC10236F879FD353ACA /* amplifyconfiguration.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
