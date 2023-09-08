@@ -23,9 +23,9 @@ pushd $CODE_DIR
 echo "Cleaning amplify data, if any"
 rm -rf ~/.amplify 
 # if amplify project has never been deployed from this machine, delete the amplify dir
-if [ ! -d amplify/\#current-cloud-backend ]; then
-	rm -rf amplify 
-fi
+# if [ ! -d amplify/\#current-cloud-backend ]; then
+# 	rm -rf amplify 
+# fi
 
 echo "Pulling amplify environment"
 
