@@ -16,10 +16,6 @@ else
 	exit 1
 fi
 
-# workaround for https://github.com/aws-amplify/amplify-cli/issues/13202
-echo "Creating generated code directory"
-mkdir -p $CODE_DIR/amplify/generated/models 
-
 echo "Using amplify at $AMPLIFY_CLI"
 echo "Changing to code directory at $CODE_DIR"
 pushd $CODE_DIR
@@ -56,6 +52,15 @@ PROVIDERS="{\
 # the region where the backend is deployed
 BACKEND_REGION=eu-central-1 
 
+# double command execution, this is a workaround for issue https://github.com/aws-amplify/amplify-cli/issues/13201
+$AMPLIFY_CLI pull \
+--amplify $AMPLIFY \
+--frontend $FRONTEND \
+--providers $PROVIDERS \
+--yes \
+--region $BACKEND_REGION || \
+echo "First amplify pull failed, applying workaround for Amplify CLI Issue # 13201" && \
+mkdir -p $CODE_DIR/amplify/generated/models && \
 $AMPLIFY_CLI pull \
 --amplify $AMPLIFY \
 --frontend $FRONTEND \
