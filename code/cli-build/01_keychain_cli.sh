@@ -7,13 +7,13 @@ else
     AWS_CLI=/usr/local/bin/aws 
 fi
 
-REGION=$(curl -s 169.254.169.254/latest/meta-data/placement/region/)
+TOKEN=$(curl -s -H "X-aws-ec2-metadata-token-ttl-seconds: 21600" -X PUT 'http://169.254.169.254/latest/api/token')
+REGION=$(curl -s -H "X-aws-ec2-metadata-token: ${TOKEN}" 'http://169.254.169.254/latest/meta-data/placement/region')
+echo "${REGION}" 
+
 HOME=/Users/ec2-user
-
-CERTIFICATES_DIR=$HOME/certificates
-mkdir -p $CERTIFICATES_DIR 2>&1 >/dev/null
-
-echo $REGION 
+CERTIFICATES_DIR="${HOME}/certificates";
+mkdir -p "${CERTIFICATES_DIR}" 2>&1 >/dev/null
 
 echo "Cleaning Provisioning Profiles"
 rm -rf "$HOME/Library/MobileDevice/Provisioning Profiles"
