@@ -6,16 +6,6 @@
 //  Copyright © 2020 Stormacq, Sebastien. All rights reserved.
 //
 
-/*
- Please check
- NoteData+Schema.swift :26
- model.listPluralName = "NoteData"
-
- https://github.com/aws-amplify/amplify-ios/issues/1443
- https://github.com/aws-amplify/amplify-codegen/pull/255
- https://github.com/aws-amplify/amplify-ios/pull/1451
- */
-
 import Foundation
 import SwiftUI
 

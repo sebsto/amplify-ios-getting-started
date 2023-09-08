@@ -25,7 +25,7 @@ extension NoteData {
     
     model.listPluralName = "NoteData"
     model.syncPluralName = "NoteData"
-
+    
     model.fields(
       .id(),
       .field(noteData.name, is: .required, ofType: .string),
