@@ -17,7 +17,8 @@ else
 fi
 
 # workaround for https://github.com/aws-amplify/amplify-cli/issues/13202
-mkdir -p code/amplify/generated/models 
+echo "Creating generated code directory"
+mkdir -p $CODE_DIR/amplify/generated/models 
 
 echo "Using amplify at $AMPLIFY_CLI"
 echo "Changing to code directory at $CODE_DIR"
