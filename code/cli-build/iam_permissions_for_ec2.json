@@ -10,6 +10,10 @@
                 "cloudformation:Get*",
                 "cloudformation:Validate*",
                 "cloudformation:Detect*",
+				"cognito-idp:ListUserPools",
+                "cognito-idp:ListIdentityProviders",
+                "cognito-idp:DescribeIdentityProvider",
+                
                 "amplify:List*",
                 "amplify:Get*"
             ],
