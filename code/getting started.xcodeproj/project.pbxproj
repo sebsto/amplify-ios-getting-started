@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 53;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -273,8 +273,6 @@
 				00E7574D2704CB720018F166 /* PBXTargetDependency */,
 			);
 			name = "getting started unit tests";
-			packageProductDependencies = (
-			);
 			productName = "getting started unit tests";
 			productReference = 00E757482704CB710018F166 /* getting started unit tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -293,8 +291,6 @@
 				00F8F9C02705A84C00786187 /* PBXTargetDependency */,
 			);
 			name = "getting started ui tests";
-			packageProductDependencies = (
-			);
 			productName = "getting started ui tests";
 			productReference = 00F8F9B92705A84B00786187 /* getting started ui tests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -305,8 +301,9 @@
 		0084716524A60D82002CD90D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1300;
-				LastUpgradeCheck = 1200;
+				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = "Stormacq, Sebastien";
 				TargetAttributes = {
 					0084716C24A60D82002CD90D = {
@@ -551,7 +548,6 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				STRIPFLAGS = "-rSTx";
-				STRIP_INSTALLED_PRODUCT = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
