@@ -20,8 +20,8 @@ echo "Using amplify at $AMPLIFY_CLI"
 echo "Changing to code directory at $CODE_DIR"
 pushd $CODE_DIR
 
-echo "Cleaning amplify data, if any"
-rm -rf ~/.amplify 
+# echo "Cleaning amplify data, if any"
+# rm -rf ~/.amplify 
 # if amplify project has never been deployed from this machine, delete the amplify dir
 # if [ ! -d amplify/\#current-cloud-backend ]; then
 # 	rm -rf amplify 
