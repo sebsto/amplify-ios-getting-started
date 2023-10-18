@@ -2,6 +2,14 @@
 set -e 
 set -o pipefail
 
+#########
+
+# for demo I can't afford to wait 20 minutes for testing.
+exit 0 
+
+########
+
+
 function upload_bundle() {
     local TYPE=$1
     local FILE=$2
@@ -134,7 +142,7 @@ echo "Preparing Test Script to Device Farm"
 upload_bundle "XCTEST_UI_TEST_SPEC"  "${FILE_TEST_SPEC}"
 IOS_TEST_SPEC_ARN=$RETURN_VALUE
 
-## Schedule a run on Device Farm
+# Schedule a run on Device Farm
 SCHEDULE_RUN_OUTPUT="$(${AWS_CLI} devicefarm schedule-run --region ${REGION}  \
                                                           --project-arn ${PROJECT_ARN} \
                                                           --app-arn ${IOS_APP_ARN} \

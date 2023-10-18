@@ -6,24 +6,8 @@
 //  Copyright © 2020 Stormacq, Sebastien. All rights reserved.
 //
 
-/*
- Please check
- NoteData+Schema.swift :26
- model.listPluralName = "NoteData"
-
- https://github.com/aws-amplify/amplify-ios/issues/1443
- https://github.com/aws-amplify/amplify-codegen/pull/255
- https://github.com/aws-amplify/amplify-ios/pull/1451
- */
-
 import Foundation
 import SwiftUI
-
-enum AuthStatus {
-    case signedIn
-    case signedOut
-    case sessionExpired
-}
 
 enum AppState {
     case signedOut
@@ -58,7 +42,8 @@ class ViewModel : ObservableObject {
 
         let note = Note(id : UUID().uuidString,
                         name: name,
-                        description: description)
+                        description: description,
+                        createdAt: Date.now)
 
         // asynchronously store the note (and assume it will succeed)
         Task {
@@ -74,7 +59,8 @@ class ViewModel : ObservableObject {
                 print("Initiating the image upload")
                 await Backend.shared.storeImage(name: note.imageName!, image: (smallImage.pngData())!)
                 
-                // asynchronously generate the URL of the image.
+                // asynchronously generate the URL of the image (this triggers the UI refresh)
+                print("Updating the image URL")
                 note.imageURL = await Backend.shared.imageURL(name: note.imageName!)
             }
         }
@@ -108,6 +94,7 @@ class ViewModel : ObservableObject {
         if !EnvironmentVariable.isPreview {
             
             let status = try await Backend.shared.getInitialAuthStatus()
+            print("INITIAL AUTH STATUS is \(status)")
             switch status {
             case .signedIn: self.state = .loading
             case .signedOut, .sessionExpired:  self.state = .signedOut
@@ -165,46 +152,10 @@ extension ViewModel {
             model.state = .signedOut
         }
 
-        let url = Bundle.main.url(forResource: "amplify_logo-10", withExtension: "png")
-        n1.imageURL = url
-        n2.imageURL = url
+        n1.imageURL = Bundle.main.url(forResource: "4BC64B0D-A56E-4218-9993-C5C4EDF9C044", withExtension: "png")
+        n2.imageURL = Bundle.main.url(forResource: "27F5F399-2D1D-476F-84BB-E50913535352", withExtension: "png")
 
         return model
     }
 }
 
-class Note : Identifiable, ObservableObject {
-    var id          : String
-    var name        : String
-    var description : String?
-    var imageName   : String?
-    @MainActor @Published var imageURL : URL?
-    
-    init(id: String, name: String, description: String? = nil, image: String? = nil ) {
-        self.id          = id
-        self.name        = name
-        self.description = description
-        self.imageName   = image
-    }
-    
-    // convert from backend data struct to our model
-    convenience init(from data: NoteData) {
-        self.init(id: data.id, name: data.name, description: data.description, image: data.image)
-        
-        if let name = self.imageName {
-            
-            // asynchronously generate the URL of the image.
-            Task { @MainActor () -> Void in
-                self.imageURL = await Backend.shared.imageURL(name: name)
-            }
-        }
-    }
-    
-    // convert our model to backend data format
-    func forApi() -> NoteData {
-        return NoteData(id: self.id,
-                        name: self.name,
-                        description: self.description,
-                        image: self.imageName)
-    }
-}

@@ -18,6 +18,9 @@ echo "[default]\n\n" > ~/.aws/credentials
 
 echo "🏗 Installing Amplify"
 curl -sL https://aws-amplify.github.io/amplify-cli/install | bash && $SHELL
+AMPLIFY_CLI=~/.amplify/bin/amplify
+
+pushd /Volumes/workspace/repository/code
 
 echo "💫 Configuring Amplify for this project"
 AMPLIFY_APPID="d1lld0ga9eqxz2"
@@ -43,8 +46,15 @@ PROVIDERS="{\
 \"awscloudformation\":$AWSCLOUDFORMATIONCONFIG\
 }"
 
-pushd /Volumes/workspace/repository/code
-~/.amplify/bin/amplify pull \
+$AMPLIFY_CLI pull \
+--region $AMPLIFY_REGION \
+--amplify $AMPLIFY       \
+--frontend $FRONTEND     \
+--providers $PROVIDERS   \
+--yes || \
+echo "First amplify pull failed, applying workaround for Amplify CLI Issue # 13201" && \
+mkdir -p $CODE_DIR/amplify/generated/models && \
+$AMPLIFY_CLI pull \
 --region $AMPLIFY_REGION \
 --amplify $AMPLIFY       \
 --frontend $FRONTEND     \
@@ -52,9 +62,7 @@ pushd /Volumes/workspace/repository/code
 --yes
 
 echo "💫 Generating code"
-~/.amplify/bin/amplify codegen models
-# Not necessary to copy the files. Xcode project has a folder pointing to amplify/generated/models
-# cp amplify/generated/models/*.swift "getting started"
+$AMPLIFY_CLI codegen models
 
 # A command or script succeeded.
 echo "✅ Done."

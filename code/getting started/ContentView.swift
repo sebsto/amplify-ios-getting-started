@@ -86,7 +86,7 @@ struct ListRow: View {
         
         VStack(alignment: .leading) {
             
-            Text("2023-06-23")
+            Text(note.date)
                 .bold()
             
             AsyncImage(url: note.imageURL) { image in
@@ -108,9 +108,9 @@ struct ListRow: View {
                         .foregroundColor(.gray)
                 }
             }
-//            .background(.gray)
         }
         .padding([.top, .bottom], 20)
+//        .background(.gray)
     }
 }
 
@@ -147,8 +147,6 @@ struct AddNoteView: View {
                                 .resizable()
                                 .frame(width: 250, height: 200)
                                 .clipShape(Circle())
-                                .overlay(Circle().stroke(Color.white, lineWidth: 4))
-                                .shadow(radius: 10)
                             Spacer()
                             }
                     }

@@ -21,7 +21,7 @@ jobs:
     machine: true
     resource_class: sebsto/amplify-ios-getting-started
     steps:
-      - checkout
+      - checkout # warning this force SSH in ~/.gitconfig
       - run: pwd && ls -al
       - run: code/ci_actions/01_keychain.sh
       - run: code/ci_actions/02_amplify.sh

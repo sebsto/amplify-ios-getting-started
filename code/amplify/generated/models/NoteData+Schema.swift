@@ -24,6 +24,7 @@ extension NoteData {
     ]
     
     model.listPluralName = "NoteData"
+    model.syncPluralName = "NoteData"
     
     model.fields(
       .id(),
