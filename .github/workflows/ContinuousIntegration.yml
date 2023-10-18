@@ -17,7 +17,7 @@ jobs:
     # - name: Clean Git Config
     #   run: rm /Users/ec2-user/.gitconfig
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: PrepareKeychain
       run: code/ci_actions/01_keychain.sh
     - name: PrepareAmplify
