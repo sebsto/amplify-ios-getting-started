@@ -10,7 +10,7 @@ pushd $CODE_DIR
 WORKSPACE="getting started.xcworkspace"
 SCHEME="getting started"
 PHONE_MODEL="iPhone 14 Pro"
-IOS_VERSION="16.2"
+IOS_VERSION="16.4"
 
 xcodebuild test \
     -workspace "$WORKSPACE" \
