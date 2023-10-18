@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ "main" ]
   
-  workflow_dispatch:
+  workflow_dispatch: # allows manual trigger of the workflow in GitHub console
 
 jobs:
   pre-build:
@@ -14,6 +14,8 @@ jobs:
     runs-on: self-hosted
 
     steps:
+    - name: Clean Git Config
+      run: rm /Users/ec2-user/.gitconfig
     - name: Checkout
       uses: actions/checkout@v4
     - name: PrepareKeychain
