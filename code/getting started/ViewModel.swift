@@ -59,7 +59,8 @@ class ViewModel : ObservableObject {
                 print("Initiating the image upload")
                 await Backend.shared.storeImage(name: note.imageName!, image: (smallImage.pngData())!)
                 
-                // asynchronously generate the URL of the image.
+                // asynchronously generate the URL of the image (this triggers the UI refresh)
+                print("Updating the image URL")
                 note.imageURL = await Backend.shared.imageURL(name: note.imageName!)
             }
         }
