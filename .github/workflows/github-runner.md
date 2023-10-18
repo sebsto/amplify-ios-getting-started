@@ -17,23 +17,28 @@ cat << EOF > /Library/LaunchDaemons/$RUNNER_NAME.plist
 <plist version="1.0">
   <dict>
     <key>Label</key>
-    <string>actions.runner.sebsto-amplify-ios-getting-started.ip-172-31-5-66</string>
+    <string>actions-runner-amplify-ios-getting-started</string>
     <key>ProgramArguments</key>
     <array>
-      <string>/Users/ec2-user/actions-runner/runsvc.sh</string>
+      <string>/Users/ec2-user/actions-runner-amplify-ios-getting-started/run.sh</string>
     </array>
+    <key>KeepAlive</key>
+    <dict>
+      <key>SuccessfulExit</key>
+      <false/>
+    </dict> 
     <key>UserName</key>
     <string>ec2-user</string>
     <key>GroupName</key>
     <string>staff</string>  
     <key>WorkingDirectory</key>
-    <string>/Users/ec2-user/actions-runner</string>
+    <string>/Users/ec2-user/actions-runner-amplify-ios-getting-started</string>
     <key>RunAtLoad</key>
     <true/>    
     <key>StandardOutPath</key>
-    <string>/Users/ec2-user/Library/Logs/actions.runner.sebsto-amplify-ios-getting-started.ip-172-31-5-66/stdout.log</string>
+    <string>/Users/ec2-user/actions-runner-amplify-ios-getting-started/stdout.log</string>
     <key>StandardErrorPath</key>
-    <string>/Users/ec2-user/Library/Logs/actions.runner.sebsto-amplify-ios-getting-started.ip-172-31-5-66/stderr.log</string>
+    <string>/Users/ec2-user/actions-runner-amplify-ios-getting-started/stderr.log</string>
     <key>EnvironmentVariables</key>
     <dict> 
       <key>ACTIONS_RUNNER_SVC</key>
