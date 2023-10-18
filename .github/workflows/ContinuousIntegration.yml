@@ -1,4 +1,4 @@
-name: ContinuousIntegration
+name: CICD on GitHub
 
 on:
   push:
