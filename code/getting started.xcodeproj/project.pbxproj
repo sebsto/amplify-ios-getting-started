@@ -3,10 +3,16 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 53;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00111E342ADF69640078D462 /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 00111E322ADF69640078D462 /* awsconfiguration.json */; };
+		00111E352ADF69640078D462 /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 00111E322ADF69640078D462 /* awsconfiguration.json */; };
+		00111E362ADF69640078D462 /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 00111E322ADF69640078D462 /* awsconfiguration.json */; };
+		00111E372ADF69640078D462 /* amplifyconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 00111E332ADF69640078D462 /* amplifyconfiguration.json */; };
+		00111E382ADF69640078D462 /* amplifyconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 00111E332ADF69640078D462 /* amplifyconfiguration.json */; };
+		00111E392ADF69640078D462 /* amplifyconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 00111E332ADF69640078D462 /* amplifyconfiguration.json */; };
 		0054616E29A670EE00D4B110 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0054616D29A670EE00D4B110 /* Model.swift */; };
 		00678A6329A646FB00CA03EF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 00678A6129A646FB00CA03EF /* LaunchScreen.storyboard */; };
 		006E5EE229A4BDD300BF4871 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 006E5EE129A4BDD300BF4871 /* Assets.xcassets */; };
@@ -29,8 +35,6 @@
 		00FA7E7724AA1DB0007042EA /* CaptureImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FA7E7624AA1DB0007042EA /* CaptureImageView.swift */; };
 		55DD6BBFE7609CE8705E3E7B /* NoteData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB68CC9C6D39A9706C8B888 /* NoteData.swift */; };
 		8F07D5E87234E68690BFCD5B /* AmplifyModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4807AE5EEA9DBD613F5DC845 /* AmplifyModels.swift */; };
-		9ED2BAC10236F879FD353ACA /* amplifyconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 8CF1AA48D0C5E2C960263F45 /* amplifyconfiguration.json */; };
-		B38FBC3FA55B3AAAF1F89548 /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 5143D6592CCDA4A3277EA67D /* awsconfiguration.json */; };
 		D2322EA3AC392E1784EBA94E /* NoteData+Schema.swift in Sources */ = {isa = PBXBuildFile; fileRef = B30EDC28179E4A8BCE0A2250 /* NoteData+Schema.swift */; };
 /* End PBXBuildFile section */
 
@@ -52,6 +56,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		00111E322ADF69640078D462 /* awsconfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = awsconfiguration.json; path = ../awsconfiguration.json; sourceTree = "<group>"; };
+		00111E332ADF69640078D462 /* amplifyconfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = amplifyconfiguration.json; path = ../amplifyconfiguration.json; sourceTree = "<group>"; };
 		0054616D29A670EE00D4B110 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		00678A6229A646FB00CA03EF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		006E5EE129A4BDD300BF4871 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -76,8 +82,6 @@
 		00FD171928D502B3004C4CC9 /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
 		00FD171A28D502CC004C4CC9 /* ci_post_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_xcodebuild.sh; sourceTree = "<group>"; };
 		4807AE5EEA9DBD613F5DC845 /* AmplifyModels.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; name = AmplifyModels.swift; path = amplify/generated/models/AmplifyModels.swift; sourceTree = "<group>"; };
-		5143D6592CCDA4A3277EA67D /* awsconfiguration.json */ = {isa = PBXFileReference; explicitFileType = text.json; path = awsconfiguration.json; sourceTree = "<group>"; };
-		8CF1AA48D0C5E2C960263F45 /* amplifyconfiguration.json */ = {isa = PBXFileReference; explicitFileType = text.json; path = amplifyconfiguration.json; sourceTree = "<group>"; };
 		B30EDC28179E4A8BCE0A2250 /* NoteData+Schema.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; name = "NoteData+Schema.swift"; path = "amplify/generated/models/NoteData+Schema.swift"; sourceTree = "<group>"; };
 		CEB68CC9C6D39A9706C8B888 /* NoteData.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; name = NoteData.swift; path = amplify/generated/models/NoteData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -210,8 +214,8 @@
 		4BAE36455AC9823D09E807BF /* AmplifyConfig */ = {
 			isa = PBXGroup;
 			children = (
-				5143D6592CCDA4A3277EA67D /* awsconfiguration.json */,
-				8CF1AA48D0C5E2C960263F45 /* amplifyconfiguration.json */,
+				00111E332ADF69640078D462 /* amplifyconfiguration.json */,
+				00111E322ADF69640078D462 /* awsconfiguration.json */,
 			);
 			name = AmplifyConfig;
 			sourceTree = "<group>";
@@ -303,7 +307,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1300;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1500;
 				ORGANIZATIONNAME = "Stormacq, Sebastien";
 				TargetAttributes = {
 					0084716C24A60D82002CD90D = {
@@ -347,14 +351,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				00111E342ADF69640078D462 /* awsconfiguration.json in Resources */,
 				0084717A24A60D86002CD90D /* Preview Assets.xcassets in Resources */,
 				00904A582A0A3FD400961C2F /* 4BC64B0D-A56E-4218-9993-C5C4EDF9C044.png in Resources */,
-				B38FBC3FA55B3AAAF1F89548 /* awsconfiguration.json in Resources */,
 				006E5EE929A4BFAA00BF4871 /* amplify_logo-10.png in Resources */,
 				00678A6329A646FB00CA03EF /* LaunchScreen.storyboard in Resources */,
 				006E5EE229A4BDD300BF4871 /* Assets.xcassets in Resources */,
+				00111E372ADF69640078D462 /* amplifyconfiguration.json in Resources */,
 				00904A592A0A3FD400961C2F /* 27F5F399-2D1D-476F-84BB-E50913535352.png in Resources */,
-				9ED2BAC10236F879FD353ACA /* amplifyconfiguration.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -362,6 +366,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				00111E352ADF69640078D462 /* awsconfiguration.json in Resources */,
+				00111E382ADF69640078D462 /* amplifyconfiguration.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -369,6 +375,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				00111E362ADF69640078D462 /* awsconfiguration.json in Resources */,
+				00111E392ADF69640078D462 /* amplifyconfiguration.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -440,6 +448,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -473,6 +482,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -501,6 +511,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -535,6 +546,7 @@
 				DEPLOYMENT_POSTPROCESSING = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

@@ -1,0 +1,8 @@
+type NoteData
+@model
+@auth (rules: [ { allow: owner } ]) {
+    id: ID!
+    name: String!
+    description: String
+    image: String
+}

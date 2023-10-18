@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/aws-amplify/amplify-swift",
       "state" : {
-        "revision" : "76ba8f1ead1cac4d53f313fb8d214c7bc5000551",
-        "version" : "2.17.1"
+        "revision" : "12cd18cdbfe12ed4ab22b1b41854948e0ebf5b63",
+        "version" : "2.19.0"
       }
     },
     {
@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/aws-amplify/aws-appsync-realtime-client-ios.git",
       "state" : {
-        "revision" : "3de274c68a3cb60c8aec18b5bc0a8c07860219cd",
-        "version" : "3.0.0"
+        "revision" : "c7ec93dcbbcd8abc90c74203937f207a7fcaa611",
+        "version" : "3.1.1"
       }
     },
     {
@@ -77,8 +77,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-collections",
       "state" : {
-        "revision" : "937e904258d22af6e447a0b72c0bc67583ef64a2",
-        "version" : "1.0.4"
+        "revision" : "a902f1823a7ff3c9ab2fba0f992396b948eda307",
+        "version" : "1.0.5"
       }
     },
     {
@@ -86,8 +86,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-log.git",
       "state" : {
-        "revision" : "32e8d724467f8fe623624570367e3d50c5638e46",
-        "version" : "1.5.2"
+        "revision" : "532d8b529501fb73a2455b179e0bbb6d49b652ed",
+        "version" : "1.5.3"
       }
     },
     {
@@ -95,8 +95,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/MaxDesiatov/XMLCoder.git",
       "state" : {
-        "revision" : "c438dad94f6a243b411b70a4b4bac54595064808",
-        "version" : "0.15.0"
+        "revision" : "b1e944cbd0ef33787b13f639a5418d55b3bed501",
+        "version" : "0.17.1"
       }
     }
   ],

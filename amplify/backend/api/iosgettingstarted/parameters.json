@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "iosgettingstarted",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authiosgettingstarted2ee74a53",
+      "Outputs.UserPoolId"
+    ]
+  }
+}

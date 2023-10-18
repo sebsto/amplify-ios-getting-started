@@ -1,0 +1,67 @@
+{
+  "version": "1",
+  "cognitoConfig": {
+    "identityPoolName": "iosgettingstarted2ee74a53_identitypool_2ee74a53",
+    "allowUnauthenticatedIdentities": false,
+    "resourceNameTruncated": "iosget2ee74a53",
+    "userPoolName": "iosgettingstarted2ee74a53_userpool_2ee74a53",
+    "autoVerifiedAttributes": [
+      "email"
+    ],
+    "mfaConfiguration": "OFF",
+    "mfaTypes": [
+      "SMS Text Message"
+    ],
+    "smsAuthenticationMessage": "Your authentication code is {####}",
+    "smsVerificationMessage": "Your verification code is {####}",
+    "emailVerificationSubject": "Your verification code",
+    "emailVerificationMessage": "Your verification code is {####}",
+    "defaultPasswordPolicy": false,
+    "passwordPolicyMinLength": 8,
+    "passwordPolicyCharacters": [],
+    "requiredAttributes": [
+      "email"
+    ],
+    "aliasAttributes": [],
+    "userpoolClientGenerateSecret": false,
+    "userpoolClientRefreshTokenValidity": 30,
+    "userpoolClientWriteAttributes": [
+      "email"
+    ],
+    "userpoolClientReadAttributes": [
+      "email"
+    ],
+    "userpoolClientLambdaRole": "iosget2ee74a53_userpoolclient_lambda_role",
+    "userpoolClientSetAttributes": false,
+    "authSelections": "identityPoolAndUserPool",
+    "resourceName": "iosgettingstarted2ee74a53",
+    "serviceName": "Cognito",
+    "useDefault": "defaultSocial",
+    "sharedId": "2ee74a53",
+    "userPoolGroupList": [],
+    "usernameCaseSensitive": false,
+    "hostedUI": true,
+    "hostedUIDomainName": "iosgettingstarted2ee74a53-2ee74a53",
+    "hostedUIProviderMeta": "[]",
+    "authProvidersUserPool": [],
+    "authRoleArn": {
+      "Fn::GetAtt": [
+        "AuthRole",
+        "Arn"
+      ]
+    },
+    "unauthRoleArn": {
+      "Fn::GetAtt": [
+        "UnauthRole",
+        "Arn"
+      ]
+    },
+    "breakCircularDependency": true,
+    "useEnabledMfas": false,
+    "dependsOn": [],
+    "signinwithappleAuthorizeScopes": [
+      "email"
+    ],
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"gettingstarted://\"],\"LogoutURLs\":[\"gettingstarted://\"]}"
+  }
+}  
