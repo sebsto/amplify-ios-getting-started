@@ -1,3 +1,5 @@
+[![ContinuousIntegration](https://github.com/sebsto/amplify-ios-getting-started/actions/workflows/ContinuousIntegration.yml/badge.svg)](https://github.com/sebsto/amplify-ios-getting-started/actions/workflows/ContinuousIntegration.yml)
+
 This is the editable material for Amplify's [iOS Getting Started](https://aws.amazon.com/getting-started/hands-on/build-ios-app-amplify/) guide.
 
 Other front-end Amplify hands on tutorial :
