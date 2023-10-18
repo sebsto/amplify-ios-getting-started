@@ -47,6 +47,7 @@ security list-keychain
 security unlock-keychain -p "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
 
 echo "Configure keychain : remove lock timeout"
+security set-keychain-settings "${KEYCHAIN_NAME}"
 
 if [ ! -f $CERTIFICATES_DIR/AppleWWDRCAG3.cer ]; then
     echo "Downloadind Apple Worlwide Developer Relation GA3 certificate"
