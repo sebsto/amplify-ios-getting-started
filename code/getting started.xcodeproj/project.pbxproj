@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0027FEF62B1417BF0030960B /* Authenticator in Frameworks */ = {isa = PBXBuildFile; productRef = 0027FEF52B1417BF0030960B /* Authenticator */; };
 		0054616E29A670EE00D4B110 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0054616D29A670EE00D4B110 /* Model.swift */; };
 		00678A6329A646FB00CA03EF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 00678A6129A646FB00CA03EF /* LaunchScreen.storyboard */; };
 		006E5EE229A4BDD300BF4871 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 006E5EE129A4BDD300BF4871 /* Assets.xcassets */; };
@@ -76,8 +77,8 @@
 		00FD171928D502B3004C4CC9 /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
 		00FD171A28D502CC004C4CC9 /* ci_post_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_xcodebuild.sh; sourceTree = "<group>"; };
 		4807AE5EEA9DBD613F5DC845 /* AmplifyModels.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; name = AmplifyModels.swift; path = amplify/generated/models/AmplifyModels.swift; sourceTree = "<group>"; };
-		5143D6592CCDA4A3277EA67D /* awsconfiguration.json */ = {isa = PBXFileReference; explicitFileType = text.json; lastKnownFileType = text.json; name = awsconfiguration.json; path = awsconfiguration.json; sourceTree = "<group>"; };
-		8CF1AA48D0C5E2C960263F45 /* amplifyconfiguration.json */ = {isa = PBXFileReference; explicitFileType = text.json; lastKnownFileType = text.json; name = amplifyconfiguration.json; path = amplifyconfiguration.json; sourceTree = "<group>"; };
+		5143D6592CCDA4A3277EA67D /* awsconfiguration.json */ = {isa = PBXFileReference; explicitFileType = text.json; path = awsconfiguration.json; sourceTree = "<group>"; };
+		8CF1AA48D0C5E2C960263F45 /* amplifyconfiguration.json */ = {isa = PBXFileReference; explicitFileType = text.json; path = amplifyconfiguration.json; sourceTree = "<group>"; };
 		B30EDC28179E4A8BCE0A2250 /* NoteData+Schema.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; name = "NoteData+Schema.swift"; path = "amplify/generated/models/NoteData+Schema.swift"; sourceTree = "<group>"; };
 		CEB68CC9C6D39A9706C8B888 /* NoteData.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; name = NoteData.swift; path = amplify/generated/models/NoteData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -88,6 +89,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				00BB8D91291D359E00756622 /* AWSAPIPlugin in Frameworks */,
+				0027FEF62B1417BF0030960B /* Authenticator in Frameworks */,
 				00BB8D97291D359E00756622 /* Amplify in Frameworks */,
 				00BB8D93291D359E00756622 /* AWSCognitoAuthPlugin in Frameworks */,
 				00BB8D95291D359E00756622 /* AWSS3StoragePlugin in Frameworks */,
@@ -254,6 +256,7 @@
 				00BB8D92291D359E00756622 /* AWSCognitoAuthPlugin */,
 				00BB8D94291D359E00756622 /* AWSS3StoragePlugin */,
 				00BB8D96291D359E00756622 /* Amplify */,
+				0027FEF52B1417BF0030960B /* Authenticator */,
 			);
 			productName = "getting started";
 			productReference = 0084716D24A60D82002CD90D /* getting started.app */;
@@ -330,6 +333,7 @@
 			mainGroup = 0084716424A60D82002CD90D;
 			packageReferences = (
 				00BB8D8F291D359E00756622 /* XCRemoteSwiftPackageReference "amplify-swift" */,
+				0027FEF42B1417BF0030960B /* XCRemoteSwiftPackageReference "amplify-ui-swift-authenticator" */,
 			);
 			productRefGroup = 0084716E24A60D82002CD90D /* Products */;
 			projectDirPath = "";
@@ -582,6 +586,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -611,6 +616,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -780,6 +786,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		0027FEF42B1417BF0030960B /* XCRemoteSwiftPackageReference "amplify-ui-swift-authenticator" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/aws-amplify/amplify-ui-swift-authenticator";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.0;
+			};
+		};
 		00BB8D8F291D359E00756622 /* XCRemoteSwiftPackageReference "amplify-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/aws-amplify/amplify-swift";
@@ -791,6 +805,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		0027FEF52B1417BF0030960B /* Authenticator */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0027FEF42B1417BF0030960B /* XCRemoteSwiftPackageReference "amplify-ui-swift-authenticator" */;
+			productName = Authenticator;
+		};
 		00BB8D90291D359E00756622 /* AWSAPIPlugin */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 00BB8D8F291D359E00756622 /* XCRemoteSwiftPackageReference "amplify-swift" */;

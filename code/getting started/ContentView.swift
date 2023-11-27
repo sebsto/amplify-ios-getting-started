@@ -8,34 +8,37 @@
 
 import SwiftUI
 
+import Authenticator
+
 struct ContentView: View {
     @EnvironmentObject public var model: ViewModel
     @State var showCreateNote = false
     
     var body: some View {
 
+        Authenticator { state in
+            mainView(state: state)
+        }
+    }
+    
+    @ViewBuilder
+    func mainView(state: SignedInState) -> some View {
         ZStack {
             switch(model.state) {
-            case .signedOut:
-                VStack {
-                    SignInButton(model : self.model)
-                        .padding(.bottom)
-                    SignOutButton(model : self.model)
-                }
                 
-            case .loading:
+            case .noData, .loading:
                 ProgressView()
                     .task() {
                         await self.model.loadNotes()
                     }
                 
             case .dataAvailable(let notes):
-                navigationView(notes: notes)
+                navigationView(notes: notes, state: state)
                 
             case .error(let error):
                 Text("There was an error: \(error.localizedDescription)")
             }
-
+            
         }
         .task {
             
@@ -48,7 +51,7 @@ struct ContentView: View {
     }
     
     @ViewBuilder
-    func navigationView(notes: [Note]) -> some View {
+    func navigationView(notes: [Note], state: SignedInState) -> some View {
         NavigationView {
             List {
                 ForEach(notes) { note in
@@ -63,7 +66,13 @@ struct ContentView: View {
 
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    SignOutButton(model: self.model)
+                    Button(action: {
+                        Task {
+                            await state.signOut()
+                        }
+                    }) {
+                        Text("Sign out")
+                    }
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
@@ -171,35 +180,6 @@ struct AddNoteView: View {
     }
 }
     
-struct SignInButton: View {
-    var model : ViewModel
-    var body: some View {
-        Button(action: { self.model.signIn() }){
-            HStack {
-                Image(systemName: "person.fill")
-                    .scaleEffect(2)
-                    .padding()
-                Text("Sign In")
-                    .font(.largeTitle)
-                    .bold()
-            }
-            .padding()
-            .foregroundColor(.white)
-            .background(Color.green)
-            .cornerRadius(30)
-        }
-    }
-}
-
-struct SignOutButton : View {
-    var model : ViewModel
-    var body: some View {
-        Button(action: { self.model.signOut() }) {
-                Text("Sign Out")
-        }
-    }
-}
-
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
 
@@ -207,7 +187,7 @@ struct ContentView_Previews: PreviewProvider {
         let user2 = ViewModel.signedOutMock
         return Group {
             ContentView().environmentObject(user1)
-            ContentView().environmentObject(user2)
+//            ContentView().mainView().environmentObject(user2)
             AddNoteView(isPresented: .constant(true), model: user1)
         }
     }

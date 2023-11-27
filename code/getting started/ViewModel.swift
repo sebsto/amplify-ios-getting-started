@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 
 enum AppState {
-    case signedOut
+    case noData
     case loading
     case dataAvailable([Note])
     case error(Error)
@@ -20,7 +20,7 @@ enum AppState {
 @MainActor
 class ViewModel : ObservableObject {
     
-    @Published var state : AppState = .signedOut
+    @Published var state : AppState = .noData
     
     // MARK: Manage the notes
     
@@ -97,7 +97,7 @@ class ViewModel : ObservableObject {
             print("INITIAL AUTH STATUS is \(status)")
             switch status {
             case .signedIn: self.state = .loading
-            case .signedOut, .sessionExpired:  self.state = .signedOut
+            case .signedOut, .sessionExpired:  self.state = .noData
             }
         }
     }
@@ -110,7 +110,7 @@ class ViewModel : ObservableObject {
                     self.state = .loading
                 case .signedOut, .sessionExpired:
                     self.notes = []
-                    self.state = .signedOut
+                    self.state = .noData
                 }
             }
             print("==== EXITED AUTH STATUS LOOP =====")
@@ -148,8 +148,6 @@ extension ViewModel {
         model.notes = [ n1, n2 ]
         if isSignedIn {
             model.state = .dataAvailable(model.notes)
-        } else {
-            model.state = .signedOut
         }
 
         n1.imageURL = Bundle.main.url(forResource: "4BC64B0D-A56E-4218-9993-C5C4EDF9C044", withExtension: "png")
