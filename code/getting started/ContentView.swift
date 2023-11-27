@@ -114,12 +114,13 @@ struct ListRow: View {
                 
                 if let description = note.description {
                     Text(description)
-                        .foregroundColor(.gray)
+//                        .foregroundColor(.gray)
+                        .foregroundColor(.white)
                 }
             }
         }
         .padding([.top, .bottom], 20)
-//        .background(.black)
+        .background(.gray)
     }
 }
 
