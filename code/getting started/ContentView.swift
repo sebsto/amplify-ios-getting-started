@@ -33,7 +33,7 @@ struct ContentView: View {
                     }
                 
             case .dataAvailable(let notes):
-                navigationView(notes: notes, state: state)
+                navigationView(notes: notes, signOut: { await state.signOut() } )
                 
             case .error(let error):
                 Text("There was an error: \(error.localizedDescription)")
@@ -51,7 +51,7 @@ struct ContentView: View {
     }
     
     @ViewBuilder
-    func navigationView(notes: [Note], state: SignedInState) -> some View {
+    func navigationView(notes: [Note], signOut: @escaping () async -> Void) -> some View {
         NavigationView {
             List {
                 ForEach(notes) { note in
@@ -68,7 +68,7 @@ struct ContentView: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: {
                         Task {
-                            await state.signOut()
+                            await signOut()
                         }
                     }) {
                         Text("Sign out")
@@ -119,7 +119,7 @@ struct ListRow: View {
             }
         }
         .padding([.top, .bottom], 20)
-//        .background(.gray)
+//        .background(.black)
     }
 }
 
@@ -184,10 +184,9 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
 
         let user1 = ViewModel.mock
-        let user2 = ViewModel.signedOutMock
         return Group {
             ContentView().environmentObject(user1)
-//            ContentView().mainView().environmentObject(user2)
+            ContentView().navigationView(notes: user1.notes, signOut: {})
             AddNoteView(isPresented: .constant(true), model: user1)
         }
     }

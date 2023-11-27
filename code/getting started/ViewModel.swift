@@ -143,8 +143,8 @@ extension ViewModel {
         let model = ViewModel()
         let desc = "this is a very long description that should fit on multiiple lines.\nit even has a line break\nor two."
         
-        let n1 = Note(id: "01", name: "Hello world", description: desc, image: "mic")
-        let n2 = Note(id: "02", name: "A new note", description: desc, image: "phone")
+        let n1 = Note(id: "01", name: "Hello world", description: desc, image: "mic", createdAt: Date())
+        let n2 = Note(id: "02", name: "A new note", description: desc, image: "phone", createdAt: Date())
         model.notes = [ n1, n2 ]
         if isSignedIn {
             model.state = .dataAvailable(model.notes)
