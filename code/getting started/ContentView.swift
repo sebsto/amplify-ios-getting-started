@@ -96,7 +96,7 @@ struct ListRow: View {
         VStack(alignment: .leading) {
             
             Text(note.date)
-//                .bold()
+                .bold()
             
             AsyncImage(url: note.imageURL) { image in
                 image
@@ -110,7 +110,7 @@ struct ListRow: View {
 
             Group {
                 Text(note.name)
-//                    .bold()
+                    .bold()
                 
                 if let description = note.description {
                     Text(description)
