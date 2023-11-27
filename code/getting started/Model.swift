@@ -40,7 +40,11 @@ class Note : Identifiable, ObservableObject {
             
             // asynchronously generate the URL of the image.
             Task { @MainActor () -> Void in
-                self.imageURL = await Backend.shared.imageURL(name: name)
+                if self.imageURL == nil {
+                    print("requesting image URL")
+                    self.imageURL = await Backend.shared.imageURL(name: name)
+                    print("received image URL")
+                }
             }
         }
     }

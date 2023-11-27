@@ -51,7 +51,7 @@ class ViewModel : ObservableObject {
         }
         
         if let i = image  {
-            let smallImage = i.resize(to: 0.10)
+            let smallImage = i.resize(to: 0.05)
             note.imageName = UUID().uuidString
 
             Task {
