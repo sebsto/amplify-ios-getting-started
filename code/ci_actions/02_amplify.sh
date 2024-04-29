@@ -20,7 +20,7 @@ echo "Using amplify at $AMPLIFY_CLI"
 echo "Changing to code directory at $CODE_DIR"
 pushd $CODE_DIR
 
-echo "Pulling amplify environment"
+echo "Retrieving secrets"
 
 AMPLIFY_APPID_SECRET=amplify-app-id
 AMPLIFY_PROJECT_NAME_SECRET=amplify-project-name
@@ -29,6 +29,7 @@ AMPLIFY_APPID=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secr
 AMPLIFY_PROJECT_NAME=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $AMPLIFY_PROJECT_NAME_SECRET --query SecretString --output text)
 AMPLIFY_ENV=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $AMPLIFY_ENV_SECRET --query SecretString --output text)  
 
+echo "Pulling amplify environment"
 
 AWSCLOUDFORMATIONCONFIG="{\
 \"configLevel\":\"general\",\
@@ -58,15 +59,7 @@ $AMPLIFY_CLI pull \
 --frontend $FRONTEND \
 --providers $PROVIDERS \
 --yes \
---region $BACKEND_REGION || \
-echo "First amplify pull failed, applying workaround for Amplify CLI Issue # 13201" && \
-mkdir -p $CODE_DIR/amplify/generated/models && \
-$AMPLIFY_CLI pull \
---amplify $AMPLIFY \
---frontend $FRONTEND \
---providers $PROVIDERS \
---yes \
---region $BACKEND_REGION
+--region $BACKEND_REGION 
 
 echo "Generate code for application models"
 $AMPLIFY_CLI codegen models 
