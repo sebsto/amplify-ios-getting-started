@@ -10,7 +10,7 @@ pushd $CODE_DIR
 KEYCHAIN_PASSWORD=Passw0rd
 KEYCHAIN_NAME=dev.keychain
 
-WORKSPACE="getting started.xcworkspace"
+PROJECT="getting started.xcodeproj"
 SCHEME="getting started"
 CONFIGURATION="Release"
 BUILD_PATH="./build-release"
@@ -26,7 +26,7 @@ plutil -replace CFBundleVersion -string $BUILD_NUMBER "./getting started/Info.pl
 security unlock-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN_NAME
 
 xcodebuild clean archive                    \
-           -workspace "$WORKSPACE"          \
+           -project  "$PROJECT"             \
            -scheme "$SCHEME"                \
            -archivePath "$ARCHIVE_PATH"     \
            -derivedDataPath "${BUILD_PATH}" \
