@@ -13,7 +13,7 @@ PHONE_MODEL="iPhone 15 Pro"
 IOS_VERSION="17.0"
 
 xcodebuild test \
-    -workspace "$PROJECT"   \
+    -project "$PROJECT"     \
     -scheme "$SCHEME"       \
     -destination platform="iOS Simulator",name="${PHONE_MODEL}",OS=${IOS_VERSION}  | $BREW_PATH/xcbeautify
 
