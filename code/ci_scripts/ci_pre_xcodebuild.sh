@@ -51,15 +51,7 @@ $AMPLIFY_CLI pull \
 --amplify $AMPLIFY       \
 --frontend $FRONTEND     \
 --providers $PROVIDERS   \
---yes || \
-echo "First amplify pull failed, applying workaround for Amplify CLI Issue # 13201" && \
-mkdir -p $CODE_DIR/amplify/generated/models && \
-$AMPLIFY_CLI pull \
---region $AMPLIFY_REGION \
---amplify $AMPLIFY       \
---frontend $FRONTEND     \
---providers $PROVIDERS   \
---yes
+--yes 
 
 echo "💫 Generating code"
 $AMPLIFY_CLI codegen models
