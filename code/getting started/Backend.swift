@@ -21,7 +21,7 @@ class Backend  {
         do {
 //            Amplify.Logging.logLevel = .info
             // reduce verbosity of AWS SDK
-            SDKLoggingSystem.initialize(logLevel: .warning)
+            Task { await SDKLoggingSystem.initialize(logLevel: .warning) }
 
             try Amplify.add(plugin: AWSCognitoAuthPlugin())
             try Amplify.add(plugin: AWSAPIPlugin(modelRegistration: AmplifyModels()))
