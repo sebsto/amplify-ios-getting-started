@@ -46,6 +46,17 @@ jobs:
     - name: DeviceFarmTest
       run: code/ci_actions/05_devicefarm_tests.sh
 
+  deploy:
+
+    needs: test
+    
+    runs-on: self-hosted
+
+    steps:
+
+    - name: DeployToTestFlight
+      run: code/ci_actions/06_deploy.sh
+
   cleanup:
 
     needs: test
