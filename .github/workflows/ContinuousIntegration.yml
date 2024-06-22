@@ -55,11 +55,11 @@ jobs:
     steps:
 
     - name: DeployToTestFlight
-      run: code/ci_actions/06_deploy.sh
+      run: code/ci_actions/06_deploy_testflight.sh
 
   cleanup:
 
-    needs: test
+    needs: deploy
     
     runs-on: self-hosted
 
