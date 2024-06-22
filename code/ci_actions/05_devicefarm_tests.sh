@@ -90,7 +90,7 @@ DEVICE_FARM="./build-device-farm"
 
 echo "Build for testing"
 xcodebuild build-for-testing                    \
-           -workspace "${APP_NAME}.xcworkspace" \
+           -project "${APP_NAME}.xcodeproj"     \
            -scheme "${APP_NAME}"                \
            -destination generic/platform=iOS    \
            -derivedDataPath "${BUILD_PATH}"   | $BREW_PATH/xcbeautify
