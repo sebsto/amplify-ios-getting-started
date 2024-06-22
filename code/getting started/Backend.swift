@@ -6,7 +6,7 @@ import AWSS3StoragePlugin
 import ClientRuntime
 
 
-class Backend  {
+final class Backend: Sendable  {
     
     enum AuthStatus {
         case signedIn
@@ -158,12 +158,20 @@ class Backend  {
     }
     
     // MARK: Image Access
+    func storagePath(for key:String) async -> IdentityIDStoragePath {
+        await withCheckedContinuation { continuation in
+           let storagePath = IdentityIDStoragePath.fromIdentityID { identityId in
+                return "private/\(identityId)/\(key)"
+            }
+            continuation.resume(returning: storagePath)
+        }
+    }
     
     func storeImage(name: String, image: Data) async {
         
         do {
-            let options = StorageUploadDataRequest.Options(accessLevel: .private)
-            let task = Amplify.Storage.uploadData(key: name, data: image, options: options)
+            let path = await storagePath(for: name)
+            let task = Amplify.Storage.uploadData(path: path, data: image)
             let result = try await task.value
             print("Image upload completed: \(result)")
 
@@ -178,8 +186,8 @@ class Backend  {
         
         var result: URL? = nil
         do {
-            let options = StorageGetURLRequest.Options(accessLevel: .private)
-            result = try await Amplify.Storage.getURL(key: name, options: options)
+            let path = await storagePath(for: name)
+            result = try await Amplify.Storage.getURL(path: path)
 
         } catch let error as StorageError {
             print("Can not retrieve URL for image \(name): \(error.errorDescription). \(error.recoverySuggestion)")
@@ -192,8 +200,8 @@ class Backend  {
     func deleteImage(name: String) async {
         
         do {
-            let options = StorageRemoveRequest.Options(accessLevel: .private)
-            let result = try await Amplify.Storage.remove(key: name, options: options)
+            let path = await storagePath(for: name)
+            let result = try await Amplify.Storage.remove(path: path)
             print("Image \(name) deleted (result: \(result)")
         } catch let error as StorageError {
             print("Can not delete image \(name): \(error.errorDescription). \(error.recoverySuggestion)")
