@@ -115,12 +115,11 @@ struct ListRow: View {
                 if let description = note.description {
                     Text(description)
                         .foregroundColor(.gray)
-//                        .foregroundColor(.white)
                 }
             }
         }
         .padding([.top, .bottom], 20)
-//        .background(.gray)
+        .background(.gray)
     }
 }
 
@@ -180,16 +179,18 @@ struct AddNoteView: View {
         }
     }
 }
-    
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
 
-        let user1 = ViewModel.mock
-        return Group {
-            ContentView().environmentObject(user1)
-            ContentView().navigationView(notes: user1.notes, signOut: {})
-            AddNoteView(isPresented: .constant(true), model: user1)
-        }
-    }
+#Preview("Unauthenticated") {
+    let user1 = ViewModel.mock
+    return ContentView().environmentObject(user1)
 }
 
+#Preview("Authenticated") {
+    let user1 = ViewModel.mock
+    return ContentView().navigationView(notes: user1.notes, signOut: {})
+}
+
+#Preview("Add memory") {
+    let user1 = ViewModel.mock
+    return AddNoteView(isPresented: .constant(true), model: user1)
+}
