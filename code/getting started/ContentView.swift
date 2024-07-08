@@ -119,7 +119,7 @@ struct ListRow: View {
             }
         }
         .padding([.top, .bottom], 20)
-//        .background(.gray)
+        .background(.gray)
     }
 }
 
