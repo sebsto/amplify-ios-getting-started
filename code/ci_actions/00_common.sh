@@ -9,7 +9,7 @@ else
     export AWS_CLI=$BREW_PATH/aws
 fi
 
-if [! -z ${AWS_REGION} ]; then
+if [ ! -z ${AWS_REGION} ]; then
     export REGION=$AWS_REGION
 else
     export REGION=$(curl -s 169.254.169.254/latest/meta-data/placement/region/)
