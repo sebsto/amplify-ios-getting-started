@@ -21,7 +21,7 @@ elif [ -f $AMPLIFY_BREW ]; then
 	AMPLIFY_CLI=$AMPLIFY_BREW
 else
 	echo "Amplify CLI not found, installing it"
-	curl -sL https://aws-amplify.github.io/amplify-cli/install | bash && $SHELL
+	curl -sL https://aws-amplify.github.io/amplify-cli/install | bash 
 	if [ -f $AMPLIFY_STANDALONE ]; then
 		AMPLIFY_CLI=$AMPLIFY_STANDALONE
 	else
