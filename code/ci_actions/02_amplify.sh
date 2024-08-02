@@ -5,7 +5,7 @@ set -o pipefail
 . code/ci_actions/00_common.sh
 
 # search for amplify 
-AMPLIFY_STANDALONE=/Users/ec2-user/.amplify/bin/amplify
+AMPLIFY_STANDALONE=$HOME/.amplify/bin/amplify
 AMPLIFY_BREW=/opt/homebrew/bin/amplify
 if [ -f $AMPLIFY_STANDALONE ]; then
 	AMPLIFY_CLI=$AMPLIFY_STANDALONE
