@@ -22,6 +22,7 @@ phases:
       - code/ci_actions/06_deploy_testflight.sh
       - code/ci_actions/07_cleanup.sh
       - mv "code/build-release/getting started.ipa" "code/build-release/getting-started.ipa"
+      - ls -al "code/build-release"
 
 artifacts:
   files:
