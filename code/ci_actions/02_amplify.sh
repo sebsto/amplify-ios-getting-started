@@ -1,5 +1,5 @@
 #!/bin/sh
-# set -x
+set -x
 set -e 
 set -o pipefail
 
@@ -27,6 +27,7 @@ else
 fi
 
 if [ -d "$HOME/.aws" ]; then
+  echo "Backing up existing AWS CLI configuration"
 	mv $HOME/.aws ~/.aws.bak
 fi
 echo "Prepare AWS CLI configuration"
@@ -79,6 +80,7 @@ echo "Generate code for application models"
 $AMPLIFY_CLI codegen models 
 
 if [ -d "$HOME/.aws.bak" ]; then
+	echo "Restoring original AWS CLI configuration"
 	mv $HOME/.aws.bak ~/.aws
 fi
 
