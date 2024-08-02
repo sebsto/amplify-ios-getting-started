@@ -7,6 +7,7 @@ phases:
     commands:
       - rm -rf ~/.aws* ~/.amplify ~/.zsh* ~/certificates
       - ls -al ~
+      - env
       - code/ci_actions/00_install_rosetta.sh
 
   pre_build:
