@@ -8,6 +8,11 @@ set -o pipefail
 # the region where the backend is deployed
 BACKEND_REGION=eu-central-1 
 
+# just for debugging - to be removed
+rm -rf $HOME/.amplify
+rm -rf $HOME/.aws
+ls -alR $HOME
+
 # search for amplify 
 AMPLIFY_STANDALONE=$HOME/.amplify/bin/amplify
 AMPLIFY_BREW=/opt/homebrew/bin/amplify
