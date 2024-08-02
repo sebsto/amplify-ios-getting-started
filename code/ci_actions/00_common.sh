@@ -16,7 +16,6 @@ else
 fi
 export LANG=en_US.UTF-8
 
-export HOME=/Users/ec2-user
 export CODE_DIR=$HOME/amplify-ios-getting-started/code # default value
 if [ ! -z ${GITHUB_ACTION} ]; then # we are running from a github runner
     export CODE_DIR=$GITHUB_WORKSPACE/code
