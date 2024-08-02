@@ -1,5 +1,5 @@
 #!/bin/sh
-set -x
+# set -x
 set -e 
 set -o pipefail
 
@@ -7,10 +7,6 @@ set -o pipefail
 
 # the region where the backend is deployed
 BACKEND_REGION=eu-central-1 
-
-# just for debugging - to be removed
-rm -rf $HOME/.amplify
-rm -rf $HOME/.aws
 
 # search for amplify 
 AMPLIFY_STANDALONE=$HOME/.amplify/bin/amplify
@@ -53,14 +49,6 @@ AMPLIFY_PROJECT_NAME=$($AWS_CLI --region $REGION secretsmanager get-secret-value
 AMPLIFY_ENV=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $AMPLIFY_ENV_SECRET --query SecretString --output text)  
 
 echo "Pulling amplify environment"
-cat ~/.aws/config
-cat ~/.aws/credentials
-
-# AWSCLOUDFORMATIONCONFIG="{\
-# \"configLevel\":\"project\",\
-# \"useProfile\":true,\
-# \"profileName\":\"default\"\
-# }"
 
 AWSCLOUDFORMATIONCONFIG="{\
 \"configLevel\":\"general\"\
@@ -84,7 +72,6 @@ $AMPLIFY_CLI pull \
 --frontend $FRONTEND \
 --providers $PROVIDERS \
 --yes 
-# --region $BACKEND_REGION 
 
 echo "Generate code for application models"
 $AMPLIFY_CLI codegen models 
