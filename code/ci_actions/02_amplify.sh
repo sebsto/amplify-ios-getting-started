@@ -53,11 +53,14 @@ AMPLIFY_PROJECT_NAME=$($AWS_CLI --region $REGION secretsmanager get-secret-value
 AMPLIFY_ENV=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $AMPLIFY_ENV_SECRET --query SecretString --output text)  
 
 echo "Pulling amplify environment"
+cat ~/.aws/config
+cat ~/.aws/credentials
 
 AWSCLOUDFORMATIONCONFIG="{\
-\"configLevel\":\"general\",\
-\"useProfile\":true,\
-\"profileName\":\"default\"\
+\"configLevel\":\"project\",\
+\"useProfile\":false,\
+\"profileName\":\"default\",\
+\"region\":\"$BACKEND_REGION\"\,
 }"
 
 AMPLIFY="{\
