@@ -1,9 +1,12 @@
 #!/bin/sh
-set -x
+# set -x
 set -e 
 set -o pipefail
 
 . code/ci_actions/00_common.sh
+
+# the region where the backend is deployed
+BACKEND_REGION=eu-central-1 
 
 # search for amplify 
 AMPLIFY_STANDALONE=$HOME/.amplify/bin/amplify
@@ -22,6 +25,14 @@ else
 		exit 1
 	fi
 fi
+
+if [ -d "$HOME/.aws" ]; then
+	mv $HOME/.aws ~/.aws.bak
+fi
+echo "Prepare AWS CLI configuration"
+mkdir $HOME/.aws
+echo "[default]\nregion=$BACKEND_REGION\n\n" > ~/.aws/config
+echo "[default]\n\n" > ~/.aws/credentials
 
 echo "Using amplify at $AMPLIFY_CLI"
 echo "Changing to code directory at $CODE_DIR"
@@ -57,9 +68,6 @@ PROVIDERS="{\
 \"awscloudformation\":$AWSCLOUDFORMATIONCONFIG\
 }"
 
-# the region where the backend is deployed
-BACKEND_REGION=eu-central-1 
-
 $AMPLIFY_CLI pull \
 --amplify $AMPLIFY \
 --frontend $FRONTEND \
@@ -69,5 +77,9 @@ $AMPLIFY_CLI pull \
 
 echo "Generate code for application models"
 $AMPLIFY_CLI codegen models 
+
+if [ -d "$HOME/.aws.bak" ]; then
+	mv $HOME/.aws.bak ~/.aws
+fi
 
 popd

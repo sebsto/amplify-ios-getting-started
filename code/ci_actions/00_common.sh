@@ -30,13 +30,6 @@ if [ ! -z ${CODEBUILD_SRC_DIR} ]; then # we are running inside AWS CodeBuild
     export CODE_DIR=$CODEBUILD_SRC_DIR/code
 fi
 
-if [ ! -d "$HOME/.aws" ]; then
-    echo "Prepare AWS CLI configuration"
-    mkdir $HOME/.aws
-    echo "[default]\nregion=$REGION\n\n" > ~/.aws/config
-    echo "[default]\n\n" > ~/.aws/credentials
-fi
-
 echo "Default region: $REGION"
 echo "AWS CLI       : $AWS_CLI"
 echo "Code directory: $CODE_DIR"
