@@ -1,0 +1,29 @@
+# buildspec.yml
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - code/ci_actions/01_keychain.sh
+      - code/ci_actions/02_amplify.sh
+
+  build:
+    commands:
+      - code/ci_actions/03_build.sh
+      - code/ci_actions/04_local_tests.sh
+
+  post_build:
+    commands:
+      - code/ci_actions/06_deploy_testflight.sh
+      - code/ci_actions/07_cleanup.sh
+
+artifacts:
+  type: zip
+  files:
+    - 'code/build-release/getting-started.xcarchive/Products/Applications/getting\ started.app/*'
+  name: getting_started_app-$(date +%Y%m%d%H%M%S).zip
+  base-directory: 'code/build-release/getting-started.xcarchive/Products/Applications'
+
+cache:
+  paths:
+    - 'code/build-release/**/*'
