@@ -16,7 +16,7 @@ else
 	curl -sL https://aws-amplify.github.io/amplify-cli/install | bash && $SHELL
 	if [ -f $AMPLIFY_STANDALONE ]; then
 		AMPLIFY_CLI=$AMPLIFY_STANDALONE
-	elif
+	else
 	  echo "🛑 Amplify CLI not found, abording"
 		exit 1
 	fi
