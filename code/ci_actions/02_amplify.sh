@@ -11,7 +11,6 @@ BACKEND_REGION=eu-central-1
 # just for debugging - to be removed
 rm -rf $HOME/.amplify
 rm -rf $HOME/.aws
-ls -alR $HOME
 
 # search for amplify 
 AMPLIFY_STANDALONE=$HOME/.amplify/bin/amplify

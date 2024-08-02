@@ -18,15 +18,19 @@ export LANG=en_US.UTF-8
 
 export CODE_DIR=$HOME/amplify-ios-getting-started/code # default value
 if [ ! -z ${GITHUB_ACTION} ]; then # we are running from a github runner
+    echo "GitHub runner detected"
     export CODE_DIR=$GITHUB_WORKSPACE/code
 fi
 if [ ! -z ${CI_BUILDS_DIR} ]; then # we are running from a gitlab runner
+    echo "GitLab runner detected"
     export CODE_DIR=$CI_PROJECT_DIR/code
 fi
 if [ ! -z ${CIRCLE_WORKING_DIRECTORY} ]; then # we are running from a gitlab runner
+    export "CircleCI runner detected"
     export CODE_DIR=$CIRCLE_WORKING_DIRECTORY/code
 fi
 if [ ! -z ${CODEBUILD_SRC_DIR} ]; then # we are running inside AWS CodeBuild
+    echo "AWS CodeBuild detected"
     export CODE_DIR=$CODEBUILD_SRC_DIR/code
 fi
 
