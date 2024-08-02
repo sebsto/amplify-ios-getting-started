@@ -12,7 +12,8 @@ fi
 if [ ! -z ${AWS_REGION} ]; then
     export REGION=$AWS_REGION
 else
-    export REGION=$(curl -s 169.254.169.254/latest/meta-data/placement/region/)
+    TOKEN=$(curl -s -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
+    export REGION=$(curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/placement/region)
 fi
 export LANG=en_US.UTF-8
 
