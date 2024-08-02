@@ -2,6 +2,12 @@
 version: 0.2
 
 phases:
+
+  install:
+    commands:
+      - softwareupdate --install-rosetta
+      - curl -sL https://aws-amplify.github.io/amplify-cli/install | bash && $SHELL
+
   pre_build:
     commands:
       - code/ci_actions/01_keychain.sh
