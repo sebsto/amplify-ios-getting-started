@@ -83,8 +83,8 @@ $AMPLIFY_CLI pull \
 --amplify $AMPLIFY \
 --frontend $FRONTEND \
 --providers $PROVIDERS \
---yes \
---region $BACKEND_REGION 
+--yes 
+# --region $BACKEND_REGION 
 
 echo "Generate code for application models"
 $AMPLIFY_CLI codegen models 
