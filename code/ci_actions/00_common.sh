@@ -9,10 +9,10 @@ else
     export AWS_CLI=$BREW_PATH/aws
 fi
 
-if [ ! -z ${AWS_REGION} ]; then
-    export REGION=$(curl -s 169.254.169.254/latest/meta-data/placement/region/)
-else
+if [! -z ${AWS_REGION} ]; then
     export REGION=$AWS_REGION
+else
+    export REGION=$(curl -s 169.254.169.254/latest/meta-data/placement/region/)
 fi
 export LANG=en_US.UTF-8
 
@@ -26,6 +26,9 @@ if [ ! -z ${CI_BUILDS_DIR} ]; then # we are running from a gitlab runner
 fi
 if [ ! -z ${CIRCLE_WORKING_DIRECTORY} ]; then # we are running from a gitlab runner
     export CODE_DIR=$CIRCLE_WORKING_DIRECTORY/code
+fi
+if [ ! -z ${CODEBUILD_SRC_DIR} ]; then # we are running inside AWS CodeBuild
+    export CODE_DIR=$CODEBUILD_SRC_DIR/code
 fi
 
 echo "Default region: $REGION"
