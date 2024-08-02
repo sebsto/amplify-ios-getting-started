@@ -24,9 +24,8 @@ phases:
 
 artifacts:
   files:
-    - 'code/build-release/getting-started.xcarchive/Products/Applications/getting\ started.app/**/*'
-  name: getting_started_app-$(date +%Y%m%d%H%M%S).zip
-  base-directory: 'code/build-release/getting-started.xcarchive/Products/Applications'
+    - 'code/build-release/getting started.ipa'
+  base-directory: 'code/build-release/'
 
 # cache:
 #   paths:
