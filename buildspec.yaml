@@ -29,6 +29,6 @@ artifacts:
     - 'code/build-release/getting-started.ipa'
   base-directory: 'code/build-release'
 
-# cache:
-#   paths:
-#     - 'code/build-release'
+cache:
+  paths:
+    - 'code/build-release'
