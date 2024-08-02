@@ -19,6 +19,7 @@ else
 	elif
 	  echo "🛑 Amplify CLI not found, abording"
 		exit 1
+	fi
 fi
 
 echo "Using amplify at $AMPLIFY_CLI"
