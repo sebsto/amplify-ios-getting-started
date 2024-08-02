@@ -59,7 +59,6 @@ PROVIDERS="{\
 # the region where the backend is deployed
 BACKEND_REGION=eu-central-1 
 
-# double command execution, this is a workaround for issue https://github.com/aws-amplify/amplify-cli/issues/13201
 $AMPLIFY_CLI pull \
 --amplify $AMPLIFY \
 --frontend $FRONTEND \
