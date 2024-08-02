@@ -15,6 +15,7 @@ else
     TOKEN=$(curl -s -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
     export REGION=$(curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/placement/region)
 fi
+export AWS_DEFAULT_REGION=
 export LANG=en_US.UTF-8
 
 export CODE_DIR=$HOME/amplify-ios-getting-started/code # default value
