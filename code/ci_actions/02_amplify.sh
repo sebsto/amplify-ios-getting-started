@@ -56,11 +56,14 @@ echo "Pulling amplify environment"
 cat ~/.aws/config
 cat ~/.aws/credentials
 
+# AWSCLOUDFORMATIONCONFIG="{\
+# \"configLevel\":\"project\",\
+# \"useProfile\":true,\
+# \"profileName\":\"default\"\
+# }"
+
 AWSCLOUDFORMATIONCONFIG="{\
-\"configLevel\":\"project\",\
-\"useProfile\":false,\
-\"profileName\":\"default\",\
-\"region\":\"$BACKEND_REGION\"\,
+\"configLevel\":\"general\"\
 }"
 
 AMPLIFY="{\
