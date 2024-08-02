@@ -5,8 +5,7 @@ phases:
 
   install:
     commands:
-      - softwareupdate --install-rosetta
-      - curl -sL https://aws-amplify.github.io/amplify-cli/install | bash && $SHELL
+      - code/ci_actions/00_install_rosetta.sh
 
   pre_build:
     commands:
