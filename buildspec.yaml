@@ -26,7 +26,7 @@ phases:
 
 artifacts:
   files:
-    - 'code/build-release/getting-started.ipa'
+    - 'getting-started.ipa'
   base-directory: 'code/build-release'
 
 cache:
