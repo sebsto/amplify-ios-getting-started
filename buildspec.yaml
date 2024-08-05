@@ -23,7 +23,7 @@ phases:
       - code/ci_actions/07_cleanup.sh
 
 artifacts:
-  name: $(date +%Y-%m-%d-getting-started.ipa
+  name: $(date +%Y-%m-%d)-getting-started.ipa
   files:
     - 'getting started.ipa'
   base-directory: 'code/build-release'
