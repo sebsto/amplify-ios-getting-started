@@ -15,7 +15,7 @@ phases:
   build:
     commands:
       - code/ci_actions/03_build.sh
-      - # code/ci_actions/04_local_tests.sh
+      - code/ci_actions/04_local_tests.sh
 
   post_build:
     commands:
