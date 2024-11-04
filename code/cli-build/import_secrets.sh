@@ -25,3 +25,4 @@ aws --region $REGION secretsmanager update-secret --secret-id amplify-getting-st
 
 # aws --region $REGION secretsmanager create-secret --name apple-id --secret-string myemail@me.com
 # aws --region $REGION secretsmanager create-secret --name apple-secret --secret-string aaaa-aaaa-aaaa-aaaa 
+# aws --region $REGION secretsmanager update-secret --secret-id apple-secret --secret-string bbbb-bbbb-bbbb-bbbb

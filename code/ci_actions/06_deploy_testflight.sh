@@ -55,20 +55,20 @@ xcodebuild -exportArchive \
            -exportOptionsPlist "$EXPORT_OPTIONS_FILE" \
            -exportPath "$BUILD_PATH"  | $BREW_PATH/xcbeautify
 
-# echo "Verify Archive"
-# xcrun altool  \
-#             --validate-app \
-#             -f "$BUILD_PATH/$SCHEME.ipa" \
-#             -t ios \
-#             -u $APPLE_ID \
-#             -p @env:APPLE_SECRET 
+echo "Verify Archive"
+xcrun altool  \
+            --validate-app \
+            -f "$BUILD_PATH/$SCHEME.ipa" \
+            -t ios \
+            -u $APPLE_ID \
+            -p @env:APPLE_SECRET 
 
-# echo "Upload to AppStore Connect"
-# xcrun altool  \
-# 		--upload-app \
-# 		-f "$BUILD_PATH/$SCHEME.ipa" \
-# 		-t ios \
-# 		-u $APPLE_ID \
-# 		-p @env:APPLE_SECRET 
+echo "Upload to AppStore Connect"
+xcrun altool  \
+		--upload-app \
+		-f "$BUILD_PATH/$SCHEME.ipa" \
+		-t ios \
+		-u $APPLE_ID \
+		-p @env:APPLE_SECRET 
 
 popd
