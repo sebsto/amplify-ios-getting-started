@@ -120,7 +120,7 @@ struct ContentView_Previews: PreviewProvider {
 func prepareTestData() -> UserData {
     let userData = UserData.shared
     userData.isSignedIn = true
-    let desc = "this is a very long description that should fit on multiiple lines.\nit even has a line break\nor two."
+    let desc = "this is a very long description that should fit on multiple lines.\nit even has a line break\nor two."
 
     let n1 = Note(id: "01", name: "Hello world", description: desc, image: "mic")
     let n2 = Note(id: "02", name: "A new note", description: desc, image: "phone")
