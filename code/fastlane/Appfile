@@ -3,6 +3,3 @@ app_identifier("com.amazonaws.amplify.mobile.getting-started") # The bundle iden
 apple_id(ENV['APPLE_ID']) # Your Apple email address
 itc_team_id(ENV['ITC_TEAM_ID']) # App Store Connect Team ID
 team_id(ENV['TEAM_ID']) # Developer Portal Team ID
-
-# For more information about the Appfile, see:
-#     https://docs.fastlane.tools/advanced/#appfile

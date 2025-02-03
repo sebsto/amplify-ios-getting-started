@@ -1,56 +1,35 @@
-# This file contains the fastlane.tools configuration
-# You can find the documentation at https://docs.fastlane.tools
-#
-# For a list of all available actions, check out
-#
-#     https://docs.fastlane.tools/actions
-#
-# For a list of all available plugins, check out
-#
-#     https://docs.fastlane.tools/plugins/available-plugins
-#
-
-# Uncomment the line if you want fastlane to automatically update itself
-# update_fastlane
 
 default_platform(:ios)
 
-# keychain is managed outside of Fastlane Match, with command line scripts.
-# if you decide to switch to Fastlane Match, you have to change the project signing settings as well.
-
-#unlock_keychain( 
-#  path: "/Users/ec2-user/Library/Keychains/dev.keychain-db",
-#  password: "Passw0rd",
-#  set_default: true
-#)
-
 platform :ios do
-  
-  lane :clean do 
-    clean_build_artifacts
-    clear_derived_data
+  before_all do
+    setup_ci
   end
 
+  desc "Build and Sign the binary"
+  lane :build do
+    match(type: "appstore", readonly: true)
+    gym(
+      scheme: "getting started",
+      export_method: "app-store"
+    )
+  end
+
+  desc "Push a new beta build to TestFlight"
   lane :beta do
-    desc "Push a new beta build to TestFlight"
+    match(type: "appstore", readonly: true)
+
+    app_store_connect_api_key(
+      key_id: "S3SVC2YV67",
+      issuer_id: "69a6de7b-8428-47e3-e053-5b8c7c11a4d1",
+      key_filepath: "./secrets/AuthKey_S3SVC2YV67.p8",
+      duration: 1200, # optional (maximum 1200)
+      in_house: false # optional but may be required if using match/sigh
+    )
+
     increment_build_number(xcodeproj: "getting started.xcodeproj")
-    build # call build lane
+    build_app(scheme: "getting started")
     upload_to_testflight
   end
-  
-
-  lane :build do
-    desc "Build the project"
-    build_app(workspace: "getting started.xcworkspace", scheme: "getting started",
-              skip_archive: false,
-              output_directory: ".build",
-              output_name: "getting_started.ipa",
-              export_method: "development",
-              export_options: {
-                 provisioningProfiles: { 
-                    "com.amazonaws.amplify.mobile.getting-started" => "match Development com.amazonaws.amplify.mobile.getting-started 1665469423"
-                 }
-              })
-  end
-
 end
+

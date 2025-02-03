@@ -2,6 +2,7 @@
 
 .DS_Store
 issues/**
+**/*.p8
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend

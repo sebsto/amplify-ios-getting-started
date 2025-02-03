@@ -1,13 +1,10 @@
-s3_bucket(ENV['S3_BUCKET'])
-s3_region(ENV['S3_REGION'])
-storage_mode("s3")
+git_url("git@github.com:sebsto/secret.git")
+storage_mode("git")
 
+# storage_mode("s3")
+# s3_bucket("ios-certificates-private-sst")
+# s3_region("us-west-2") 
 type("development") # The default type, can be: appstore, adhoc, enterprise or development
-
-app_identifier(["com.amazonaws.amplify.mobile.getting-started"])
-username(ENV['APPLE_ID'])
-
-# keychain_name("dev-match")
 
 # app_identifier(["tools.fastlane.app", "tools.fastlane.app2"])
 # username("user@fastlane.tools") # Your Apple Developer Portal username

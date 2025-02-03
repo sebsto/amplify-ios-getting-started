@@ -1,0 +1,27 @@
+# buildspec.yml
+version: 0.2
+
+phases:
+
+  install:
+    commands:
+      - code/ci_actions/00_install_rosetta.sh
+
+  pre_build:
+    commands:
+      - code/ci_actions/02_amplify.sh
+
+  build:
+    commands:
+      - (cd code && fastlane build)
+
+
+artifacts:
+  name: getting-started-$(date +%Y-%m-%d).ipa
+  files:
+    - 'getting started.ipa'
+  base-directory: 'code/build-release'
+
+cache:
+  paths:
+    - 'code/build-release'
