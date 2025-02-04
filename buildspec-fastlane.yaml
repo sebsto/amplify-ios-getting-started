@@ -1,6 +1,10 @@
 # buildspec.yml
 version: 0.2
 
+env:
+  plaintext:
+    CODEBUILD_BUILD_ARN: true
+
 phases:
 
   install:
