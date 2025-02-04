@@ -13,7 +13,7 @@ phases:
 
   build:
     commands:
-      - (cd code && CODEBUILD_BUILD_ARN=true fastlane build)
+      - (cd code && fastlane build)
 
 
 artifacts:
