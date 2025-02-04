@@ -3,10 +3,10 @@ version: 0.2
 
 env:
   variables:
-    CODEBUILD_BUILD_ARN: true
+    CODEBUILD_BUILD_ARN: "true"
   exported-variables:
     - CODEBUILD_BUILD_ARN
-    
+
 phases:
 
   install:
