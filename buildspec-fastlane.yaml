@@ -1,12 +1,6 @@
 # buildspec.yml
 version: 0.2
 
-env:
-  variables:
-    CODEBUILD_BUILD_ARN: "true"
-  exported-variables:
-    - CODEBUILD_BUILD_ARN
-
 phases:
 
   install:
@@ -19,7 +13,7 @@ phases:
 
   build:
     commands:
-      - (cd code && fastlane build)
+      - (cd code && CODEBUILD_BUILD_ARN=true fastlane build)
 
 
 artifacts:
