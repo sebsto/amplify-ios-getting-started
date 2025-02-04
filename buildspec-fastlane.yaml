@@ -2,7 +2,7 @@
 version: 0.2
 
 env:
-  plaintext:
+  variables:
     CODEBUILD_BUILD_ARN: true
 
 phases:
