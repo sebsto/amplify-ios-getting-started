@@ -20,8 +20,8 @@ artifacts:
   name: getting-started-$(date +%Y-%m-%d).ipa
   files:
     - 'getting started.ipa'
-  base-directory: 'code/build-release'
+  base-directory: 'code'
 
 cache:
   paths:
-    - 'code/build-release'
+    - 'code'
