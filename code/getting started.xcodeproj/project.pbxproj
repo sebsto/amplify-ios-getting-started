@@ -612,10 +612,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_ASSET_PATHS = "\"getting started/Preview Content\"";
-				DEVELOPMENT_TEAM = 56U756R2L2;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 56U756R2L2;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "getting started/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -625,6 +627,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.amazonaws.amplify.mobile.getting-started";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "amplify-ios-getting-started-dist";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
