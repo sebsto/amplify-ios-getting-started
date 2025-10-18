@@ -151,8 +151,9 @@ export GITHUB_ACTIONS=true
 export GITHUB_REF=refs/heads/main
 export GITHUB_SHA=$(git rev-parse HEAD)
 
-export AMPLIFY_APP_ID=d199v9208momso
+export AMPLIFY_APP_ID=<YOUR AMPLIFY APP ID>
 
+# Create the backend
 npx ampx pipeline-deploy     \
   --branch main              \
   --app-id ${AMPLIFY_APP_ID} \
@@ -164,7 +165,7 @@ npx ampx pipeline-deploy     \
 TOKEN=$(curl -s -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
 export AWS_REGION=$(curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/placement/region)
 
-npx ampx generate outputs.   \
+npx ampx generate outputs    \
   --app-id ${AMPLIFY_APP_ID} \
   --branch main              \
   --out-dir .                \
