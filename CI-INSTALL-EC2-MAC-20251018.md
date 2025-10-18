@@ -67,6 +67,8 @@ xcodebuild -downloadPlatform iOS
 
 ## IAM Permission for your CICD host 
 
+(Remove the Amplify related permissions when not using AWS Amplify)
+
 ```
 {
 	"Version": "2012-10-17",

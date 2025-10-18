@@ -5,9 +5,9 @@
 
 # Instructions to build on Amazon EC2
 
-The below are step by step instructions to build this project on macOS.  It describe how to start an Amazon EC2 mac1 instance and how to use the command line to install your development environment and to build the project.  If you are using your own Mac, you can skip the Amazon EC2 section.
+The below are step by step instructions to build this project on macOS.  It describe how to start an Amazon EC2 Mac instance and how to use the command line to install your development environment and to build the project.  If you are using your own Mac, you can skip the Amazon EC2 section.
 
-## Prepare a mac1 EC2 instance with Xcode (one time setup)
+## Prepare an EC2 Mac instance with Xcode (one time setup)
 
 1. Get an EC2 Mac instance ([doc](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-mac-instances.html)).
 
@@ -16,10 +16,7 @@ The below are step by step instructions to build this project on macOS.  It desc
 
 - Choose an EBS volume large enough, Xcode and development tools need space. I use a 500Gb gp3 volume.
 
-- Create a Security Group with at least SSH (TCP 22). If you plan to use Xcode Server, add the following:
-   - TCP 443 (HTTPS)
-   - TCP 20300 (Xcode Server)
-   - TCP 20343 - 20346 (Xcode Server)   
+- Create a Security Group athorizing ingress traffic for SSH (TCP 22)
 
   It is always a good idea to restrict the source IP to your laptop / internet box (to find out your current IP address, use `curl ifconfig.me`)
 
@@ -33,22 +30,24 @@ Now that you have access to a macOS EC2 Instance, let's install Xcode.
 
 3. Install Xcode
 
-   See `cli-build/00_AMI_install_dev_tools.sh`
+   See instructions `cli-build/00_AMI_install_dev_tools.sh`
 
-4. Create an EBS snapshot and an GOLD AMI  
+   Alternatively, you can use [xcodeinstall](https://github.com/sebsto/xcodeinstall)
+
+4. (optional) Create an EBS snapshot and an GOLD AMI  
 
    At this stage, it is a good idea to create a snapshot and a GOLD AMI to avoid having to repeat this long installation process for each future EC2 Mac instance that you would start.
 
    FROM YOUR LAPTOP (NOT FROM THE EC2 MAC INSTANCE) :
 
    ```bash
-   REGION=us-east-2
+   REGION=us-west-2
    # REPLACE THE IP ADDRESS IN THE COMMAND BELOW
    # Use the EC2 Mac Instance Public IP
    EBS_VOLUME_ID=$(aws ec2 --region $REGION describe-instances --query 'Reservations[].Instances[?PublicIpAddress==`<YOUR EC2 MAC PUBLIC IP ADDRESS>`].BlockDeviceMappings[][].Ebs.VolumeId' --output text)
    aws ec2 create-snapshot --region $REGION --volume-id $EBS_VOLUME_ID --description "macOS Big Sur Xcode"
 
-   # AT THIS STAGE COPY THE SNAPSHOT_ID RETURNED BY THE PREVIOUS COMMAND
+   # COPY THE SNAPSHOT_ID RETURNED BY THE PREVIOUS COMMAND
    # WAIT FOR THE SNAPSHOT TO COMPLETE, THIS CAN TAKES SEVERAL MINUTES
    SNAPSHOT_ID=<YOUR SNAPSHOT ID>
    aws ec2 register-image --region=$REGION --name "GOLD_macOS_BigSur_Xcode" --description "macOS Big Sur Xcode Gold Image" --architecture x86_64_mac --virtualization-type hvm --block-device-mappings DeviceName="/dev/sda1",Ebs=\{SnapshotId=$SNAPSHOT_ID,VolumeType=gp3\} --root-device-name "/dev/sda1"
@@ -56,7 +55,7 @@ Now that you have access to a macOS EC2 Instance, let's install Xcode.
 
 4. Attach an EC2 role to the instance
 
-   This is required to give processes running on your instances permission to access AWS resources in your account, such as Amazon S3 buckets, AWS SecretsManager secrets etc. It alos gives required permissions for Amplify to pull out it's resources and to the SQS Build agent to poll and post SQS messages.
+   This is required to give processes running on your instances permission to access AWS resources in your account, such as Amazon S3 buckets, AWS SecretsManager secrets etc. It alos gives required permissions for Amplify to pull out its resources (if you use AWS Amplify).
 
    Once the role is created, it can be attached to future instances that you will launch, without typing these commands.
 
@@ -120,4 +119,4 @@ Now that the one-time setup is behind you, you can start to build the project.
    cd $CODE_DIR
    ```
 
-4. Run the scripts in the `ci_actions` directory, in the correct order.
+4. Run the scripts in the `ci_actions` directory, one by one, in the correct order.

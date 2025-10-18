@@ -2,7 +2,7 @@
 
 . code/ci_actions/00_common.sh
 
-CERTIFICATES_DIR=./certificates
+CERTIFICATES_DIR=./code/certificates
 mkdir -p $CERTIFICATES_DIR 2>&1 >/dev/null
 echo "Certificates directory: $CERTIFICATES_DIR"
 
@@ -66,11 +66,9 @@ echo "$SECRET_VALUE" | jq -r '.uitests_mobileprovision' | base64 -d > ${CERTIFIC
 
 echo "Import Signing private key and certificate"
 DEV_KEY_FILE=$CERTIFICATES_DIR/apple_dev_key.p12
-echo $SIGNING_DEV_KEY | base64 -d > $DEV_KEY_FILE
 security import "${DEV_KEY_FILE}" -P "" -k "${KEYCHAIN_NAME}" "${AUTHORISATION[@]}"
 
 DIST_KEY_FILE=$CERTIFICATES_DIR/apple_dist_key.p12
-echo $SIGNING_DIST_KEY | base64 -d > $DIST_KEY_FILE
 security import "${DIST_KEY_FILE}" -P "" -k "${KEYCHAIN_NAME}" "${AUTHORISATION[@]}"
 
 # is this necessary when importing keys with -A ?
@@ -78,19 +76,16 @@ security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "${KEYCHAI
 
 echo "Install development provisioning profile"
 MOBILE_PROVISIONING_DEV_PROFILE_FILE=$CERTIFICATES_DIR/dev.mobileprovision
-echo $MOBILE_PROVISIONING_DEV_PROFILE | base64 -d > $MOBILE_PROVISIONING_DEV_PROFILE_FILE
 UUID=$(security cms -D -i $MOBILE_PROVISIONING_DEV_PROFILE_FILE -k "${KEYCHAIN_NAME}" | plutil -extract UUID xml1 -o - - | xmllint --xpath "//string/text()" -)
 mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
 cp $MOBILE_PROVISIONING_DEV_PROFILE_FILE "$HOME/Library/MobileDevice/Provisioning Profiles/${UUID}.mobileprovision"
 
 echo "Install distribution provisioning profile"
 MOBILE_PROVISIONING_DIST_PROFILE_FILE=$CERTIFICATES_DIR/dist.mobileprovision
-echo $MOBILE_PROVISIONING_DIST_PROFILE | base64 -d > $MOBILE_PROVISIONING_DIST_PROFILE_FILE
 UUID=$(security cms -D -i $MOBILE_PROVISIONING_DIST_PROFILE_FILE -k "${KEYCHAIN_NAME}" | plutil -extract UUID xml1 -o - - | xmllint --xpath "//string/text()" -)
 cp $MOBILE_PROVISIONING_DIST_PROFILE_FILE "$HOME/Library/MobileDevice/Provisioning Profiles/${UUID}.mobileprovision"
 
 echo "Install test provisioning profile"
 MOBILE_PROVISIONING_TEST_PROFILE_FILE=$CERTIFICATES_DIR/uitests.mobileprovision
-echo $MOBILE_PROVISIONING_TEST_PROFILE | base64 -d > $MOBILE_PROVISIONING_TEST_PROFILE_FILE
 UUID=$(security cms -D -i $MOBILE_PROVISIONING_TEST_PROFILE_FILE -k "${KEYCHAIN_NAME}" | plutil -extract UUID xml1 -o - - | xmllint --xpath "//string/text()" -)
 cp $MOBILE_PROVISIONING_TEST_PROFILE_FILE "$HOME/Library/MobileDevice/Provisioning Profiles/${UUID}.mobileprovision"

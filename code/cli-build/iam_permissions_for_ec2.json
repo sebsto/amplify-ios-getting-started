@@ -27,8 +27,7 @@
                 "s3:Get*"
             ],
             "Resource": [
-                "arn:aws:s3:::MY_AMPLIFY_PROJECT_DEPLOYMENT_BUCKET/*",
-                "arn:aws:s3:::MY_AMPLIFY_PROJECT_DEPLOYMENT_BUCKET"
+                "arn:aws:s3:::amplify-<AMPLIFY_APP_ID>*"
             ]
         },
         {
