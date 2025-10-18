@@ -16,10 +16,15 @@ KEYCHAIN_PASSWORD=Passw0rd
 KEYCHAIN_NAME=dev.keychain
 security unlock-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN_NAME
 
-APPLE_ID_SECRET=apple-id
-APPLE_SECRET_SECRET=apple-secret
-APPLE_ID=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $APPLE_ID_SECRET --query SecretString --output text)
-export APPLE_SECRET=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $APPLE_SECRET_SECRET --query SecretString --output text)
+# Apple API Key authentication
+SECRET_VALUE=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id "ios-build-secrets" --query SecretString --output text)
+APPLE_API_KEY_ID=$(echo $SECRET_VALUE | jq -r '.apple_api_key_id')
+APPLE_API_KEY_B64=$(echo $SECRET_VALUE | jq -r '.apple_api_key')
+APPLE_API_ISSUER=$(echo $SECRET_VALUE | jq -r '.apple_api_issuer_id')
+
+# Create temporary API key file
+API_KEY_FILE="$CERTIFICATES_DIR/AuthKey_${APPLE_API_KEY_ID}.p8"
+echo $APPLE_API_KEY_B64 | base64 -d > $API_KEY_FILE
 
 cat << EOF > $EXPORT_OPTIONS_FILE
 <?xml version="1.0" encoding="UTF-8"?>
@@ -60,15 +65,18 @@ xcrun altool  \
             --validate-app \
             -f "$BUILD_PATH/$SCHEME.ipa" \
             -t ios \
-            -u $APPLE_ID \
-            -p @env:APPLE_SECRET 
+            --apiKey $APPLE_API_KEY_ID \
+            --apiIssuer $APPLE_API_ISSUER
 
 echo "Upload to AppStore Connect"
 xcrun altool  \
 		--upload-app \
 		-f "$BUILD_PATH/$SCHEME.ipa" \
 		-t ios \
-		-u $APPLE_ID \
-		-p @env:APPLE_SECRET 
+		--apiKey $APPLE_API_KEY_ID \
+		--apiIssuer $APPLE_API_ISSUER
+
+# Clean up temporary API key file
+rm -f $API_KEY_FILE 
 
 popd

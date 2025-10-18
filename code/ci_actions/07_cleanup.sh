@@ -6,7 +6,7 @@ set -o pipefail
 
 # delete build secrets 
 echo "Delete certificates directory"
-rm -rf ~/certificates 
+rm -rf $CERTIFICATES_DIR 
 
 KEYCHAIN_NAME=dev.keychain
 if [ -f $HOME/Library/Keychains/"${KEYCHAIN_NAME}"-db ]; then
