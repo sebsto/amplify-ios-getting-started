@@ -35,7 +35,7 @@ if [ ! -z ${CODEBUILD_SRC_DIR} ]; then # we are running inside AWS CodeBuild
     export CODE_DIR=$CODEBUILD_SRC_DIR/code
 fi
 
-CERTIFICATES_DIR=./code/certificates
+export CERTIFICATES_DIR=$(pwd)/code/certificates
 
 echo "Default region: $AWS_REGION"
 echo "AWS CLI       : $AWS_CLI"
