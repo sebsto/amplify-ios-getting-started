@@ -28,6 +28,7 @@ security unlock-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN_NAME
 xcodebuild clean archive                    \
            -project  "$PROJECT"             \
            -scheme "$SCHEME"                \
+           -destination "generic/platform=iOS" \
            -archivePath "$ARCHIVE_PATH"     \
            -derivedDataPath "${BUILD_PATH}" \
            -configuration "$CONFIGURATION"   | $BREW_PATH/xcbeautify

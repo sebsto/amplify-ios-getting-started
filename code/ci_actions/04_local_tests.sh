@@ -9,7 +9,7 @@ pushd $CODE_DIR
 
 PROJECT="getting started.xcodeproj"
 SCHEME="getting started"
-PHONE_MODEL="iPhone 15 Pro"
+PHONE_MODEL="iPhone 17 Pro"
 IOS_VERSION="26.0"
 
 xcodebuild test \
