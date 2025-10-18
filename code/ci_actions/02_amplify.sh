@@ -40,7 +40,7 @@ pushd $CODE_DIR
 npx ampx generate outputs    \
   --app-id ${AMPLIFY_APP_ID} \
   --branch main              \
-  --out-dir ./code           \
+  --out-dir .                \
   --format json
 
 popd
