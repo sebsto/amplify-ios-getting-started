@@ -21,13 +21,13 @@ final class Backend: Sendable  {
         do {
 //            Amplify.Logging.logLevel = .info
             // reduce verbosity of AWS SDK
-            Task { await SDKLoggingSystem.initialize(logLevel: .warning) }
+//            Task { await SDKLoggingSystem().initialize(logLevel: .warning) }
 
             try Amplify.add(plugin: AWSCognitoAuthPlugin())
             try Amplify.add(plugin: AWSAPIPlugin(modelRegistration: AmplifyModels()))
             try Amplify.add(plugin: AWSS3StoragePlugin())
             
-            try Amplify.configure()
+            try Amplify.configure(with: .amplifyOutputs)
             print("Initialized Amplify")
         } catch {
             print("Could not initialize Amplify: \(error)")

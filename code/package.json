@@ -1,0 +1,25 @@
+{
+  "name": "code",
+  "version": "1.0.0",
+  "description": "<!--![Build status](https://codebuild.us-east-2.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiVFpRMy9XOXVubXFyR1dRTHhXRGdEZjBYU3Q2R2lsQ2R0RjRpaDRGcllQYjdaUmQ2V01kVWZ2OENvZGVJckRIMkdVc1YrK0pTQjVQa21mN3hQdW5iQUxvPSIsIml2UGFyYW1ldGVyU3BlYyI6IlM1dk41dDhNVDZ1dWNXN0UiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=main) -->",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@aws-amplify/backend": "^1.16.1",
+    "@aws-amplify/backend-cli": "^1.8.0",
+    "aws-cdk-lib": "^2.204.0",
+    "constructs": "^10.4.2",
+    "esbuild": "^0.25.11",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "aws-amplify": "^6.15.7"
+  }
+}

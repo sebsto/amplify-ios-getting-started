@@ -6,9 +6,8 @@
 //  Copyright © 2020 Stormacq, Sebastien. All rights reserved.
 //
 
-import SwiftUI
-
 import Authenticator
+import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject public var model: ViewModel

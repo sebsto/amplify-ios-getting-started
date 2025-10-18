@@ -1,11 +1,8 @@
 ## GitHub Runner as macOS Daemon 
 
-GitHub instructions 
-https://docs.github.com/en/actions/hosting-your-own-runners/configuring-the-self-hosted-runner-application-as-a-service
+[GitHub instructions to install a runner on macOS](https://docs.github.com/en/actions/hosting-your-own-runners/configuring-the-self-hosted-runner-application-as-a-service) doesn't work on headless machines because it launches as LaunchAgent (these require a GUI Session)
 
-Does not work because it launch as LaunchAgent (requires a GUI Session)
-
-Solution : install as a Dameon
+Solution : install as a Launch Dameon
 
 ```sh
 sudo bash 
