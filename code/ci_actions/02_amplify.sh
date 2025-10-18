@@ -22,6 +22,10 @@ fi
 
 echo "✅ npm and npx are available"
 
+# Install Amplify Gen2 CLI
+echo "Installing Amplify Gen2 CLI dependencies"
+npm install @aws-amplify/backend-cli@latest
+
 # verify amplify app exists in the region
 echo "Verifying Amplify app $AMPLIFY_APP_ID exists in region $AWS_REGION"
 if ! aws amplify get-app --app-id $AMPLIFY_APP_ID --region $AWS_REGION &> /dev/null; then
