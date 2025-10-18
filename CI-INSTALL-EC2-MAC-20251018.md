@@ -63,7 +63,70 @@ xcodebuild -downloadPlatform iOS
 
 ### Install the GitHub Actions Runner 
 
+# Create a folder
 
+```
+# Create a folder
+$ mkdir actions-runner-amplify-ios-getting-started && cd actions-runner-amplify-ios-getting-started
+
+# Download the latest runner package
+$ curl -o actions-runner-osx-arm64-2.329.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.329.0/actions-runner-osx-arm64-2.329.0.tar.gz
+
+# Optional: Validate the hash
+$ echo "50c0d409040cc52e701ac1d5afb4672cb7803a65c1292a30e96c42051dfa690f  actions-runner-osx-arm64-2.329.0.tar.gz" | shasum -a 256 -c
+
+# Extract the installer
+$ tar xzf ./actions-runner-osx-arm64-2.329.0.tar.gz
+```
+
+Install the runner as a Launch Daemon
+
+```sh
+RUNNER_NAME=actions.runner.amplify-ios-getting-started
+sudo tee /Library/LaunchDaemons/$RUNNER_NAME.plist > /dev/null << EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>actions-runner-amplify-ios-getting-started</string>
+    <key>ProgramArguments</key>
+    <array>
+      <string>/Users/ec2-user/actions-runner-amplify-ios-getting-started/run.sh</string>
+    </array>
+    <key>KeepAlive</key>
+    <dict>
+      <key>SuccessfulExit</key>
+      <false/>
+    </dict> 
+    <key>UserName</key>
+    <string>ec2-user</string>
+    <key>GroupName</key>
+    <string>staff</string>  
+    <key>WorkingDirectory</key>
+    <string>/Users/ec2-user/actions-runner-amplify-ios-getting-started</string>
+    <key>RunAtLoad</key>
+    <true/>    
+    <key>StandardOutPath</key>
+    <string>/Users/ec2-user/actions-runner-amplify-ios-getting-started/stdout.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/ec2-user/actions-runner-amplify-ios-getting-started/stderr.log</string>
+    <key>EnvironmentVariables</key>
+    <dict> 
+      <key>ACTIONS_RUNNER_SVC</key>
+      <string>1</string>
+      <key>PATH</key>
+      <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    </dict>
+    <key>SessionCreate</key>
+    <true/>
+  </dict>
+</plist>
+EOF
+
+sudo chown root:wheel /Library/LaunchDaemons/$RUNNER_NAME.plist 
+sudo /bin/launchctl load /Library/LaunchDaemons/$RUNNER_NAME.plist
+```
 
 ## IAM Permission for your CICD host 
 
