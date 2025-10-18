@@ -13,13 +13,9 @@ if [ ! -z ${AWS_REGION} ]; then
     export REGION=$AWS_REGION
 else
     TOKEN=$(curl -s -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
-    export REGION=$(curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/placement/region)
+    export AWS_REGION=$(curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/placement/region)
 fi
 export LANG=en_US.UTF-8
-
-# to avoid side effect when using amplify CLI
-export AWS_DEFAULT_REGION=
-export AWS_REGION=
 
 export CODE_DIR=$HOME/amplify-ios-getting-started/code # default value
 if [ ! -z ${GITHUB_ACTION} ]; then # we are running from a github runner
@@ -39,7 +35,7 @@ if [ ! -z ${CODEBUILD_SRC_DIR} ]; then # we are running inside AWS CodeBuild
     export CODE_DIR=$CODEBUILD_SRC_DIR/code
 fi
 
-echo "Default region: $REGION"
+echo "Default region: $AWS_REGION"
 echo "AWS CLI       : $AWS_CLI"
 echo "Code directory: $CODE_DIR"
 echo "Home directory: $HOME"

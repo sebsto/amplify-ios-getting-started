@@ -1,28 +1,28 @@
-REGION=us-east-2
+REGION=us-west-2
 
-# get the amplify app id with : amplify env list --details
+# Run these command from your laptop where the secrets are, not from the EC2 Mac instance
+# do not change the name of the secrets. Builds scripts are using these names to retrieve the secrets.
 
-# Initial run - use `create-secret`, afterwards use `update-secret` when updating the information.
+# Create JSON structure with all files as base64
+SECRET_JSON=$(cat << EOF
+{
+  "apple_dev_key_p12": "$(base64 -i secrets/apple_dev_key.p12)",
+  "apple_dist_key_p12": "$(base64 -i secrets/apple_dist_key.p12)",
+  "dev_mobileprovision": "$(base64 -i secrets/amplifyiosgettingstarteddev.mobileprovision)",
+  "dist_mobileprovision": "$(base64 -i secrets/amplifyiosgettingstarteddist.mobileprovision)",
+  "uitests_mobileprovision": "$(base64 -i secrets/amplifyiosgettingstarteduitests.mobileprovision)"
+}
+EOF
+)
 
-# aws --region $REGION secretsmanager create-secret --name amplify-app-id --secret-string d3.......t9p
-# aws --region $REGION secretsmanager create-secret --name amplify-project-name --secret-string iosgettingstarted
-# aws --region $REGION secretsmanager create-secret --name amplify-environment --secret-string dev
+# Create or update the secret
+aws secretsmanager create-secret \
+  --name "ios-build-secrets" \
+  --secret-string "$SECRET_JSON" \
+  --region $REGION
 
-#aws --region $REGION secretsmanager create-secret --name apple-signing-dev-certificate --secret-binary fileb://./secrets/sebsto-apple-dev.p12 
-aws --region $REGION secretsmanager update-secret --secret-id apple-signing-dev-certificate --secret-binary fileb://./secrets/sebsto-apple-dev.p12
-
-# aws --region $REGION secretsmanager create-secret --name apple-signing-dist-certificate --secret-binary fileb://./secrets/sebsto-apple-dist.p12 
-aws --region $REGION secretsmanager update-secret --secret-id apple-signing-dist-certificate --secret-binary fileb://./secrets/sebsto-apple-dist.p12
-
-# aws --region $REGION secretsmanager create-secret --name amplify-getting-started-dev-provisionning --secret-binary fileb://./secrets/amplifyiosgettingstarteddev.mobileprovision
-aws --region $REGION secretsmanager update-secret --secret-id amplify-getting-started-dev-provisionning --secret-binary fileb://./secrets/amplifyiosgettingstarteddev.mobileprovision
-
-# aws --region $REGION secretsmanager create-secret --name amplify-getting-started-dist-provisionning --secret-binary fileb://./secrets/amplifyiosgettingstarteddist.mobileprovision
-aws --region $REGION secretsmanager update-secret --secret-id amplify-getting-started-dist-provisionning --secret-binary fileb://./secrets/amplifyiosgettingstarteddist.mobileprovision
-
-# aws --region $REGION secretsmanager create-secret --name amplify-getting-started-test-provisionning --secret-binary fileb://./secrets/amplifyiosgettingstarteduitests.mobileprovision
-aws --region $REGION secretsmanager update-secret --secret-id amplify-getting-started-test-provisionning --secret-binary fileb://./secrets/amplifyiosgettingstarteduitests.mobileprovision
-
-# aws --region $REGION secretsmanager create-secret --name apple-id --secret-string myemail@me.com
-# aws --region $REGION secretsmanager create-secret --name apple-secret --secret-string aaaa-aaaa-aaaa-aaaa 
-# aws --region $REGION secretsmanager update-secret --secret-id apple-secret --secret-string bbbb-bbbb-bbbb-bbbb
+# To update existing secret:
+# aws secretsmanager update-secret \
+#   --secret-id "ios-build-secrets" \
+#   --secret-string "$SECRET_JSON" \
+#   --region $REGION

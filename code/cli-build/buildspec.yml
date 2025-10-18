@@ -1,7 +1,0 @@
-version: 0.2
-
-phases:
-  build:
-    commands:
-      # clean, build, test, sign, and upload
-      - SQSProducer $SQS_COMMAND_QUEUE_URL $SQS_RESPONSE_QUEUE_URL code/cli-build/99_build_all.sh

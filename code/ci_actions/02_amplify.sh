@@ -5,80 +5,38 @@ set -o pipefail
 
 . code/ci_actions/00_common.sh
 
-# the region where the backend is deployed
-BACKEND_REGION=eu-central-1 
+# The amplify app ID for this apps
+# ⚠️⚠️⚠️ REPLACE WITH YOUR OWN APP ID IF YOU USE AMPLIFY ##
+AMPLIFY_APP_ID=d199v9208momso
 
-# search for amplify 
-AMPLIFY_STANDALONE=$HOME/.amplify/bin/amplify
-AMPLIFY_BREW=/opt/homebrew/bin/amplify
-if [ -f $AMPLIFY_STANDALONE ]; then
-	AMPLIFY_CLI=$AMPLIFY_STANDALONE
-elif [ -f $AMPLIFY_BREW ]; then
-	AMPLIFY_CLI=$AMPLIFY_BREW
-else
-	echo "Amplify CLI not found, installing it"
-	curl -sL https://aws-amplify.github.io/amplify-cli/install | bash 
-	if [ -f $AMPLIFY_STANDALONE ]; then
-		AMPLIFY_CLI=$AMPLIFY_STANDALONE
-	else
-	  echo "🛑 Amplify CLI not found, abording"
-		exit 1
-	fi
+# verify npm and npx are installed
+if ! command -v npm &> /dev/null; then
+    echo "🛑 npm not found, please install Node.js"
+    exit 1
 fi
 
-if [ -d "$HOME/.aws" ]; then
-  echo "Backing up existing AWS CLI configuration"
-	mv $HOME/.aws ~/.aws.bak
+if ! command -v npx &> /dev/null; then
+    echo "🛑 npx not found, please install Node.js"
+    exit 1
 fi
-echo "Prepare AWS CLI configuration"
-mkdir $HOME/.aws
-echo "[default]\nregion=$BACKEND_REGION\n\n" > ~/.aws/config
-echo "[default]\n\n" > ~/.aws/credentials
 
-echo "Using amplify at $AMPLIFY_CLI"
+echo "✅ npm and npx are available"
+
+# verify amplify app exists in the region
+echo "Verifying Amplify app $AMPLIFY_APP_ID exists in region $AWS_REGION"
+if ! aws amplify get-app --app-id $AMPLIFY_APP_ID --region $AWS_REGION &> /dev/null; then
+    echo "🛑 Amplify app $AMPLIFY_APP_ID not found in region $AWS_REGION"
+    exit 1
+fi
+echo "✅ Amplify app verified"
+
 echo "Changing to code directory at $CODE_DIR"
 pushd $CODE_DIR
 
-echo "Retrieving secrets"
-
-AMPLIFY_APPID_SECRET=amplify-app-id
-AMPLIFY_PROJECT_NAME_SECRET=amplify-project-name
-AMPLIFY_ENV_SECRET=amplify-environment
-AMPLIFY_APPID=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $AMPLIFY_APPID_SECRET --query SecretString --output text)
-AMPLIFY_PROJECT_NAME=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $AMPLIFY_PROJECT_NAME_SECRET --query SecretString --output text)
-AMPLIFY_ENV=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $AMPLIFY_ENV_SECRET --query SecretString --output text)  
-
-echo "Pulling amplify environment"
-
-AWSCLOUDFORMATIONCONFIG="{\
-\"configLevel\":\"general\"\
-}"
-
-AMPLIFY="{\
-\"projectName\":\"$AMPLIFY_PROJECT_NAME\",\
-\"appId\":\"$AMPLIFY_APPID\",\
-\"envName\":\"$AMPLIFY_ENV\",\
-\"defaultEditor\":\"code\"\
-}"
-FRONTEND="{\
-\"frontend\":\"ios\"
-}"
-PROVIDERS="{\
-\"awscloudformation\":$AWSCLOUDFORMATIONCONFIG\
-}"
-
-$AMPLIFY_CLI pull \
---amplify $AMPLIFY \
---frontend $FRONTEND \
---providers $PROVIDERS \
---yes 
-
-echo "Generate code for application models"
-$AMPLIFY_CLI codegen models 
-
-if [ -d "$HOME/.aws.bak" ]; then
-	echo "Restoring original AWS CLI configuration"
-	mv $HOME/.aws.bak ~/.aws
-fi
+npx ampx generate outputs    \
+  --app-id ${AMPLIFY_APP_ID} \
+  --branch main              \
+  --out-dir .                \
+  --format json
 
 popd

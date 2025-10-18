@@ -2,7 +2,7 @@
 
 . code/ci_actions/00_common.sh
 
-CERTIFICATES_DIR=$HOME/certificates
+CERTIFICATES_DIR=./certificates
 mkdir -p $CERTIFICATES_DIR 2>&1 >/dev/null
 echo "Certificates directory: $CERTIFICATES_DIR"
 
@@ -51,18 +51,18 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Retrieve application dev and dist keys from AWS Secret Manager"
-SIGNING_DEV_KEY_SECRET=apple-signing-dev-certificate
-MOBILE_PROVISIONING_PROFILE_DEV_SECRET=amplify-getting-started-dev-provisionning
-SIGNING_DIST_KEY_SECRET=apple-signing-dist-certificate
-MOBILE_PROVISIONING_PROFILE_DIST_SECRET=amplify-getting-started-dist-provisionning
-MOBILE_PROVISIONING_PROFILE_TEST_SECRET=amplify-getting-started-test-provisionning
+# Get the secret and extract files
+SECRET_VALUE=$(aws secretsmanager get-secret-value \
+  --secret-id "ios-build-secrets" \
+  --region $AWS_REGION \
+  --query SecretString --output text)
 
-# These are base64 values, we will need to decode to a file when needed
-SIGNING_DEV_KEY=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $SIGNING_DEV_KEY_SECRET --query SecretBinary --output text)
-MOBILE_PROVISIONING_DEV_PROFILE=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $MOBILE_PROVISIONING_PROFILE_DEV_SECRET --query SecretBinary --output text)
-SIGNING_DIST_KEY=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $SIGNING_DIST_KEY_SECRET --query SecretBinary --output text)
-MOBILE_PROVISIONING_DIST_PROFILE=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $MOBILE_PROVISIONING_PROFILE_DIST_SECRET --query SecretBinary --output text)
-MOBILE_PROVISIONING_TEST_PROFILE=$($AWS_CLI --region $REGION secretsmanager get-secret-value --secret-id $MOBILE_PROVISIONING_PROFILE_TEST_SECRET --query SecretBinary --output text)
+# Extract each file
+echo "$SECRET_VALUE" | jq -r '.apple_dev_key_p12' | base64 -d > ${CERTIFICATES_DIR}/apple_dev_key.p12
+echo "$SECRET_VALUE" | jq -r '.apple_dist_key_p12' | base64 -d > ${CERTIFICATES_DIR}/apple_dist_key.p12
+echo "$SECRET_VALUE" | jq -r '.dev_mobileprovision' | base64 -d > ${CERTIFICATES_DIR}/dev.mobileprovision
+echo "$SECRET_VALUE" | jq -r '.dist_mobileprovision' | base64 -d > ${CERTIFICATES_DIR}/dist.mobileprovision
+echo "$SECRET_VALUE" | jq -r '.uitests_mobileprovision' | base64 -d > ${CERTIFICATES_DIR}/uitests.mobileprovision
 
 echo "Import Signing private key and certificate"
 DEV_KEY_FILE=$CERTIFICATES_DIR/apple_dev_key.p12
@@ -77,20 +77,20 @@ security import "${DIST_KEY_FILE}" -P "" -k "${KEYCHAIN_NAME}" "${AUTHORISATION[
 security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "${KEYCHAIN_PASSWORD}" "${KEYCHAIN_NAME}"
 
 echo "Install development provisioning profile"
-MOBILE_PROVISIONING_DEV_PROFILE_FILE=$CERTIFICATES_DIR/project-dev.mobileprovision
+MOBILE_PROVISIONING_DEV_PROFILE_FILE=$CERTIFICATES_DIR/dev.mobileprovision
 echo $MOBILE_PROVISIONING_DEV_PROFILE | base64 -d > $MOBILE_PROVISIONING_DEV_PROFILE_FILE
 UUID=$(security cms -D -i $MOBILE_PROVISIONING_DEV_PROFILE_FILE -k "${KEYCHAIN_NAME}" | plutil -extract UUID xml1 -o - - | xmllint --xpath "//string/text()" -)
 mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
 cp $MOBILE_PROVISIONING_DEV_PROFILE_FILE "$HOME/Library/MobileDevice/Provisioning Profiles/${UUID}.mobileprovision"
 
 echo "Install distribution provisioning profile"
-MOBILE_PROVISIONING_DIST_PROFILE_FILE=$CERTIFICATES_DIR/project-dist.mobileprovision
+MOBILE_PROVISIONING_DIST_PROFILE_FILE=$CERTIFICATES_DIR/dist.mobileprovision
 echo $MOBILE_PROVISIONING_DIST_PROFILE | base64 -d > $MOBILE_PROVISIONING_DIST_PROFILE_FILE
 UUID=$(security cms -D -i $MOBILE_PROVISIONING_DIST_PROFILE_FILE -k "${KEYCHAIN_NAME}" | plutil -extract UUID xml1 -o - - | xmllint --xpath "//string/text()" -)
 cp $MOBILE_PROVISIONING_DIST_PROFILE_FILE "$HOME/Library/MobileDevice/Provisioning Profiles/${UUID}.mobileprovision"
 
 echo "Install test provisioning profile"
-MOBILE_PROVISIONING_TEST_PROFILE_FILE=$CERTIFICATES_DIR/project-test.mobileprovision
+MOBILE_PROVISIONING_TEST_PROFILE_FILE=$CERTIFICATES_DIR/uitests.mobileprovision
 echo $MOBILE_PROVISIONING_TEST_PROFILE | base64 -d > $MOBILE_PROVISIONING_TEST_PROFILE_FILE
 UUID=$(security cms -D -i $MOBILE_PROVISIONING_TEST_PROFILE_FILE -k "${KEYCHAIN_NAME}" | plutil -extract UUID xml1 -o - - | xmllint --xpath "//string/text()" -)
 cp $MOBILE_PROVISIONING_TEST_PROFILE_FILE "$HOME/Library/MobileDevice/Provisioning Profiles/${UUID}.mobileprovision"

@@ -32,21 +32,11 @@
             ]
         },
         {
-            "Sid": "SQSAccess",
-            "Effect": "Allow",
-            "Action": [
-                "sqs:Receive*",
-                "sqs:Send*",
-                "sqs:DeleteMessage"
-            ],
-            "Resource": "*"
-        },
-        {
             "Sid": "SecretsManagerAccess",
             "Effect": "Allow",
             "Action": "secretsmanager:GetSecretValue",
             "Resource": [
-                "arn:aws:secretsmanager:REGION:ACCOUNT_ID:secret:amplify*",
+                "arn:aws:secretsmanager:REGION:ACCOUNT_ID:secret:ios-build-secrets*",
                 "arn:aws:secretsmanager:REGION:ACCOUNT_ID:secret:apple*"
             ]
         },
