@@ -17,6 +17,12 @@ export CODE_DIR=/Volumes/workspace/repository/code
 # ⚠️⚠️⚠️ REPLACE WITH YOUR OWN APP ID IF YOU USE AMPLIFY ##
 AMPLIFY_APP_ID=d199v9208momso
 
+# Install Node.js if not present
+if ! command -v node &> /dev/null; then
+    echo "Installing Node.js via Homebrew"
+    brew install node
+fi
+
 # verify npm and npx are installed
 if ! command -v npm &> /dev/null; then
     echo "🛑 npm not found, please install Node.js"
@@ -27,6 +33,10 @@ if ! command -v npx &> /dev/null; then
     echo "🛑 npx not found, please install Node.js"
     exit 1
 fi
+
+# Verify Node.js installation
+echo "Node.js version: $(node --version)"
+echo "npm version: $(npm --version)"
 
 echo "✅ npm and npx are available"
 
