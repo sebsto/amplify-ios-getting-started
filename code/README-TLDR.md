@@ -79,6 +79,13 @@ $ echo "50c0d409040cc52e701ac1d5afb4672cb7803a65c1292a30e96c42051dfa690f  action
 $ tar xzf ./actions-runner-osx-arm64-2.329.0.tar.gz
 ```
 
+Configure the runner for you GitHub repository.
+
+```
+# From your GitHub repo: Settings -> Runnners -> New slef hosted runner
+$ ./config.sh --url <YOUR GITHUB REPO URL> --token <YOUR UNIQUE TOKEN>
+```
+
 Install the runner as a Launch Daemon
 
 ```sh
@@ -128,7 +135,15 @@ sudo chown root:wheel /Library/LaunchDaemons/$RUNNER_NAME.plist
 sudo /bin/launchctl load /Library/LaunchDaemons/$RUNNER_NAME.plist
 ```
 
-## IAM Permission for your CICD host 
+### Store your build secrets
+
+Store your build secrets in a safe place. I use [AWS Secrets Manager](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html).
+
+- See this script to prepare your secrets : `cli-build/import_secrets.sh`
+
+- See `ci-actions/01_keychain.sh` and `ci-actions/06_deploy_testflight.sh` to see how to consume these secrets from your build scripts.
+
+### IAM Permission for your CICD host 
 
 (Remove the Amplify related permissions when not using AWS Amplify)
 
@@ -198,7 +213,9 @@ sudo /bin/launchctl load /Library/LaunchDaemons/$RUNNER_NAME.plist
 	]
 }
 ```
-### Amplify-based app - manual validation
+### (optional) Amplify-based applications
+
+Manually validate the Amplify setup
 
 ```
 brew install node

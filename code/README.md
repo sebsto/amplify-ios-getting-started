@@ -1,6 +1,6 @@
 [![Build Status](https://github.com/sebsto/amplify-ios-getting-started/actions/workflows/ContinuousIntegration.yml/badge.svg)](https://github.com/sebsto/amplify-ios-getting-started/actions/workflows/ContinuousIntegration.yml)
-![language](https://img.shields.io/badge/swift-5.7-blue)
-![platform](https://img.shields.io/badge/platform-ios-green)
+![language](https://img.shields.io/badge/swift-6.2-blue)
+![platform](https://img.shields.io/badge/platform-ios18+-green)
 [![license](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
 # Instructions to build on Amazon EC2
@@ -9,14 +9,19 @@ The below are step by step instructions to build this project on macOS.  It desc
 
 ## Prepare an EC2 Mac instance with Xcode (one time setup)
 
-1. Get an EC2 Mac instance ([doc](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-mac-instances.html)).
+Get an EC2 Mac instance ([doc](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-mac-instances.html)).
+
+Follow these two blog posts to learn how to start and Amazon EC2 Mac instance and how to connect to it.
+
+- [Start an Amazon EC2 Mac instance](https://builder.aws.com/content/2duUEgh4u4TIDqfECiDkEbrn2Iw/start-an-amazon-ec2-mac-instance)
+- [Connect to an Amazon EC2 Mac instance](https://builder.aws.com/content/2duUtYq4ENzOLGLdEg0A3aeyCuj/connect-to-an-amazon-ec2-mac-instance)
 
 ### Tips
 - Remember, you need to allocate a dedicated host.  Minimum billing period is 24h. 
 
 - Choose an EBS volume large enough, Xcode and development tools need space. I use a 500Gb gp3 volume.
 
-- Create a Security Group athorizing ingress traffic for SSH (TCP 22)
+- If you choose to connect over SSH, create a Security Group athorizing ingress traffic for SSH (TCP 22)
 
   It is always a good idea to restrict the source IP to your laptop / internet box (to find out your current IP address, use `curl ifconfig.me`)
 
@@ -24,11 +29,7 @@ The below are step by step instructions to build this project on macOS.  It desc
 
 Now that you have access to a macOS EC2 Instance, let's install Xcode.
 
-2. Connect to your EC2 Mac instance using SSH
-
-   `ssh -i /path/to/my/private-ssh-key.pem ec2-user@<mac1_instance_IP_address>`
-
-3. Install Xcode
+2. Install Xcode
 
    See instructions `cli-build/00_AMI_install_dev_tools.sh`
 
@@ -85,15 +86,19 @@ Now that you have access to a macOS EC2 Instance, let's install Xcode.
 
 5. Import build secrets into AWS Secrets Manager
 
-   [AWS Secrets Manager](https://aws.amazon.com/secrets-manager/) helps to securely store the secrets you need to access your application or resources.  For this project I will store a couple of project-specific secrets. Build time scripts will read from AWS Secrets Manager to retrieve a plain-text version of these.  Secrets are Amplify Project ID, Apple Distribution secret key and certificate, and the mobile provisionning profile downloaded from Apple developer web site. When uplaoding binaries automatically from App Store Connect, I use AWS Secrets Manager to also store my Apple ID and apple application-specific password.
+[AWS Secrets Manager](https://aws.amazon.com/secrets-manager/) helps to securely store the secrets you need to access your application or resources.  For this project I will store a couple of project-specific secrets. Build time scripts will read from AWS Secrets Manager to retrieve a plain-text version of these.  Secrets are Amplify Project ID, Apple Distribution secret key and certificate, and the mobile provisionning profile downloaded from Apple developer web site. When uplaoding binaries automatically from App Store Connect, I use AWS Secrets Manager to also store my Apple ID and apple application-specific password.
 
-   **How to collect your build secrets ?**
+**How to collect your build secrets ?**
 
-   - To generate an Apple application-specific password, visit https://appleid.apple.com/account/manage
-   - Your Apple iOS Distribution certificate and private key can be exported from your development machine Keychain or from [Apple developer's console](https://developer.apple.com/account/resources/certificates).
-   - Your mobile application provisioning profile can be downloaded from [Apple's developer's console](https://developer.apple.com/account/resources/profiles/list)
+You need at least three secrets on your build environment
 
-   See `cli-build/import_secrets.sh`
+- Your Apple iOS Distribution certificate and private key. They can be exported from your development machine Keychain and from [Apple developer's console](https://developer.apple.com/account/resources/certificates).
+
+- Your mobile application distribution and test provisioning profiles. They can be downloaded from [Apple's developer's console](https://developer.apple.com/account/resources/profiles/list)
+
+- An API Key to call the App Store Connect API and upload your application to Test Flight. To generate an App Store Connect API Key, visit https://appstoreconnect.apple.com/access/integrations/api
+
+Prepare these secrets on your laptop and create an AWS Secrets Manager. I use the following script: `cli-build/import_secrets.sh`
 
 ## Command Line Build
 
