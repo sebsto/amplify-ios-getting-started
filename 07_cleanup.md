@@ -1,76 +1,98 @@
 # Introduction
 
-Now that you have a full project running, let's explore two options frequently used : the ability to share your project's backend with another app, and the deletion of backend resources.
+Now that you have a full project running, let's explore two options frequently used with Amplify Gen2: the ability to share your project's backend with another app, and the deletion of backend resources.
 
 ## What You Will Learn
 
-- Sharing an Amplify backend configuration accross projects
-- Delete a cloud backend using Amplify CLI 
+- Sharing an Amplify Gen2 backend configuration across projects
+- Delete a cloud backend using Amplify Gen2 commands 
 
 ## Key Concepts
 
-Shared Backend - it is common to have multiple front end applications sharing a common backend in one single AWS account.  For example, you might have a tvOS, Android, iOS, and web frontends, all sharing the same API, database, storage, and user authentication.
+Shared Backend - it is common to have multiple front end applications sharing a common backend in one single AWS account. For example, you might have a tvOS, Android, iOS, and web frontends, all sharing the same API, database, storage, and user authentication. With Amplify Gen2, this is achieved by sharing the `amplify_outputs.json` configuration file.
 
 # Implementation
 
 ## Share your Backend Between Multiple Projects
 
-Amplify makes it easy to share a single backend between multiple front end applications.
+Amplify Gen2 makes it easy to share a single backend between multiple front end applications by sharing the configuration file.
 
-In a terminal, navigate to your other project directory and **execute the following command**:
+### Option 1: Generate Outputs for Another Project
+
+If you have an existing Amplify Gen2 backend deployed, you can generate the configuration for another project:
+
+```zsh
+# In your original project directory
+npx ampx generate outputs --app-id <your-app-id> --branch main --out-dir ../other-project --format json
+```
+
+### Option 2: Copy Configuration File
+
+Simply copy the `amplify_outputs.json` file to your other project:
 
 ```zsh
 mkdir other-project
-cd other-project
-
-amplify pull
+cp amplify_outputs.json other-project/
 ```
 
-- *? Do you want to use an AWS profile?* accept the default **Yes** and press **enter**
-- *? Please choose the profile you want to use* select the profile you want to use and press **enter**
-- *? Which app are you working on?* select the backend you want to share and press **enter**
-- *? Choose your default editor:* select you prefered text editor and press **enter**
-- *? Choose the type of app that you're building* select the operating system for your new project and press **enter**
-- *? Do you plan on modifying this backend?* most of the time, select **No** and press **enter**.  All backend modifications can be done from the original iOS project.
-
-After a few seconds, you will see the following message:
-
-```text
-Added backend environment config object to your project.
-Run 'amplify pull' to sync upstream changes.
-```
-
-You can see the two configurations files that have been pulled out.  When you answer 'Yes' to the question 'Do you plan on modifying this backend?', you also see a `amplify` directory.
-
-```zsh
-➜  other-project git:(master) ✗ ls -al
-total 24
-drwxr-xr-x   5 stormacq  admin   160 Jul 10 10:28 .
-drwxr-xr-x  19 stormacq  admin   608 Jul 10 10:27 ..
--rw-r--r--   1 stormacq  admin   315 Jul 10 10:28 .gitignore
--rw-r--r--   1 stormacq  admin  3421 Jul 10 10:28 amplifyconfiguration.json
--rw-r--r--   1 stormacq  admin  1897 Jul 10 10:28 awsconfiguration.json
-```
 
 ## Delete your Backend
 
-When creating a backend for a test or a prototype, or just for learning purposes, just like when you follow this tutorial, you want to delete the cloud resources that have been created.  
+When creating a backend for a test or a prototype, or just for learning purposes, you want to delete the cloud resources that have been created.
 
-Although the usage of this resources in the context of this tutorial fall under the [free tier](https://aws.amazon.com/free), it is a best practice to clean up unused resources in the cloud.
+Although the usage of these resources in the context of this tutorial fall under the [free tier](https://aws.amazon.com/free), it is a best practice to clean up unused resources in the cloud.
 
-To clean your amplify project, in a terminal, execute the following command:
+### Option 1: Delete Sandbox Resources
+
+If you used the sandbox for development, simply stop the sandbox and delete the resources:
 
 ```zsh
-amplify delete
+# Stop the sandbox (Ctrl+C if running)
+# Then delete the sandbox resources
+npx ampx sandbox delete
 ```
 
-After a while, you will see the below message confirming all cloud resources have been deleted.
+### Option 2: Delete via AWS Console
 
-```text
-✔ Project deleted in the cloud
-Project deleted locally.
+You can also delete resources through the AWS Console:
+
+1. Go to [AWS Amplify Console](https://console.aws.amazon.com/amplify/)
+2. Select your app
+3. Go to **Actions** > **Delete app**
+4. Confirm deletion
+
+### Option 3: Delete CloudFormation Stacks
+
+For more control, delete the CloudFormation stacks directly:
+
+```zsh
+# List Amplify-related stacks
+aws cloudformation list-stacks --query 'StackSummaries[?contains(StackName, `amplify`) && StackStatus != `DELETE_COMPLETE`].[StackName,StackStatus]' --output table
+
+# Delete specific stacks (replace with your actual stack names)
+aws cloudformation delete-stack --stack-name amplify-<your-app-name>-<branch>-<random-id>
 ```
 
-Thank you for having followed this tutorial until the end. Please le us know your feedback by opening an issue or a pull request on our [GitHub repository](https://github.com/sebsto/amplify-ios-getting-started).
+After deletion, all cloud resources including:
+- Cognito User Pool
+- AppSync GraphQL API
+- DynamoDB tables
+- S3 buckets
+- IAM roles and policies
+
+will be permanently removed.
+
+## Congratulations! 🎉
+
+You have successfully built a full-stack iOS application using:
+
+- **Amplify Gen2** with TypeScript backend definitions
+- **Swift 6** and **iOS 18** with modern SwiftUI patterns
+- **Authentication** with SwiftUI Authenticator
+- **GraphQL API** with real-time capabilities
+- **File Storage** with S3 integration
+- **Modern Swift Concurrency** (async/await)
+
+Thank you for following this tutorial! Please let us know your feedback by opening an issue or a pull request on our [GitHub repository](https://github.com/sebsto/amplify-ios-getting-started).
 
 [Back](/01_introduction.md) to the start.

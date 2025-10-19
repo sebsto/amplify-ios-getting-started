@@ -46,15 +46,15 @@ You will be building this iOS application using the [Terminal](https://support.a
 
 To follow this tutorial, you need the following tools and resources:
 
-- [Xcode 15.x](https://developer.apple.com/xcode/) or more recent, available on the [Apple Store](https://apps.apple.com/us/app/xcode/id497799835?mt=12s).
+- [Xcode 26.x](https://developer.apple.com/xcode/) or more recent, available on the [Apple Store](https://apps.apple.com/us/app/xcode/id497799835?mt=12s).
 - an [AWS Account](https://portal.aws.amazon.com/billing/signup#/start) with at least [these permissions](/amplify-policy.json) (an `Administrator` role or `root` account will also work, but we recommend a [least-privileges](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#grant-least-privilege) approach).
-- [NodeJS 22.4](https://nodejs.org/en/download/) or more recent.
-- AWS Command Line Interface [AWS CLI 2.17.x](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) or more recent.
+- [NodeJS 24.x](https://nodejs.org/en/download/) or more recent.
+- AWS Command Line Interface [AWS CLI 2.31.x](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) or more recent.
 
 You can install these tools following these instructions:
 
 ```zsh
-# install brew itself
+# install brew itself, if not installed yet
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 # install python3 and pip3
@@ -72,18 +72,17 @@ Once installed, you should have **at least the versions shown below** (anything 
 
 ```zsh
 brew --version
-# Homebrew 4.3.9-38-g4bd3b93
-# Homebrew/homebrew-core (git revision 6b117484622; last commit 2024-07-03)
-# Homebrew/homebrew-cask (git revision 75f95ae22c; last commit 2024-07-03)
+# Homebrew 4.6.17-57-g0b8eb66
+# Homebrew/homebrew-core (git revision 7c2dc0cd028; last commit 2025-10-18)
+# Homebrew/homebrew-cask (git revision b797e17faa4; last commit 2025-10-18)
 
 python3 --version
-# Python 3.12.4
+# Python 3.14.0
 
 aws --version
-# aws-cli/2.17.5 Python/3.11.9 Darwin/23.5.0 source/arm64
-
+# aws-cli/2.31.17 Python/3.13.9 Darwin/25.0.0 source/arm64
 node --version
-# v22.4.0
+# v24.10.0
 
 ```
 

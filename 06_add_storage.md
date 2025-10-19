@@ -1,6 +1,6 @@
 # Introduction
 
-Now that we have the notes app working, let's add the ability to associate an image with each note. In this module, you will use the Amplify CLI and libraries to create a storage service leveraging [Amazon S3](https://aws.amazon.com/s3/). Finally, you will update the iOS app to enable image uploading, fetching, and rendering.
+Now that we have the notes app working, let's add the ability to associate an image with each note. In this module, you will use the existing Amplify Gen2 storage service leveraging [Amazon S3](https://aws.amazon.com/s3/). The storage service is already configured and the iOS app already includes image uploading, fetching, and rendering capabilities.
 
 ## What You Will Learn
 
@@ -14,288 +14,250 @@ Storage service - Storing and querying for files like images and videos is a com
 
 # Implementation
 
-## Create the Storage Service
+## Verify the Storage Service
 
- To add image storage functionality, we'll use the Amplify storage category:
+The storage service was already defined in the previous modules when we created `amplify/storage/resource.ts`. Let's verify it's configured correctly:
+
+```typescript
+// amplify/storage/resource.ts
+import { defineStorage } from '@aws-amplify/backend';
+
+export const storage = defineStorage({
+  name: 'image',
+  access: (allow) => ({
+    'private/{entity_id}/*': [
+      allow.entity('identity').to(['read', 'write', 'delete'])
+    ],
+  })
+});
+```
+
+This configuration:
+- Creates an S3 bucket named 'image'
+- Allows authenticated users to read, write, and delete their own files
+- Uses private access level (files are isolated per user)
+- Files are stored under `private/{entity_id}/` path structure
+
+## Verify Storage Deployment
+
+The storage service is automatically deployed with your sandbox. If your sandbox is not running, start it:
 
 ```zsh
-amplify add storage
+npx ampx sandbox
 ```
 
-- *? Please select from one of the below mentioned services:*,accept the default **Content (Images, audio, video, etc.)** and press **enter**
-- *? Please provide a friendly name for your resource that will be used to label this category in the project:* type **image** and press **enter**
-- *? Please provide bucket name:, accept the default and press **enter**
-- *? Who should have access:*, accept the default **Auth users only** and press **enter**
-- *? What kind of access do you want for Authenticated users?* select all three options **create/update, read, delete** using the space and arrows keys, then press **enter**
-- *? Do you want to add a Lambda Trigger for your S3 Bucket?*, accept the default **No** and press **enter**
+The S3 bucket and necessary IAM permissions are created automatically.
 
-After a while, you should see
+## Verify Storage Plugin Installation
 
-```text
-Successfully added resource image locally
-```
-
-## Deploy the Storage Service
-
-To deploy the storage service we have just created, go to your terminal and **execute the command**:
-
-``` zsh
-amplify push
-```
-
-Press **Y** to confirm and, after a while, you should see:
-
-```text
-✔ Successfully pulled backend environment amplify from the cloud.
-```
-
-## Add Amplify Storage Libraries to the Xcode Project
-
-Before going to the code, you add the Amplify Storage Library to the dependencies of your project.  Navigate back to the **General** tab of your target and select **AWSS3StoragePlugin** then click **Add**:
-
-![Select AWSS3StoragePlugin as dependencies](img/select-awss3storageplugin-dependency.png)
-
-You have now added **AWSS3StoragePlugin** as a dependency for your project:
-
-![All dependencies with Storage added](img/awss3storageplugin-as-dependency.png)
-
-## Initialize Amplify Storage plugin at runtime
-
-Back to Xcode, open `Backend.swift` and add a line in the Amplify initialisation sequence in `private init()` method. Complete code block should look like this:
+The **AWSS3StoragePlugin** should already be installed from the previous modules. Verify it's included in your `Backend.swift` initialization:
 
 ```swift
-// at the top of the file
+try Amplify.add(plugin: AWSS3StoragePlugin())
+```
+
+## Verify Backend Storage Initialization
+
+Your `Backend.swift` should already include the storage plugin from previous modules. The initialization should look like this:
+
+```swift
 import AWSS3StoragePlugin
 
-// initialize amplify
-do {
-   try Amplify.add(plugin: AWSCognitoAuthPlugin())
-   try Amplify.add(plugin: AWSAPIPlugin(modelRegistration: AmplifyModels()))
-   try Amplify.add(plugin: AWSS3StoragePlugin())
-   try Amplify.configure()
-   print("Initialized Amplify");
-} catch {
-   print("Could not initialize Amplify: \(error)")
-}
+// In the Backend init method:
+try Amplify.add(plugin: AWSS3StoragePlugin())
+try Amplify.configure(with: .amplifyOutputs)
 ```
 
-## Add Image CRUD methods to the `Backend` Class
+## Verify Image Storage Methods
 
-Open `Backend.swift`. Anywhere in the `Backend` class, **add** the the following methods:
-
-```Swift
-// MARK: - Image Storage
-
-func storeImage(name: String, image: Data) {
-
-    let options = StorageUploadDataRequest.Options(accessLevel: .private)
-    Amplify.Storage.uploadData(key: name, data: image, options: options,
-        progressListener: { progress in
-            // optionally update a progress bar here
-        }, resultListener: { event in
-            switch event {
-            case .success(let data):
-                print("Image upload completed: \(data)")
-            case .failure(let storageError):
-                print("Image upload failed: \(storageError.errorDescription). \(storageError.recoverySuggestion)")
-        }
-    })
-}
-
-func retrieveImage(name: String, completed: @escaping (Data) -> Void) {
-
-    let options = StorageDownloadDataRequest.Options(accessLevel: .private)
-    Amplify.Storage.downloadData(key: name, options: options,
-        progressListener: { progress in
-            // in case you want to monitor progress
-        }, resultListener: { (event) in
-            switch event {
-            case let .success(data):
-                print("Image \(name) loaded")
-                completed(data)
-            case let .failure(storageError):
-                print("Can not download image: \(storageError.errorDescription). \(storageError.recoverySuggestion)")
-            }
-        }
-    )
-}
-
-func deleteImage(name: String) {
-
-    let options = StorageRemoveRequest.Options(accessLevel: .private)
-    Amplify.Storage.remove(key: name, options: options,
-        resultListener: { (event) in
-            switch event {
-            case let .success(data):
-                print("Image \(data) deleted")
-            case let .failure(storageError):
-                print("Can not delete image: \(storageError.errorDescription). \(storageError.recoverySuggestion)")
-            }
-        }
-    )
-}
-```
-
-These three methods simply call their `Amplify` counterpart. Amplify storage has three file protection levels:
-
-- **Public** Accessible by all users
-- **Protected** Readable by all users, but only writable by the creating user
-- **Private** Readable and writable only by the creating user
-
-For this app, we want the images to only be available to the Note owner, we are using the `accessLevel: .private` property.
-
-## Load image when data are retrieved from the API
-
-Now that we have our backend functions available, let's load the images when the API call returns.  The central place to add this behaviour is when the app construct a `Note` UI object from the `NoteData` returned by the API.
-
-Open `ContentView.swift` and update the `Note`'s initializer:
+The `Backend.swift` file already includes the necessary storage methods using modern async/await patterns:
 
 ```swift
-// add a publishable's object property
-@Published var image : Image?
-
-// update init's code
-convenience init(from data: NoteData) {
-    self.init(id: data.id, name: data.name, description: data.description, image: data.image)
-
-    if let name = self.imageName {
-        // asynchronously download the image
-        Backend.shared.retrieveImage(name: name) { (data) in
-            // update the UI on the main thread
-            DispatchQueue.main.async() {
-                let uim = UIImage(data: data)
-                self.image = Image(uiImage: uim!)
-            }
+// MARK: Image Access
+func storagePath(for key:String) async -> IdentityIDStoragePath {
+    await withCheckedContinuation { continuation in
+       let storagePath = IdentityIDStoragePath.fromIdentityID { identityId in
+            return "private/\(identityId)/\(key)"
         }
+        continuation.resume(returning: storagePath)
     }
-    // store API object for easy retrieval later
-    self._data = data
-}
-```
-
-When an image name is present in the instance of `Note`, the code calls `retrieveImage`. This is an asynchronous function. It takes a function to call when the image is downloaded. The function creates an `Image` UI object and assign it to the instance of `Note`. Notice that this assignment triggers a User Interface update, hence it happens on the main thread of the application `DispatchQueue.main.async`.
-
-## Add UI Code to Capture an Image
-
-First, we add generic code to support image capture. This code can be reused in many appications, it shows an image selector allowing the user to chose an image from its image library.
-
-In Xcode, **create a new swift file** (**&#8984;N**, then select Swift). Name the file `CaptureImageView.swift` file and **add this code**:
-
-```swift
-import Foundation
-import UIKit
-import SwiftUI
-
-struct CaptureImageView {
-
-  /// MARK: - Properties
-  @Binding var isShown: Bool
-  @Binding var image: UIImage?
-
-  func makeCoordinator() -> Coordinator {
-    return Coordinator(isShown: $isShown, image: $image)
-  }
 }
 
-class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
-  @Binding var isCoordinatorShown: Bool
-  @Binding var imageInCoordinator: UIImage?
-  init(isShown: Binding<Bool>, image: Binding<UIImage?>) {
-    _isCoordinatorShown = isShown
-    _imageInCoordinator = image
-  }
-  func imagePickerController(_ picker: UIImagePickerController,
-                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-     guard let unwrapImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
-     imageInCoordinator = unwrapImage
-     isCoordinatorShown = false
-  }
-  func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-     isCoordinatorShown = false
-  }
-}
+func storeImage(name: String, image: Data) async {
+    
+    do {
+        let path = await storagePath(for: name)
+        let task = Amplify.Storage.uploadData(path: path, data: image)
+        let result = try await task.value
+        print("Image upload completed: \(result)")
 
-extension CaptureImageView: UIViewControllerRepresentable {
-    func makeUIViewController(context: UIViewControllerRepresentableContext<CaptureImageView>) -> UIImagePickerController {
-        let picker = UIImagePickerController()
-        picker.delegate = context.coordinator
-
-        // picker.sourceType = .camera // on real devices, you can capture image from the camera
-        // see https://medium.com/better-programming/how-to-pick-an-image-from-camera-or-photo-library-in-swiftui-a596a0a2ece
-
-        return picker
+    } catch let error as StorageError {
+        print("Can not upload image \(name): \(error.errorDescription). \(error.recoverySuggestion)")
+    } catch {
+        print("Unknown error when uploading image \(name): \(error)")
     }
+}
 
-    func updateUIViewController(_ uiViewController: UIImagePickerController,
-                                context: UIViewControllerRepresentableContext<CaptureImageView>) {
+func imageURL(name: String) async -> URL? {
+    
+    var result: URL? = nil
+    do {
+        let path = await storagePath(for: name)
+        result = try await Amplify.Storage.getURL(path: path)
 
+    } catch let error as StorageError {
+        print("Can not retrieve URL for image \(name): \(error.errorDescription). \(error.recoverySuggestion)")
+    } catch {
+        print("Unknown error when retrieving URL for image \(name): \(error)")
+    }
+    return result
+}
+
+func deleteImage(name: String) async {
+    
+    do {
+        let path = await storagePath(for: name)
+        let result = try await Amplify.Storage.remove(path: path)
+        print("Image \(name) deleted (result: \(result)")
+    } catch let error as StorageError {
+        print("Can not delete image \(name): \(error.errorDescription). \(error.recoverySuggestion)")
+    } catch {
+        print("Unknown error when deleting image \(name): \(error)")
     }
 }
 ```
 
-## Store image when Notes are created
+These methods use:
+- **Modern async/await** patterns instead of callbacks
+- **IdentityIDStoragePath** for user-specific file paths
+- **Private access level** - files are only accessible by their owner
+- **Proper error handling** with StorageError types
 
-Let's invoke the storage methods from `Backend` when a `Note` is created.
-Open `ContentView.swift` and **modify** the `AddNoteView` to add an `ImagePicker` component:
+## Verify Image Loading in Note Model
+
+The `Note` class in `Model.swift` already includes image loading functionality:
 
 ```swift
-// at the start of the Content View struct 
-@State var image : UIImage? // replace the previous declaration of image
-@State var showCaptureImageView = false
+// In the Note class
+@MainActor @Published var imageURL : URL?
 
-// in the view, replace the existing PICTURE section
-Section(header: Text("PICTURE")) {
-    VStack {
+// In the convenience init(from data: NoteData) method:
+if let name = self.imageName {
+    
+    // asynchronously generate the URL of the image.
+    Task { @MainActor () -> Void in
+        if self.imageURL == nil {
+            print("requesting image URL")
+            self.imageURL = await Backend.shared.imageURL(name: name)
+            print("received image URL")
+        }
+    }
+}
+```
+
+This approach:
+- Uses **AsyncImage** in SwiftUI instead of manual image loading
+- Generates **signed URLs** for secure image access
+- Uses **@MainActor** to ensure UI updates happen on the main thread
+- Leverages **Task** for modern Swift concurrency
+
+## Verify Image Capture UI
+
+The `CaptureImageView.swift` file should already exist in your project with the image picker functionality. This file provides:
+
+- **UIImagePickerController** integration with SwiftUI
+- **Photo library access** for selecting images
+- **Camera support** (on real devices)
+- **Coordinator pattern** for UIKit/SwiftUI bridging
+
+The implementation uses `UIViewControllerRepresentable` to wrap the UIKit image picker in a SwiftUI-compatible view.
+
+## Verify Image Storage in AddNoteView
+
+The `AddNoteView` in `ContentView.swift` already includes image capture and storage functionality:
+
+```swift
+struct AddNoteView: View {
+    @Binding var isPresented: Bool
+    var model: ViewModel
+
+    @State var name : String        = "New memory"
+    @State var description : String = "These are my notes from this moment"
+    @State var image : UIImage?
+    @State var showCaptureImageView = false
+
+    // PICTURE section with image picker
+    Section(header: Text("PICTURE")) {
+        VStack {
+            Button(action: {
+              self.showCaptureImageView.toggle()
+            }) {
+              Text("Choose photo")
+            }.sheet(isPresented: $showCaptureImageView) {
+                CaptureImageView(isShown: self.$showCaptureImageView, image: self.$image)
+            }
+            if (image != nil ) {
+                HStack {
+                    Spacer()
+                    Image(uiImage: image!)
+                        .resizable()
+                        .frame(width: 250, height: 200)
+                        .clipShape(Circle())
+                    Spacer()
+                    }
+            }
+        }
+    }
+
+    // Create button that handles image upload
+    Section {
         Button(action: {
-            self.showCaptureImageView.toggle()
-        }) {
-            Text("Choose photo")
-        }.sheet(isPresented: $showCaptureImageView) {
-            CaptureImageView(isShown: self.$showCaptureImageView, image: self.$image)
-        }
-        if (image != nil ) {
-            HStack {
-                Spacer()
-                Image(uiImage: image!)
-                    .resizable()
-                    .frame(width: 250, height: 200)
-                    .clipShape(Circle())
-                    .overlay(Circle().stroke(Color.white, lineWidth: 4))
-                    .shadow(radius: 10)
-                Spacer()
+            self.isPresented = false
+            
+            withAnimation {
+                let _ = Task { await self.model.addNote(name: self.name,
+                                                        description: self.description,
+                                                        image: self.image)
+                }
             }
+        }) {
+            Text("Create this memory")
         }
     }
 }
 ```
 
-Modify the `Create Note` section to store the image as well as the Note :
+The image upload is handled in the `ViewModel.addNote` method:
 
 ```swift
-Section {
-    Button(action: {
-        self.isPresented = false
+// In ViewModel.swift
+func addNote(name: String, description: String?, image: UIImage?) async {
+    let note = Note(id : UUID().uuidString,
+                    name: name,
+                    description: description,
+                    createdAt: Date.now)
 
-        let note = Note(id : UUID().uuidString,
-                        name: self.$name.wrappedValue,
-                        description: self.$description.wrappedValue)
+    // Handle image upload if provided
+    if let i = image  {
+        let smallImage = i.resize(to: 0.05)
+        note.imageName = UUID().uuidString
 
-        if let i = self.image  {
-            note.imageName = UUID().uuidString
-            note.image = Image(uiImage: i)
-
-            // asynchronously store the image (and assume it will work)
-            Backend.shared.storeImage(name: note.imageName!, image: (i.pngData())!)
+        Task {
+            // asynchronously store the image
+            await Backend.shared.storeImage(name: note.imageName!, image: (smallImage.pngData())!)
+            
+            // asynchronously generate the URL of the image
+            note.imageURL = await Backend.shared.imageURL(name: note.imageName!)
         }
-
-        // asynchronously store the note (and assume it will succeed)
-        Backend.shared.createNote(note: note)
-
-        // add the new note in our userdata, this will refresh UI
-        withAnimation { self.userData.notes.append(note) }
-    }) {
-        Text("Create this note")
     }
+    
+    // Store the note
+    Task {
+        await Backend.shared.createNote(note: note)
+    }
+    
+    self.notes.append(note)
+    self.state = .dataAvailable(self.notes)
 }
 ```
 

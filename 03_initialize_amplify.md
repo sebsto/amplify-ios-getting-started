@@ -2,38 +2,41 @@
 
 Now that we have created an iOS application, we want to continue development and add new features.
 
-To start to use AWS Amplify in your application, you must install the Amplify command line, initialize the amplify project directory, configure your project to use the Amplify libraries, and initialize Amplify Libraries at runtime.
+To start to use AWS Amplify Gen2 in your application, you must install Node.js and npm, initialize the Amplify Gen2 project with TypeScript backend definitions, configure your project to use the Amplify libraries, and initialize Amplify Libraries at runtime.
 
 ## What you Will Learn
 
-- Initialize a new Amplify project
+- Initialize a new Amplify Gen2 project
 - Add Amplify Libraries in your project
 - Initialize Amplify libraries at runtime
 
 ## Key Concepts
 
-- Amplify CLI - The Amplify CLI allows you to create, manage, and remove AWS services directly from your terminal.
+- Amplify Gen2 - Amplify Gen2 allows you to define your backend using TypeScript, providing type safety and better integration with modern development workflows.
 
 - Amplify libraries – The Amplify libraries allow you to interact with AWS services from a web or mobile application.
 
 # Implementation
 
-## Install Amplify CLI
+## Install Node.js and npm
 
-To install AWS Amplify CLI, open a Terminal, and **type the following command**:
+Amplify Gen2 requires Node.js and npm. If you haven't installed them yet, **type the following command**:
 
 ```zsh
-## Install Amplify CLI
-curl -sL https://aws-amplify.github.io/amplify-cli/install | bash && $SHELL
+# install Node.js & npm (if not already installed)
+brew install node
 
-## Verify installation and version
-amplify --version
-# 9.1.0
+# Verify installation and version
+node --version
+# v24.10.0
+
+npm --version
+# 11.6.0
 ```
 
-## Initialize an Amplify Backend
+## Initialize an Amplify Gen2 Backend
 
-To create the basic structure of our backend, we first need to initialize the amplify project directory and to create our cloud backend.
+To create the basic structure of our backend, we need to initialize the Amplify Gen2 project and create our TypeScript backend definition.
 
 Open a Terminal and change directories to your project. For example, if you created your project in the folder `~/Developer`, you can type:
 
@@ -41,51 +44,108 @@ Open a Terminal and change directories to your project. For example, if you crea
 cd ~/Developer/iOS\ Getting\ Started
 ```
 
-Verify you are in the correct directory, it should look like this:
+Initialize the npm project and install Amplify Gen2 dependencies. **Execute the following commands**:
 
 ```zsh
-➜  iOS Getting Started git:(master) ✗ ls -al
-total 32
-drwxr-xr-x   9 stormacq  admin   288 Jul  8 15:09 .
-drwxr-xr-x  17 stormacq  admin   544 Jul  6 16:20 ..
--rw-r--r--@  1 stormacq  admin  6148 Jul  8 15:06 .DS_Store
-drwxr-xr-x   9 stormacq  admin   288 Jul  6 16:12 iOS Getting Started
-drwxr-xr-x@  5 stormacq  admin   160 Jul  8 15:09 iOS Getting Started.xcodeproj
+# Initialize npm project
+npm init -y
+
+# Install Amplify Gen2 dependencies
+npm install aws-amplify
+npm install --save-dev @aws-amplify/backend @aws-amplify/backend-cli typescript
+
+# Create the amplify directory structure
+mkdir amplify
+mkdir amplify/auth
+mkdir amplify/data
+mkdir amplify/storage
 ```
 
-Initialize the Amplify project structure and configuration file. **Execute the following command**:
+Create the backend definition files. First, create `amplify/backend.ts`:
+
+```typescript
+import { defineBackend } from '@aws-amplify/backend';
+import { auth } from './auth/resource';
+import { data } from './data/resource';
+import { storage } from './storage/resource';
+
+defineBackend({
+  auth,
+  data,
+  storage
+});
+```
+
+Create the auth resource at `amplify/auth/resource.ts`:
+
+```typescript
+import { defineAuth } from '@aws-amplify/backend';
+
+export const auth = defineAuth({
+  loginWith: {
+    email: true,
+  },
+});
+```
+
+Create the data resource at `amplify/data/resource.ts`:
+
+```typescript
+import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
+
+const schema = a.schema({
+  NoteData: a
+    .model({
+      id: a.id(),
+      name: a.string().required(),
+      description: a.string(),
+      image: a.string(),
+    })
+    .authorization((allow) => [allow.owner()]),
+});
+
+export type Schema = ClientSchema<typeof schema>;
+
+export const data = defineData({
+  schema,
+  authorizationModes: {
+    defaultAuthorizationMode: 'userPool',
+  },
+});
+```
+
+Create the storage resource at `amplify/storage/resource.ts`:
+
+```typescript
+import { defineStorage } from '@aws-amplify/backend';
+
+export const storage = defineStorage({
+  name: 'image',
+  access: (allow) => ({
+    'private/{entity_id}/*': [
+      allow.entity('identity').to(['read', 'write', 'delete'])
+    ],
+  })
+});
+```
+
+Create `amplify/package.json`:
+
+```json
+{
+  "type": "module"
+}
+```
+
+Deploy your backend to the cloud:
 
 ```zsh
-amplify init
-
-? Enter a name for the project (iOSGettingStarted): accept the default, press enter
-The following configuration will be applied:
-
-Project information
-| Name: iOSGettingStarted
-| Environment: dev
-| Default editor: Visual Studio Code
-| App type: ios
-
-? Initialize the project with the above configuration? Yes, press enter
-Using default provider  awscloudformation, press enter
-? Select the authentication method you want to use: AWS profile, press enter
-? Please choose the profile you want to use: default, press enter
+npx ampx sandbox
 ```
 
-You can create a profile using AWS CLI using `aws configure --profile <name>` if you don't have one yet.
+This will deploy your backend and generate the configuration files. After a few minutes, you should see a message indicating the sandbox is ready and `amplify_outputs.json` will be generated.
 
-Amplify initilizes your project in the cloud, it might take a few minutes. After a few minutes, you should see a message like:
-
-```zsh
-✔ Successfully created initial AWS cloud resources for deployments.
-✔ Initialized provider successfully.
-Initialized your environment successfully.
-
-Your project has been successfully initialized and connected to the cloud!
-```
-
-## Add Amplify Librairies to your Project
+## Add Amplify Libraries to your Project
 
 1. Switch back to Xcode. Select `File > Add Packages...`
 
@@ -95,17 +155,17 @@ Your project has been successfully initialized and connected to the cloud!
 
 ![Amplify iOS repo URL in Add Packages search bar](img/search-for-amplify-repo.png)
 
-3. Lastly, choose which of the libraries you want added to your project. For this tutorial, select Amplify, then click **Add Package**.
+3. Lastly, choose which of the libraries you want added to your project. For this tutorial, select **Amplify**, **AWSCognitoAuthPlugin**, **AWSAPIPlugin**, and **AWSS3StoragePlugin**, then click **Add Package**.
 
 ![AWS Amplify Package Products](img/amplify-package-product.png)
 
 ## Initialize Amplify at Runtime
 
-At runtime, the Amplify libraries require the Amplify configuration files generated by the CLI.
+At runtime, the Amplify libraries require the Amplify configuration files generated by the sandbox.
 
 1. Add the Amplify Configuration Files to our Project
 
-    Using the Finder, locate `awsconfiguration.json` and `amplifyconfiguration.json`at the root of your project directory. Drag 'n drop them into your Xcode project:
+    Using the Finder, locate `amplify_outputs.json` at the root of your project directory (generated by `npx ampx sandbox`). Drag and drop it into your Xcode project:
 
     ![Add Amplify Configuration Files to Xcode](img/03_10.gif)
 
@@ -113,41 +173,60 @@ At runtime, the Amplify libraries require the Amplify configuration files genera
 
     Let's create a `Backend` class to group the code to interact with our backend. I use a [singleton design pattern](https://en.wikipedia.org/wiki/Singleton_pattern) to make it easily available through the application and to ensure the Amplify libraries are initialized only once.
 
-    The class initializer takes care of initializing the Amplify librairies.
-
-    Create a new swift text file `Backend.swift`, add it to your Xcode project (**CTRL-N**) and add this code:
+    Create a new Swift file `Backend.swift`, add it to your Xcode project (**CMD+N**) and add this code:
 
     ```swift
-    import UIKit
+    import SwiftUI
     import Amplify
+    import AWSCognitoAuthPlugin
+    import AWSAPIPlugin
+    import AWSS3StoragePlugin
+    import ClientRuntime
 
-    class Backend {
-        static let shared = Backend()
-        @discardableResult
-        static func initialize() -> Backend {
-            return .shared
+    final class Backend: Sendable {
+        
+        enum AuthStatus {
+            case signedIn
+            case signedOut
+            case sessionExpired
         }
+        
+        static let shared = Backend()
+            
         private init() {
-          // initialize amplify
-          do {
-            try Amplify.configure()
-            print("Initialized Amplify");
-          } catch {
-            print("Could not initialize Amplify: \(error)")
-          }
+            // initialize amplify
+            do {
+                try Amplify.add(plugin: AWSCognitoAuthPlugin())
+                try Amplify.add(plugin: AWSAPIPlugin(modelRegistration: AmplifyModels()))
+                try Amplify.add(plugin: AWSS3StoragePlugin())
+                
+                try Amplify.configure(with: .amplifyOutputs)
+                print("Initialized Amplify")
+            } catch {
+                print("Could not initialize Amplify: \(error)")
+            }
         }
     }
     ```
 
-    We initialize our singleton `Backend` object when application finishes launching.
+    We initialize our singleton `Backend` object when the application launches.
 
-    Open the `<PROJECT_NAME>App.swift` file and add `Backend.initialize()` in the `init()` method, just like this:
+    Update your `App.swift` file to initialize the backend:
 
     ```swift
-    // inside the <PROJECT_NAME>App.swift file 
-    init() {
-        // initialize Amplify
-        Backend.initialize()
+    import SwiftUI
+
+    @main
+    struct GettingStartedApp: App {
+
+        // trigger initialization of the Backend
+        let backend = Backend.shared
+
+        var body: some Scene {
+            WindowGroup {
+                ContentView().environmentObject(ViewModel())
+            }
+        }
     }
     ```
 

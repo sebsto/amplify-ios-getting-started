@@ -39,28 +39,55 @@ From the file list on the left of Xcode, open `ContentView.swift` and replace th
 ```swift
 import SwiftUI
 
-// singleton object to store user data
-class UserData : ObservableObject {
-    private init() {}
-    static let shared = UserData()
+enum AppState {
+    case noData
+    case loading
+    case dataAvailable([Note])
+    case error(Error)
+}
 
-    @Published var notes : [Note] = []
-    @Published var isSignedIn : Bool = false
+// ViewModel to manage app state
+@MainActor
+class ViewModel : ObservableObject {
+    
+    @Published var state : AppState = .noData
+    
+    // just a local cache
+    var notes : [Note] = []
 }
 
 // the data class to represents Notes
 class Note : Identifiable, ObservableObject {
-    var id : String
-    var name : String
+    var id          : String
+    var name        : String
     var description : String?
-    var imageName : String?
-    @Published var image : Image?
-
-    init(id: String, name: String, description: String? = nil, image: String? = nil ) {
-        self.id = id
-        self.name = name
+    var imageName   : String?
+    var createdAt   : Date?
+    @MainActor @Published var imageURL : URL?
+    
+    init(id: String,
+         name: String,
+         description: String? = nil,
+         image: String? = nil,
+         createdAt: Date? = nil) {
+        self.id          = id
+        self.name        = name
         self.description = description
-        self.imageName = image
+        self.imageName   = image
+        self.createdAt   = createdAt
+    }
+    
+    // provide a display ready representation of the date
+    var date: String {
+        get {
+            if let date = self.createdAt {
+                let formatter = DateFormatter()
+                formatter.dateStyle = .short
+                return formatter.string(from: date)
+            } else {
+                return ""
+            }
+        }
     }
 }
 
@@ -68,80 +95,95 @@ class Note : Identifiable, ObservableObject {
 struct ListRow: View {
     @ObservedObject var note : Note
     var body: some View {
-
-        return HStack(alignment: .center, spacing: 5.0) {
-
-            // if there is an image, display it on the left
-            if (note.image != nil) {
-                note.image!
-                .resizable()
-                .frame(width: 50, height: 50)
+        
+        VStack(alignment: .leading) {
+            
+            Text(note.date)
+                .bold()
+            
+            AsyncImage(url: note.imageURL) { image in
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .padding(.bottom)
+            } placeholder: {
+                ProgressView()
+                    .frame(maxWidth: .infinity)
             }
 
-            // the right part is a vertical stack with the title and description
-            VStack(alignment: .leading, spacing: 5.0) {
+            Group {
                 Text(note.name)
-                .bold()
-
-                if ((note.description) != nil) {
-                    Text(note.description!)
+                    .bold()
+                
+                if let description = note.description {
+                    Text(description)
+                        .foregroundColor(.gray)
                 }
             }
         }
+        .padding([.top, .bottom], 20)
     }
 }
 
-// this is the main view of our app, 
-// it is made of a Table with one line per Note
+// this is the main view of our app
 struct ContentView: View {
-    @ObservedObject private var userData: UserData = .shared
-
+    @EnvironmentObject public var model: ViewModel
+    
     var body: some View {
-        List {
-            ForEach(userData.notes) { note in
-                ListRow(note: note)
+        ZStack {
+            switch(model.state) {
+                
+            case .noData, .loading:
+                ProgressView()
+                
+            case .dataAvailable(let notes):
+                navigationView(notes: notes)
+                
+            case .error(let error):
+                Text("There was an error: \(error.localizedDescription)")
             }
+        }
+    }
+    
+    @ViewBuilder
+    func navigationView(notes: [Note]) -> some View {
+        NavigationView {
+            List {
+                ForEach(notes) { note in
+                    ListRow(note: note)
+                }
+            }
+            .navigationTitle(Text("My Memories"))
         }
     }
 }
 
-// this is use to preview the UI in Xcode
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-
-        prepareTestData()
-
-        return ContentView()
-    }
+#Preview("Empty State") {
+    let model = ViewModel()
+    return ContentView().environmentObject(model)
 }
 
-// this is a test data set to preview the UI in Xcode
-@discardableResult
-func prepareTestData() -> UserData {
-    let userData = UserData.shared
-    userData.isSignedIn = true
+#Preview("With Data") {
+    let model = ViewModel()
     let desc = "this is a very long description that should fit on multiple lines.\nit even has a line break\nor two."
-
-    let n1 = Note(id: "01", name: "Hello world", description: desc, image: "mic")
-    let n2 = Note(id: "02", name: "A new note", description: desc, image: "phone")
-
-    n1.image = Image(systemName: n1.imageName!)
-    n2.image = Image(systemName: n2.imageName!)
-
-    userData.notes = [ n1, n2 ]
-
-    return userData
+    
+    let n1 = Note(id: "01", name: "Hello world", description: desc, createdAt: Date())
+    let n2 = Note(id: "02", name: "A new note", description: desc, createdAt: Date())
+    
+    model.notes = [n1, n2]
+    model.state = .dataAvailable(model.notes)
+    
+    return ContentView().environmentObject(model)
 }
-
 ```
 
 ### What did we just add?
 
-- I created a `Note` class to store the data of Notes. I used two distinct properties for `ImageName` and `Image`. I will take care of `Image` later on in section [06 Add Storage](o6_add_storage.md)
-- I created a `UserData` class to hold specific user's data, at this stage, just a list of `Note` objects.
-- the main view `ContentView` contains a `List` of `ListRow`s
-- Each line is rendered by a `ListRow` : a horizontal stack with an image and text.  Text is a vertical stack with the note name, in bold, and the note description.
-- Finally I adjusted `ContentView_Previews` and added `prepareTestData()` to allow a preview rendering in the canvas.
+- I created a `Note` class to store the data of Notes. I used `imageURL` for async image loading that we'll implement later in [06 Add Storage](06_add_storage.md)
+- I created a `ViewModel` class following the MVVM pattern to manage app state using an `AppState` enum
+- The main view `ContentView` uses a `ZStack` to switch between different states (loading, data, error)
+- Each note is rendered by a `ListRow` using a vertical stack with date, async image, title and description
+- I used modern SwiftUI `#Preview` macros instead of the deprecated `PreviewProvider` for Xcode canvas previews
 
 ## Build and Test
 
@@ -158,6 +200,22 @@ After a while, the app starts in the iOS Simulator, with an initial empty screen
 ![Initial Demo Screenshot on Simulator](img/initial-demo-screenshot.png)
 
 The preview data does not render at runtime, they are only intended for previews inside Xcode.
+
+Finally, update your `App.swift` file to provide the ViewModel to your ContentView:
+
+```swift
+import SwiftUI
+
+@main
+struct GettingStartedApp: App {
+
+    var body: some Scene {
+        WindowGroup {
+            ContentView().environmentObject(ViewModel())
+        }
+    }
+}
+```
 
 You have successfully created an iOS app. You are ready to start building with Amplify! 🎉
 
