@@ -8,6 +8,10 @@ on:
   
   workflow_dispatch: # allows manual trigger of the workflow in GitHub console
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+  
 jobs:
   pre-build:
 
