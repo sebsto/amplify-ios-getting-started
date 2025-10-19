@@ -40,6 +40,16 @@ echo "npm version: $(npm --version)"
 
 echo "✅ npm and npx are available"
 
+# Install AWS CLI if not present
+if ! command -v aws &> /dev/null; then
+    echo "Installing AWS CLI via Homebrew"
+    brew install awscli
+fi
+
+# Verify AWS CLI installation
+echo "AWS CLI version: $(aws --version)"
+echo "✅ AWS CLI is available"
+
 # Install Amplify Gen2 CLI
 echo "Installing Amplify Gen2 CLI dependencies"
 npm install @aws-amplify/backend-cli@latest
