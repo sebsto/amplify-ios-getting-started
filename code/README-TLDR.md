@@ -43,8 +43,6 @@ xcodeinstall list -f -x 26 -s us-east-1
 xcodeinstall download -s us-east-1 --name "Xcode 26.0.1 Universal.xip"
 
 # Install Xcode (skip --name for interactive UI)
-# Note 18 Oct 2025 : 
-# After Xcode installation, the package installation hangs. You can safely CTRL-C
 xcodeinstall install --name "Xcode 26.0.1 Universal.xip"
 
 # Not mandatory but it helps 
