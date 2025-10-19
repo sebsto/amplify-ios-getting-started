@@ -10,51 +10,46 @@
 # a nonzero exit code.
 set -e
 
-echo "🍜 Prepare AWS CLI configuration"
-AMPLIFY_REGION=eu-central-1
-mkdir ~/.aws
-echo "[default]\nregion=$AMPLIFY_REGION\n\n" > ~/.aws/config
-echo "[default]\n\n" > ~/.aws/credentials
+export AWS_REGION=us-west-2
+export CODE_DIR=/Volumes/workspace/repository/code
 
-echo "🏗 Installing Amplify"
-curl -sL https://aws-amplify.github.io/amplify-cli/install | bash && $SHELL
-AMPLIFY_CLI=~/.amplify/bin/amplify
+# The amplify app ID for this apps
+# ⚠️⚠️⚠️ REPLACE WITH YOUR OWN APP ID IF YOU USE AMPLIFY ##
+AMPLIFY_APP_ID=d199v9208momso
 
-pushd /Volumes/workspace/repository/code
+# verify npm and npx are installed
+if ! command -v npm &> /dev/null; then
+    echo "🛑 npm not found, please install Node.js"
+    exit 1
+fi
 
-echo "💫 Configuring Amplify for this project"
-AMPLIFY_APPID="d1lld0ga9eqxz2"
-AMPLIFY_PROJECT_NAME="iOSGettingStarted"
-AMPLIFY_ENV="dev"
+if ! command -v npx &> /dev/null; then
+    echo "🛑 npx not found, please install Node.js"
+    exit 1
+fi
 
-AWSCLOUDFORMATIONCONFIG="{\
-\"configLevel\":\"general\",\
-\"useProfile\":true,\
-\"profileName\":\"default\"\
-}"
+echo "✅ npm and npx are available"
 
-AMPLIFY="{\
-\"projectName\":\"$AMPLIFY_PROJECT_NAME\",\
-\"appId\":\"$AMPLIFY_APPID\",\
-\"envName\":\"$AMPLIFY_ENV\",\
-\"defaultEditor\":\"code\"\
-}"
-FRONTEND="{\
-\"frontend\":\"ios\"
-}"
-PROVIDERS="{\
-\"awscloudformation\":$AWSCLOUDFORMATIONCONFIG\
-}"
+# Install Amplify Gen2 CLI
+echo "Installing Amplify Gen2 CLI dependencies"
+npm install @aws-amplify/backend-cli@latest
 
-$AMPLIFY_CLI pull \
---region $AMPLIFY_REGION \
---amplify $AMPLIFY       \
---frontend $FRONTEND     \
---providers $PROVIDERS   \
---yes 
+# verify amplify app exists in the region
+echo "Verifying Amplify app $AMPLIFY_APP_ID exists in region $AWS_REGION"
+if ! aws amplify get-app --app-id $AMPLIFY_APP_ID --region $AWS_REGION &> /dev/null; then
+    echo "🛑 Amplify app $AMPLIFY_APP_ID not found in region $AWS_REGION"
+    exit 1
+fi
+echo "✅ Amplify app verified"
 
-echo "💫 Generating code"
-$AMPLIFY_CLI codegen models
+echo "Changing to code directory at $CODE_DIR"
+pushd $CODE_DIR
+
+npx ampx generate outputs    \
+  --app-id ${AMPLIFY_APP_ID} \
+  --branch main              \
+  --out-dir .                \
+  --format json
 
 # A command or script succeeded.
 echo "✅ Done."
