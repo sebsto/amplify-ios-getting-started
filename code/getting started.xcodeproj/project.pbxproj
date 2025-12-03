@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -94,6 +94,10 @@
 		00FD171A28D502CC004C4CC9 /* ci_post_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_xcodebuild.sh; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		001CF0A32EE090FF00BF18A5 /* ci_actions */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ci_actions; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		0084716A24A60D82002CD90D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -150,6 +154,7 @@
 		0084716424A60D82002CD90D = {
 			isa = PBXGroup;
 			children = (
+				001CF0A32EE090FF00BF18A5 /* ci_actions */,
 				00FD171728D5028C004C4CC9 /* ci_scripts */,
 				0084716F24A60D82002CD90D /* getting started */,
 				00E757492704CB720018F166 /* getting started unit tests */,
