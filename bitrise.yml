@@ -22,7 +22,6 @@ workflows:
       install your project's dependencies if any, run your Xcode tests and save
       the test results.
     steps:
-    - git-clone@8: {}
     - script:
         inputs:
         - content: |-
@@ -33,6 +32,8 @@ workflows:
         inputs:
         - path: "$BITRISE_WORKING_DIR"
         
+    - git-clone@8: {}
+
     - script:
         inputs:
         - content: |-
