@@ -14,88 +14,78 @@ app:
   - BITRISE_DISTRIBUTION_METHOD: app-store
     opts:
       is_expand: false
-pipelines:
-  run_tests:
-    workflows:
-      build_for_testing: {}
-      test_without_building:
-        depends_on:
-        - build_for_testing
-        parallel: "$TEST_SHARD_COUNT"
+
 workflows:
-  archive_and_export_app:
-    summary: Run your Xcode tests and create an IPA file to install your app on a
-      device or share it with your team.
-    description: The workflow will first clone your Git repository, cache and
-      install your project's dependencies if any, run your Xcode tests, export
-      an IPA file from the project and save it.
-    steps:
-    - git-clone@8: {}
-    - xcode-test@6:
-        inputs:
-        - project_path: "$BITRISE_PROJECT_PATH"
-        - scheme: "$BITRISE_SCHEME"
-        - test_repetition_mode: retry_on_failure
-        - cache_level: none
-    - xcode-archive@5:
-        inputs:
-        - project_path: "$BITRISE_PROJECT_PATH"
-        - scheme: "$BITRISE_SCHEME"
-        - distribution_method: "$BITRISE_DISTRIBUTION_METHOD"
-        - automatic_code_signing: api-key
-        - cache_level: none
-    - deploy-to-bitrise-io@2: {}
-  build_for_testing:
-    steps:
-    - git-clone@8: {}
-    - restore-spm-cache@2: {}
-    - xcode-build-for-test@3:
-        inputs:
-        - project_path: "$BITRISE_PROJECT_PATH"
-        - scheme: "$BITRISE_SCHEME"
-        - destination: generic/platform=iOS Simulator
-        - cache_level: none
-    - save-spm-cache@1: {}
-    - xcode-test-shard-calculation@0:
-        inputs:
-        - shard_count: "$TEST_SHARD_COUNT"
-        - product_path: "$BITRISE_XCTESTRUN_FILE_PATH"
-    - deploy-to-bitrise-io@2:
-        inputs:
-        - pipeline_intermediate_files: |-
-            BITRISE_TEST_SHARDS_PATH
-            BITRISE_TEST_BUNDLE_PATH
-  run_tests:
+  build_test_depoy:
     summary: Run your Xcode tests and get the test report.
     description: The workflow will first clone your Git repository, cache and
       install your project's dependencies if any, run your Xcode tests and save
       the test results.
     steps:
     - git-clone@8: {}
-    - restore-spm-cache@2: {}
-    - xcode-test@6:
+    - script:
         inputs:
-        - project_path: "$BITRISE_PROJECT_PATH"
-        - scheme: "$BITRISE_SCHEME"
-        - test_repetition_mode: retry_on_failure
-        - cache_level: none
-    - save-spm-cache@1: {}
-    - deploy-to-bitrise-io@2: {}
-    triggers:
-      push:
-      - branch: main
-      pull_request:
-      - source_branch: "*"
-    meta:
-      bitrise.io:
-        stack: agent-pool-71860415-46e6-4223-96a2-a98cd4ce7afc
-  test_without_building:
-    steps:
-    - pull-intermediate-files@1: {}
-    - xcode-test-without-building@0:
+        - content: |-
+            #!/usr/bin/env bash
+            # fail if any commands fails
+            set -e
+            # debug log
+            set -x
+            # Prepare the keychain
+            code/ci_actions/01_keychain.sh
+            # Prepare Amplify
+            code/ci_actions/02_amplify.sh
+        title: Pre-Build
+    
+    - script:
         inputs:
-        - only_testing: "$BITRISE_TEST_SHARDS_PATH/$BITRISE_IO_PARALLEL_INDEX"
-        - xctestrun: "$BITRISE_TEST_BUNDLE_PATH/all_tests.xctestrun"
+        - content: |-
+            #!/usr/bin/env bash
+            # fail if any commands fails
+            set -e
+            # debug log
+            set -x
+            # Build
+            code/ci_actions/03_build.sh
+        title: Build
+
+    - script:
+        inputs:
+        - content: |-
+            #!/usr/bin/env bash
+            # fail if any commands fails
+            set -e
+            # debug log
+            set -x
+            # Tests
+            code/ci_actions/04_local_tests.sh
+            code/ci_actions/05_devicefarm_tests.sh
+        title: Tests
+
+    - script:
+        inputs:
+        - content: |-
+            #!/usr/bin/env bash
+            # fail if any commands fails
+            set -e
+            # debug log
+            set -x
+            # Deploy
+            code/ci_actions/06_deploy_testflight.sh
+        title: Deploy
+
+    - script:
+        inputs:
+        - content: |-
+            #!/usr/bin/env bash
+            # fail if any commands fails
+            set -e
+            # debug log
+            set -x
+            # Cleanup
+            code/ci_actions/07_cleanup.sh
+        title: Cleanup
+      
 meta:
   bitrise.io:
     stack: osx-xcode-26.2.x-edge
