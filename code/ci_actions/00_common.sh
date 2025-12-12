@@ -34,8 +34,8 @@ if [ ! -z ${CODEBUILD_SRC_DIR} ]; then # we are running inside AWS CodeBuild
     echo "AWS CodeBuild detected"
     export CODE_DIR=$CODEBUILD_SRC_DIR/code
 fi
-if [ ! -z ${BITRISE_WORKING_DIR} ]; then # we are running inside AWS CodeBuild
-    echo "AWS CodeBuild detected"
+if [ ! -z ${BITRISE_WORKING_DIR} ]; then # we are running inside BITRISE w/ self hosted environment
+    echo "BitRise self hosted detected"
     export CODE_DIR=$BITRISE_WORKING_DIR/code
 fi
 
