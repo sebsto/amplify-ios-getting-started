@@ -96,7 +96,10 @@ workflows:
             # Cleanup
             code/ci_actions/07_cleanup.sh
         title: Cleanup
-      
+    
+    triggers:
+      push:
+      - branch: "*"      
 meta:
   bitrise.io:
     stack: agent-pool-71860415-46e6-4223-96a2-a98cd4ce7afc
