@@ -12,7 +12,7 @@ SCHEME="getting started"
 CONFIGURATION="Debug"
 BUILD_PATH="./build-test"
 PHONE_MODEL="iPhone 17 Pro"
-IOS_VERSION="26.0.1"
+IOS_VERSION="26.2"
 
 xcodebuild clean test \
     -project "$PROJECT"     \
