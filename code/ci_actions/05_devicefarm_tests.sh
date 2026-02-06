@@ -17,8 +17,8 @@ function upload_bundle() {
     echo "Preparing an upload to Device Farm"
     local UPLOAD_NAME=$(basename "${FILE}")
     local UPLOAD_OUTPUT=$(${AWS_CLI} devicefarm create-upload --region ${REGION} --project-arn ${PROJECT_ARN} --name "${UPLOAD_NAME}" --type ${TYPE})
-    local S3_UPLOAD_URL=$(echo $UPLOAD_OUTPUT | $BREW_PATH/jq -r '.upload.url')
-    local UPLOAD_ARN=$(echo $UPLOAD_OUTPUT | $BREW_PATH/jq -r '.upload.arn')
+    local S3_UPLOAD_URL=$(echo $UPLOAD_OUTPUT | /usr/bin/jq -r '.upload.url')
+    local UPLOAD_ARN=$(echo $UPLOAD_OUTPUT | /usr/bin/jq -r '.upload.arn')
 
     echo "Uploading"
     curl -T "$FILE" "$S3_UPLOAD_URL" 2>/dev/null
@@ -54,8 +54,8 @@ function wait_test_complete() {
     
     echo "Waiting for test to complete"
     local TEST_RUN_OUTPUT=$(${AWS_CLI} devicefarm --region ${REGION} get-run --arn ${ARN} --no-cli-pager)
-    local TEST_RUN_STATUS=$(echo $TEST_RUN_OUTPUT | $BREW_PATH/jq -r '.run.status')
-    local TEST_RUN_RESULT=$(echo $TEST_RUN_OUTPUT | $BREW_PATH/jq -r '.run.result')
+    local TEST_RUN_STATUS=$(echo $TEST_RUN_OUTPUT | /usr/bin/jq -r '.run.status')
+    local TEST_RUN_RESULT=$(echo $TEST_RUN_OUTPUT | /usr/bin/jq -r '.run.result')
     local ATTEMPT=0
     local MAX_ATTEMPT=30
     local WAIT_TIME=60
@@ -65,8 +65,8 @@ function wait_test_complete() {
         sleep $WAIT_TIME
 
         TEST_RUN_OUTPUT=$(${AWS_CLI} devicefarm --region ${REGION} get-run --arn ${ARN} --no-cli-pager)
-        TEST_RUN_STATUS=$(echo $TEST_RUN_OUTPUT | $BREW_PATH/jq -r '.run.status')
-        TEST_RUN_RESULT=$(echo $TEST_RUN_OUTPUT | $BREW_PATH/jq -r '.run.result')
+        TEST_RUN_STATUS=$(echo $TEST_RUN_OUTPUT | /usr/bin/jq -r '.run.status')
+        TEST_RUN_RESULT=$(echo $TEST_RUN_OUTPUT | /usr/bin/jq -r '.run.result')
         echo "Test run status : $TEST_RUN_STATUS"
 
         ATTEMPT=$(( ATTEMPT + 1 ))
@@ -119,9 +119,14 @@ REGION=us-west-2
 
 # TODO move these to secrets manager ?
 PROJECT_ARN="arn:aws:devicefarm:us-west-2:486652066693:project:7fb4f0f3-2772-4123-97c0-d323084db635"
-#PRIVATE_DEVICE_POOL_ARN="arn:aws:devicefarm:us-west-2:486652066693:devicepool:7fb4f0f3-2772-4123-97c0-d323084db635/0658c78b-8df7-439d-9785-e4f087dbcc55" # iOS 16
 PRIVATE_DEVICE_POOL_ARN="arn:aws:devicefarm:us-west-2:486652066693:devicepool:7fb4f0f3-2772-4123-97c0-d323084db635/be14005c-069d-463a-8190-57025a820b0b" # iOS 26
+TOP_DEVICE_POOL_ARN="arn:aws:devicefarm:us-west-2::devicepool:082d10e5-d7d7-48a5-ba5c-b33d66efa1f5"
 
+# To find the top device pool arn:
+#aws devicefarm list-device-pools --region us-west-2 \
+#  --arn ${PROJECT_ARN} \
+#  --type CURATED
+  
 APP_BUNDLE="${APP_NAME}.ipa"
 TEST_BUNDLE="${APP_NAME}-UI.ipa"
 FILE_APP_BUNDLE="${DEVICE_FARM}/${APP_NAME}.ipa"
@@ -145,16 +150,23 @@ IOS_TEST_SPEC_ARN=$RETURN_VALUE
 
 # Schedule a run on Device Farm
 echo "Schedule a run on  Device Farm"
-SCHEDULE_RUN_OUTPUT="$(${AWS_CLI} devicefarm schedule-run --region ${REGION}  \
+#SCHEDULE_RUN_OUTPUT="$(${AWS_CLI} devicefarm schedule-run --region ${REGION}  \
+#                                                          --project-arn ${PROJECT_ARN} \
+#                                                          --app-arn ${IOS_APP_ARN} \
+#                                                          --device-pool-arn ${PRIVATE_DEVICE_POOL_ARN} \
+#                                                          --name CLITestRun  \
+#                                                          --test type=XCTEST_UI,testPackageArn=${IOS_TEST_APP_ARN},testSpecArn=${IOS_TEST_SPEC_ARN} )"
+
+SCHEDULE_RUN_OUTPUT="$(${AWS_CLI} devicefarm schedule-run --region ${REGION} \
                                                           --project-arn ${PROJECT_ARN} \
                                                           --app-arn ${IOS_APP_ARN} \
-                                                          --device-pool-arn ${PRIVATE_DEVICE_POOL_ARN} \
-                                                          --name CLITestRun  \
+                                                          --device-pool-arn  ${TOP_DEVICE_POOL_ARN}\
+                                                          --name "CLITestRun" \
                                                           --test type=XCTEST_UI,testPackageArn=${IOS_TEST_APP_ARN},testSpecArn=${IOS_TEST_SPEC_ARN} )"
-
+  
 
 # Forloop to test until run is complete 
-SCHEDULED_RUN_ARN=$(echo $SCHEDULE_RUN_OUTPUT | $BREW_PATH/jq -r '.run.arn')
+SCHEDULED_RUN_ARN=$(echo $SCHEDULE_RUN_OUTPUT | /usr/bin/jq -r '.run.arn')
 wait_test_complete $SCHEDULED_RUN_ARN
 
 popd
