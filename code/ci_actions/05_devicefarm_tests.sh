@@ -119,7 +119,8 @@ REGION=us-west-2
 
 # TODO move these to secrets manager ?
 PROJECT_ARN="arn:aws:devicefarm:us-west-2:486652066693:project:7fb4f0f3-2772-4123-97c0-d323084db635"
-PRIVATE_DEVICE_POOL_ARN="arn:aws:devicefarm:us-west-2:486652066693:devicepool:7fb4f0f3-2772-4123-97c0-d323084db635/0658c78b-8df7-439d-9785-e4f087dbcc55"
+#PRIVATE_DEVICE_POOL_ARN="arn:aws:devicefarm:us-west-2:486652066693:devicepool:7fb4f0f3-2772-4123-97c0-d323084db635/0658c78b-8df7-439d-9785-e4f087dbcc55" # iOS 16
+PRIVATE_DEVICE_POOL_ARN="arn:aws:devicefarm:us-west-2:486652066693:devicepool:7fb4f0f3-2772-4123-97c0-d323084db635/be14005c-069d-463a-8190-57025a820b0b" # iOS 26
 
 APP_BUNDLE="${APP_NAME}.ipa"
 TEST_BUNDLE="${APP_NAME}-UI.ipa"
@@ -143,6 +144,7 @@ upload_bundle "XCTEST_UI_TEST_SPEC"  "${FILE_TEST_SPEC}"
 IOS_TEST_SPEC_ARN=$RETURN_VALUE
 
 # Schedule a run on Device Farm
+echo "Schedule a run on  Device Farm"
 SCHEDULE_RUN_OUTPUT="$(${AWS_CLI} devicefarm schedule-run --region ${REGION}  \
                                                           --project-arn ${PROJECT_ARN} \
                                                           --app-arn ${IOS_APP_ARN} \
