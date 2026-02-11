@@ -65,6 +65,10 @@ echo "✅ Amplify app verified"
 echo "Changing to code directory at $CODE_DIR"
 pushd $CODE_DIR
 
+# This prevents errors in Amplify CLI when using NodeJS 25.x
+export NODE_OPTIONS="--no-experimental-global-webcrypto --no-experimental-global-navigator"
+
+echo "Amplify generate outputs"
 npx ampx generate outputs    \
   --app-id ${AMPLIFY_APP_ID} \
   --branch main              \

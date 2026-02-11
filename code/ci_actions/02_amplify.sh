@@ -20,6 +20,10 @@ if ! command -v npx &> /dev/null; then
     exit 1
 fi
 
+# Verify Node.js installation
+echo "Node.js version: $(node --version)"
+echo "npm version: $(npm --version)"
+
 echo "✅ npm and npx are available"
 
 # Install Amplify Gen2 CLI
@@ -36,6 +40,9 @@ echo "✅ Amplify app verified"
 
 echo "Changing to code directory at $CODE_DIR"
 pushd $CODE_DIR
+
+# This prevents errors in Amplify CLI when using NodeJS 25.x
+export NODE_OPTIONS="--no-experimental-global-webcrypto --no-experimental-global-navigator"
 
 npx ampx generate outputs    \
   --app-id ${AMPLIFY_APP_ID} \
