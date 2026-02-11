@@ -21,23 +21,26 @@ AMPLIFY_APP_ID=d199v9208momso
 if ! command -v node &> /dev/null; then
     echo "Installing Node.js via Homebrew"
     # Force v20 because of https://github.com/aws-amplify/amplify-cli/issues/14572
-    brew install node@20
+    HOMEBREW_NO_AUTO_UPDATE=1 brew install node@20
+    export NODEJS20_PATH=/usr/local/opt/node@20/bin
+    echo 'export PATH="$NODEJS20_PATH:$PATH"' >> ~/.zshrc
+
 fi
 
 # verify npm and npx are installed
-if ! command -v npm &> /dev/null; then
+if ! command -v ${NODEJS20_PATH}/npm &> /dev/null; then
     echo "🛑 npm not found, please install Node.js"
     exit 1
 fi
 
-if ! command -v npx &> /dev/null; then
+if ! command -v ${NODEJS20_PATH}/npx &> /dev/null; then
     echo "🛑 npx not found, please install Node.js"
     exit 1
 fi
 
 # Verify Node.js installation
-echo "Node.js version: $(node --version)"
-echo "npm version: $(npm --version)"
+echo "Node.js version: $(${NODEJS20_PATH}/node --version)"
+echo "npm version: $(${NODEJS20_PATH}/npm --version)"
 
 echo "✅ npm and npx are available"
 
@@ -53,7 +56,7 @@ echo "✅ AWS CLI is available"
 
 # Install Amplify Gen2 CLI
 echo "Installing Amplify Gen2 CLI dependencies"
-npm install @aws-amplify/backend-cli@latest
+${NODEJS20_PATH}/npm install @aws-amplify/backend-cli@latest
 
 # verify amplify app exists in the region
 echo "Verifying Amplify app $AMPLIFY_APP_ID exists in region $AWS_REGION"
@@ -70,7 +73,7 @@ pushd $CODE_DIR
 # https://github.com/aws-amplify/amplify-cli/issues/14572
 
 echo "Amplify generate outputs"
-npx ampx generate outputs    \
+${NODEJS20_PATH}/npx ampx generate outputs    \
   --app-id ${AMPLIFY_APP_ID} \
   --branch main              \
   --out-dir .                \
