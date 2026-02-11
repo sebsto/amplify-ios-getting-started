@@ -20,7 +20,8 @@ AMPLIFY_APP_ID=d199v9208momso
 # Install Node.js if not present
 if ! command -v node &> /dev/null; then
     echo "Installing Node.js via Homebrew"
-    brew install node
+    # Force v20 because of https://github.com/aws-amplify/amplify-cli/issues/14572
+    brew install node@20
 fi
 
 # verify npm and npx are installed
@@ -65,8 +66,8 @@ echo "✅ Amplify app verified"
 echo "Changing to code directory at $CODE_DIR"
 pushd $CODE_DIR
 
-# This prevents errors in Amplify CLI when using NodeJS 25.x
-export NODE_OPTIONS="--no-experimental-global-webcrypto --no-experimental-global-navigator"
+# DO NOT USE NodeJS 25 with this !
+# https://github.com/aws-amplify/amplify-cli/issues/14572
 
 echo "Amplify generate outputs"
 npx ampx generate outputs    \
