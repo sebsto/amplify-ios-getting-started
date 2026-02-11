@@ -12,6 +12,7 @@ set -e
 
 export AWS_REGION=us-west-2
 export CODE_DIR=/Volumes/workspace/repository/code
+export HOMEBREW_NO_AUTO_UPDATE=1
 
 # The amplify app ID for this apps
 # ⚠️⚠️⚠️ REPLACE WITH YOUR OWN APP ID IF YOU USE AMPLIFY ##
@@ -21,8 +22,9 @@ AMPLIFY_APP_ID=d199v9208momso
 if ! command -v node &> /dev/null; then
     echo "Installing Node.js via Homebrew"
     # Force v20 because of https://github.com/aws-amplify/amplify-cli/issues/14572
-    HOMEBREW_NO_AUTO_UPDATE=1 brew install node@22
+    brew install node@22
     export NODEJS22_PATH=/usr/local/opt/node@22/bin
+    export PATH=${NODEJS22_PATH}:${PATH}
     echo 'export PATH="$NODEJS22_PATH:$PATH"' >> ~/.zshrc
 
 fi
