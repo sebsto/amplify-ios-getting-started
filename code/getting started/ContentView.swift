@@ -118,7 +118,7 @@ struct ListRow: View {
             }
         }
         .padding([.top, .bottom], 20)
-//        .background(.green)
+        .background(.green)
     }
 }
 
